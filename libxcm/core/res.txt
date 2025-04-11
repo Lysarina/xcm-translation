@@ -1,0 +1,222 @@
+/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:9:10: fatal error: 'util.h' file not found
+#include "util.h"
+         ^~~~~~~~
+
+NEW!!!!!!!
+/usr/include/errno.h
+/usr/local/include/xcm.h:1570:10
+/usr/local/include/xcm.h
+
+NEW!!!!!!!
+/usr/lib/llvm-14/lib/clang/14.0.6/include/stddef.h
+/usr/local/include/xcm.h:1572:10
+/usr/local/include/xcm.h
+
+NEW!!!!!!!
+/usr/lib/llvm-14/lib/clang/14.0.6/include/__stddef_max_align_t.h
+/usr/include/clang/14.0.6/include/stddef.h:102:10
+/usr/include/clang/14.0.6/include/stddef.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types.h
+/usr/include/x86_64-linux-gnu/sys/types.h:29:10
+/usr/include/x86_64-linux-gnu/sys/types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/sys/types.h
+/usr/local/include/xcm.h:1573:10
+/usr/local/include/xcm.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types/clock_t.h
+/usr/include/x86_64-linux-gnu/sys/types.h:126:11
+/usr/include/x86_64-linux-gnu/sys/types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h
+/usr/include/x86_64-linux-gnu/sys/types.h:128:10
+/usr/include/x86_64-linux-gnu/sys/types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types/time_t.h
+/usr/include/x86_64-linux-gnu/sys/types.h:129:10
+/usr/include/x86_64-linux-gnu/sys/types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types/timer_t.h
+/usr/include/x86_64-linux-gnu/sys/types.h:130:10
+/usr/include/x86_64-linux-gnu/sys/types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/stdint-intn.h
+/usr/include/x86_64-linux-gnu/sys/types.h:155:10
+/usr/include/x86_64-linux-gnu/sys/types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/byteswap.h
+/usr/include/endian.h:35:11
+/usr/include/endian.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/uintn-identity.h
+/usr/include/endian.h:36:11
+/usr/include/endian.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h
+/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:4:10
+/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h
+/usr/include/x86_64-linux-gnu/sys/select.h:33:10
+/usr/include/x86_64-linux-gnu/sys/select.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h
+/usr/include/x86_64-linux-gnu/sys/select.h:37:10
+/usr/include/x86_64-linux-gnu/sys/select.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h
+/usr/include/x86_64-linux-gnu/sys/select.h:39:11
+/usr/include/x86_64-linux-gnu/sys/select.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/sys/select.h
+/usr/include/x86_64-linux-gnu/sys/types.h:179:11
+/usr/include/x86_64-linux-gnu/sys/types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:23:10
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/struct_mutex.h
+/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:74:10
+/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h
+/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:87:10
+/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h
+/usr/include/x86_64-linux-gnu/sys/types.h:227:11
+/usr/include/x86_64-linux-gnu/sys/types.h
+
+NEW!!!!!!!
+/usr/local/include/xcm_attr_types.h
+/usr/local/include/xcm_attr_map.h:23:10
+/usr/local/include/xcm_attr_map.h
+
+NEW!!!!!!!
+/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h
+/usr/include/stdint.h:37:10
+/usr/include/stdint.h
+
+NEW!!!!!!!
+/usr/include/stdint.h
+/usr/include/clang/14.0.6/include/stdint.h:52:16
+/usr/include/clang/14.0.6/include/stdint.h
+
+NEW!!!!!!!
+/usr/local/include/xcm_attr_map.h
+/usr/local/include/xcm.h:1574:10
+/usr/local/include/xcm.h
+
+NEW!!!!!!!
+/usr/local/include/xcm.h
+/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:6:10
+/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c
+
+NEW!!!!!!!
+/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c
+<invalid loc>
+1 error generated.
+Error while processing /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c.
+Transpiling xcm.c
+[33mwarning:[0m Missing child 94650509898592 of node AstNode { tag: TagIfStmt, children: [Some(94650509898592), Some(94650509900320), Some(94650509900624)], loc: SrcSpan { fileid: 27, begin_line: 391, begin_column: 5, end_line: 401, end_column: 52 }, type_id: None, rvalue: LValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:391:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509836624 of node AstNode { tag: TagCallExpr, children: [Some(94650509836536), Some(94650509836624)], loc: SrcSpan { fileid: 27, begin_line: 61, begin_column: 8, end_line: 61, end_column: 34 }, type_id: Some(94650508000848), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:61:8
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509884264 of node AstNode { tag: TagVarDecl, children: [Some(94650509884264)], loc: SrcSpan { fileid: 27, begin_line: 292, begin_column: 10, end_line: 292, end_column: 10 }, type_id: Some(94650508000720), rvalue: LValue, macro_expansions: [], macro_expansion_text: Some("NULL"), extras: [Text("is_blocking"), Bool(false), Bool(false), Bool(false), Bool(true), Array([])] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:292:10
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509903528 of node AstNode { tag: TagCallExpr, children: [Some(94650509903440), Some(94650509903528)], loc: SrcSpan { fileid: 27, begin_line: 420, begin_column: 12, end_line: 420, end_column: 33 }, type_id: Some(94650508000848), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:420:12
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509852032 of node AstNode { tag: TagIfStmt, children: [Some(94650509852032), Some(94650509852120), None], loc: SrcSpan { fileid: 27, begin_line: 106, begin_column: 2, end_line: 109, end_column: 14 }, type_id: None, rvalue: LValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:106:2
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509908240 of node AstNode { tag: TagReturnStmt, children: [Some(94650509908240)], loc: SrcSpan { fileid: 27, begin_line: 458, begin_column: 5, end_line: 458, end_column: 15 }, type_id: None, rvalue: LValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:458:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509866688 of node AstNode { tag: TagBinaryOperator, children: [Some(94650509866688), Some(94650509866728)], loc: SrcSpan { fileid: 27, begin_line: 173, begin_column: 5, end_line: 173, end_column: 16 }, type_id: Some(94650508002192), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [Text("="), Null, Null] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:173:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509903320 of node AstNode { tag: TagCallExpr, children: [Some(94650509903232), Some(94650509903320), Some(94650509903360)], loc: SrcSpan { fileid: 27, begin_line: 418, begin_column: 5, end_line: 418, end_column: 41 }, type_id: Some(94650508000848), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:418:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509850728 of node AstNode { tag: TagIfStmt, children: [Some(94650509850728), Some(94650509852168), None], loc: SrcSpan { fileid: 27, begin_line: 100, begin_column: 5, end_line: 110, end_column: 5 }, type_id: None, rvalue: LValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:100:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509872680 of node AstNode { tag: TagBinaryOperator, children: [Some(94650509872680), Some(94650509872992)], loc: SrcSpan { fileid: 27, begin_line: 212, begin_column: 9, end_line: 212, end_column: 46 }, type_id: Some(94650508000848), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [Text("&&"), Null, Null] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:212:9
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509907616 of node AstNode { tag: TagBinaryOperator, children: [Some(94650509907616), Some(94650509907656)], loc: SrcSpan { fileid: 27, begin_line: 451, begin_column: 5, end_line: 451, end_column: 22 }, type_id: Some(94650508002192), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [Text("="), Null, Null] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:451:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509905648 of node AstNode { tag: TagBinaryOperator, children: [Some(94650509905648), Some(94650509905688)], loc: SrcSpan { fileid: 27, begin_line: 436, begin_column: 9, end_line: 436, end_column: 27 }, type_id: Some(94650508000848), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [Text("=="), Null, Null] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:436:9
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509835088 of node AstNode { tag: TagBinaryOperator, children: [Some(94650509835088), Some(94650509835128)], loc: SrcSpan { fileid: 27, begin_line: 52, begin_column: 5, end_line: 52, end_column: 20 }, type_id: Some(94650508002192), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [Text("="), Null, Null] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:52:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509902424 of node AstNode { tag: TagCallExpr, children: [Some(94650509902304), Some(94650509902336), Some(94650509902424), Some(94650509902464)], loc: SrcSpan { fileid: 27, begin_line: 409, begin_column: 5, end_line: 409, end_column: 41 }, type_id: Some(94650508000848), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:409:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509867712 of node AstNode { tag: TagVarDecl, children: [Some(94650509867712)], loc: SrcSpan { fileid: 27, begin_line: 181, begin_column: 16, end_line: 181, end_column: 16 }, type_id: Some(94650509061520), rvalue: LValue, macro_expansions: [], macro_expansion_text: Some("NULL"), extras: [Text("xpoll"), Bool(false), Bool(false), Bool(false), Bool(true), Array([])] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:181:16
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509895688 of node AstNode { tag: TagIfStmt, children: [Some(94650509895688), Some(94650509897400), Some(94650509897728)], loc: SrcSpan { fileid: 27, begin_line: 371, begin_column: 5, end_line: 383, end_column: 44 }, type_id: None, rvalue: LValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:371:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509901520 of node AstNode { tag: TagCallExpr, children: [Some(94650509901432), Some(94650509901520), Some(94650509901560)], loc: SrcSpan { fileid: 27, begin_line: 406, begin_column: 5, end_line: 406, end_column: 41 }, type_id: Some(94650508000848), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:406:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509851728 of node AstNode { tag: TagNonCanonicalDecl, children: [Some(94650509851728)], loc: SrcSpan { fileid: 0, begin_line: 0, begin_column: 0, end_line: 0, end_column: 0 }, type_id: Some(94650509920048), rvalue: LValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> DisplaySrcSpan { file: None, loc: SrcSpan { fileid: 0, begin_line: 0, begin_column: 0, end_line: 0, end_column: 0 } }
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509904104 of node AstNode { tag: TagCallExpr, children: [Some(94650509904016), Some(94650509904104), Some(94650509904144)], loc: SrcSpan { fileid: 27, begin_line: 425, begin_column: 5, end_line: 425, end_column: 41 }, type_id: Some(94650508000848), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:425:5
+ [-Wclang-ast]
+[33mwarning:[0m Missing child 94650509906352 of node AstNode { tag: TagImplicitCastExpr, children: [Some(94650509906352)], loc: SrcSpan { fileid: 27, begin_line: 443, begin_column: 10, end_line: 443, end_column: 13 }, type_id: Some(94650508002192), rvalue: RValue, macro_expansions: [], macro_expansion_text: None, extras: [Text("LValueToRValue")] }
+Exported Clang AST was invalid. Check warnings above for unimplemented features.
+--> /home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c:443:10
+ [-Wclang-ast]
+thread 'main' panicked at 'Type conversion not implemented for TagTypeUnknown expecting 3', c2rust-transpile/src/c_ast/conversion.rs:827:22
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
