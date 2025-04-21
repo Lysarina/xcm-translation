@@ -7,7 +7,7 @@
 *.pyc
 *.la
 .libs/
-*/target
+*/target/
 
 test/xcmtest.c
 
