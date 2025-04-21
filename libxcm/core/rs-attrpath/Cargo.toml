@@ -1,0 +1,12 @@
+[package]
+name = "rs-attrpath"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+libc = "0.2.171"
+cbindgen = "0.28.0"
+
+[lib]
+path="src/attr_path.rs"
+crate-type = ["cdylib"]
