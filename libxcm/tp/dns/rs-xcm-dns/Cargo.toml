@@ -1,0 +1,12 @@
+[package]
+name = "rs-xcm-dns"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+c2rust-bitfields = "0.20.0"
+libc = "0.2.171"
+
+[lib]
+path="src/xcm_dns.rs"
+crate-type = ["cdylib"]

@@ -50,7 +50,6 @@ libxcm_la_SOURCES = \
 	libxcm/core/log_attr_tree.c \
 	libxcm/core/timer_mgr.c \
 	libxcm/core/xcm.c \
-	libxcm/core/xcm_addr.c \
 	libxcm/core/xcm_addr_compat.c \
 	libxcm/core/xcm_attr_map.c \
 	libxcm/core/xcm_compat.c \
@@ -61,7 +60,6 @@ libxcm_la_SOURCES = \
 	libxcm/tp/common/dns_attr.c \
 	libxcm/tp/common/log_tp.c \
 	libxcm/tp/common/xcm_tp.c \
-	libxcm/tp/dns/xcm_dns.c \
 	libxcm/tp/tcp/tconnect.c \
 	libxcm/tp/tcp/tcp_attr.c \
 	libxcm/tp/tcp/xcm_tp_btcp.c \
@@ -71,8 +69,12 @@ libxcm_la_SOURCES = \
 libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-Wl,--version-script=$(srcdir)/libxcm/libxcm.vs \
 	-version-info $(XCM_VERSION_CURRENT):$(XCM_VERSION_REVISION):$(XCM_VERSION_AGE) \
-	-L$(abs_top_builddir)/libxcm/core/rs-attrpath/target/release -lrs_attrpath \
-	-Wl,-rpath,$(abs_top_builddir)/libxcm/core/rs-attrpath/target/release
+	-L$(srcdir)/libxcm/core/rs-attrpath/target/release -lrs_attrpath \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attrpath/target/release \
+	-L$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release -lrs_xcm_dns \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release
 libxcm_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/libxcm/core \
 	-I$(srcdir)/libxcm/tp/common -I$(srcdir)/libxcm/tp/ux \
 	-I$(srcdir)/libxcm/tp/tcp -I$(srcdir)/libxcm/tp/dns
@@ -147,8 +149,10 @@ xcmrelay_SOURCES = tools/xcmrelay/main.c tools/xcmrelay/rserver.c \
 # libtool.
 xcmrelay_CFLAGS = $(AM_CFLAGS)
 xcmrelay_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/tools/common -DUT_STD_ASSERT
-xcmrelay_LDADD = libxcm.la
-xcmrelay_LDFLAGS = @EVENT_LIBS@
+xcmrelay_LDADD = libxcm.la \
+	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr
+xcmrelay_LDFLAGS = @EVENT_LIBS@ \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release
 endif
 
 if CTL
@@ -202,8 +206,10 @@ xcmtest_SOURCES = \
 
 xcmtest_CPPFLAGS=$(AM_CPPFLAGS) $(TEST_CPPFLAGS) -DUT_STD_ASSERT
 xcmtest_LDFLAGS = @RT_LIBS@ @PTHREAD_LIBS@ -ldl -no-install  \
-	-L$(abs_top_builddir)/libxcm/core/rs-attrpath/target/release -lrs_attrpath \
-	-Wl,-rpath,$(abs_top_builddir)/libxcm/core/rs-attrpath/target/release
+	-L$(srcdir)/libxcm/core/rs-attrpath/target/release -lrs_attrpath \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attrpath/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release
 xcmtest_LDADD = libxcm.la
 if CTL
 xcmtest_LDADD += libxcmctl.la
