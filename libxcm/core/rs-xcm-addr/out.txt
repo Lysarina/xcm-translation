@@ -1,0 +1,2004 @@
+   Compiling libc v0.2.172
+   Compiling rs-xcm-addr v0.1.0 (/home/ehhjmou/xcm-translation/libxcm/core/rs-xcm-addr)
+error[E0554]: `#![feature]` may not be used on the stable release channel
+  --> src/xcm_addr.rs:10:1
+   |
+10 | #![feature(extern_types)]
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:245:36
+    |
+245 |     let mut _oerrno: libc::c_int = *__errno_location();
+    |                                    ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:228:1
+    |
+228 | / unsafe extern "C" fn is_valid_addr(
+229 | |     mut xcm_addr_s: *const libc::c_char,
+230 | |     mut require_supported: bool,
+231 | | ) -> bool {
+    | |_________^
+    = note: `#[warn(unsafe_op_in_unsafe_fn)]` on by default
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:245:37
+    |
+245 |     let mut _oerrno: libc::c_int = *__errno_location();
+    |                                     ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_proto` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:246:10
+    |
+246 |       rc = xcm_addr_parse_proto(
+    |  __________^
+247 | |         xcm_addr_s,
+248 | |         proto.as_mut_ptr(),
+249 | |         ::core::mem::size_of::<[libc::c_char; 32]>() as libc::c_ulong,
+250 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:264:12
+    |
+264 |         if strcmp(b"tcp\0" as *const u8 as *const libc::c_char, proto.as_mut_ptr())
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_tcp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:267:18
+    |
+267 |             rc = xcm_addr_parse_tcp(xcm_addr_s, &mut host, &mut port);
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:268:19
+    |
+268 |           } else if strcmp(
+    |  ___________________^
+269 | |             b"btcp\0" as *const u8 as *const libc::c_char,
+270 | |             proto.as_mut_ptr(),
+271 | |         ) == 0 as libc::c_int
+    | |_________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_btcp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:273:18
+    |
+273 |             rc = xcm_addr_parse_btcp(xcm_addr_s, &mut host, &mut port);
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:274:19
+    |
+274 |         } else if strcmp(b"ux\0" as *const u8 as *const libc::c_char, proto.as_mut_ptr())
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_ux` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:277:18
+    |
+277 |               rc = xcm_addr_parse_ux(
+    |  __________________^
+278 | |                 xcm_addr_s,
+279 | |                 ux_name.as_mut_ptr(),
+280 | |                 ::core::mem::size_of::<[libc::c_char; 579]>() as libc::c_ulong,
+281 | |             );
+    | |_____________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:282:19
+    |
+282 |           } else if strcmp(
+    |  ___________________^
+283 | |             b"uxf\0" as *const u8 as *const libc::c_char,
+284 | |             proto.as_mut_ptr(),
+285 | |         ) == 0 as libc::c_int
+    | |_________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_uxf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:287:18
+    |
+287 |               rc = xcm_addr_parse_uxf(
+    |  __________________^
+288 | |                 xcm_addr_s,
+289 | |                 ux_name.as_mut_ptr(),
+290 | |                 ::core::mem::size_of::<[libc::c_char; 579]>() as libc::c_ulong,
+291 | |             );
+    | |_____________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `supports_tls` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:293:12
+    |
+293 |         if supports_tls() as libc::c_int != 0 || !require_supported {
+    |            ^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:294:16
+    |
+294 |             if strcmp(b"utls\0" as *const u8 as *const libc::c_char, proto.as_mut_ptr())
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_utls` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:297:22
+    |
+297 |                 rc = xcm_addr_parse_utls(xcm_addr_s, &mut host, &mut port);
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:298:23
+    |
+298 |               } else if strcmp(
+    |  _______________________^
+299 | |                 b"tls\0" as *const u8 as *const libc::c_char,
+300 | |                 proto.as_mut_ptr(),
+301 | |             ) == 0 as libc::c_int
+    | |_____________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_tls` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:303:22
+    |
+303 |                 rc = xcm_addr_parse_tls(xcm_addr_s, &mut host, &mut port);
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:304:23
+    |
+304 |               } else if strcmp(
+    |  _______________________^
+305 | |                 b"btls\0" as *const u8 as *const libc::c_char,
+306 | |                 proto.as_mut_ptr(),
+307 | |             ) == 0 as libc::c_int
+    | |_____________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_btls` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:309:22
+    |
+309 |                 rc = xcm_addr_parse_btls(xcm_addr_s, &mut host, &mut port);
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `supports_sctp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:312:12
+    |
+312 |         if supports_sctp() as libc::c_int != 0 || !require_supported {
+    |            ^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:313:16
+    |
+313 |             if strcmp(b"sctp\0" as *const u8 as *const libc::c_char, proto.as_mut_ptr())
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_addr_parse_sctp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:316:22
+    |
+316 |                 rc = xcm_addr_parse_sctp(xcm_addr_s, &mut host, &mut port);
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:320:5
+    |
+320 |     *__errno_location() = _oerrno;
+    |     ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:320:6
+    |
+320 |     *__errno_location() = _oerrno;
+    |      ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `is_valid_addr` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:325:12
+    |
+325 |     return is_valid_addr(xcm_addr_s, 0 as libc::c_int != 0);
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:324:1
+    |
+324 | pub unsafe extern "C" fn xcm_addr_is_valid(mut xcm_addr_s: *const libc::c_char) -> bool {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: call to unsafe function `is_valid_addr` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:331:12
+    |
+331 |     return is_valid_addr(xcm_addr_s, 1 as libc::c_int != 0);
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:328:1
+    |
+328 | / pub unsafe extern "C" fn xcm_addr_is_supported(
+329 | |     mut xcm_addr_s: *const libc::c_char,
+330 | | ) -> bool {
+    | |_________^
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:336:34
+    |
+336 |     while (i as libc::c_ulong) < strlen(s) {
+    |                                  ^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:333:1
+    |
+333 | unsafe extern "C" fn has_space(mut s: *const libc::c_char) -> bool {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:337:12
+    |
+337 |         if *(*__ctype_b_loc()).offset(*s.offset(i as isize) as libc::c_int as isize)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:337:13
+    |
+337 |         if *(*__ctype_b_loc()).offset(*s.offset(i as isize) as libc::c_int as isize)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:337:13
+    |
+337 |         if *(*__ctype_b_loc()).offset(*s.offset(i as isize) as libc::c_int as isize)
+    |             ^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__ctype_b_loc` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:337:15
+    |
+337 |         if *(*__ctype_b_loc()).offset(*s.offset(i as isize) as libc::c_int as isize)
+    |               ^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:337:39
+    |
+337 |         if *(*__ctype_b_loc()).offset(*s.offset(i as isize) as libc::c_int as isize)
+    |                                       ^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:337:40
+    |
+337 |         if *(*__ctype_b_loc()).offset(*s.offset(i as isize) as libc::c_int as isize)
+    |                                        ^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:358:10
+    |
+358 |     if !(strlen(addr_s)
+    |          ^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:348:1
+    |
+348 | / unsafe extern "C" fn proto_addr_parse(
+349 | |     mut addr_s: *const libc::c_char,
+350 | |     mut proto: *mut libc::c_char,
+351 | |     mut proto_capacity: size_t,
+352 | |     mut proto_addr: *mut libc::c_char,
+353 | |     mut proto_addr_capacity: size_t,
+354 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `has_space` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:360:33
+    |
+360 |             as libc::c_ulong || has_space(addr_s) as libc::c_int != 0)
+    |                                 ^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strchr` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:362:21
+    |
+362 |         proto_sep = strchr(addr_s, ':' as i32);
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset_from` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:364:25
+    |
+364 |             proto_len = proto_sep.offset_from(addr_s) as libc::c_long as size_t;
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:367:40
+    |
+367 |                       proto_addr_start = addr_s
+    |  ________________________________________^
+368 | |                         .offset(proto_len as isize)
+369 | |                         .offset(1 as libc::c_int as isize);
+    | |__________________________________________________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:367:40
+    |
+367 |                       proto_addr_start = addr_s
+    |  ________________________________________^
+368 | |                         .offset(proto_len as isize)
+    | |___________________________________________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:370:26
+    |
+370 |                     if !(strlen(proto_addr_start) >= proto_addr_capacity) {
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strncpy` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:371:25
+    |
+371 |                         strncpy(proto, addr_s, proto_len);
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:372:25
+    |
+372 |                         *proto.offset(proto_len as isize) = '\0' as i32 as libc::c_char;
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:372:26
+    |
+372 |                         *proto.offset(proto_len as isize) = '\0' as i32 as libc::c_char;
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcpy` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:373:25
+    |
+373 |                         strcpy(proto_addr, proto_addr_start);
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:377:17
+    |
+377 |                 *__errno_location() = 36 as libc::c_int;
+    |                 ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:377:18
+    |
+377 |                 *__errno_location() = 36 as libc::c_int;
+    |                  ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:382:5
+    |
+382 |     *__errno_location() = 22 as libc::c_int;
+    |     ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:382:6
+    |
+382 |     *__errno_location() = 22 as libc::c_int;
+    |      ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `proto_addr_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:392:12
+    |
+392 |       return proto_addr_parse(
+    |  ____________^
+393 | |         addr_s,
+394 | |         proto,
+395 | |         capacity,
+396 | |         proto_addr.as_mut_ptr(),
+397 | |         ::core::mem::size_of::<[libc::c_char; 579]>() as libc::c_ulong,
+398 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:386:1
+    |
+386 | / pub unsafe extern "C" fn xcm_addr_parse_proto(
+387 | |     mut addr_s: *const libc::c_char,
+388 | |     mut proto: *mut libc::c_char,
+389 | |     mut capacity: size_t,
+390 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `proto_addr_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:408:8
+    |
+408 |       if proto_addr_parse(
+    |  ________^
+409 | |         ux_addr_s,
+410 | |         proto.as_mut_ptr(),
+411 | |         ::core::mem::size_of::<[libc::c_char; 33]>() as libc::c_ulong,
+412 | |         name.as_mut_ptr(),
+413 | |         ::core::mem::size_of::<[libc::c_char; 579]>() as libc::c_ulong,
+414 | |     ) < 0 as libc::c_int
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:400:1
+    |
+400 | / unsafe extern "C" fn addr_parse_ux_uxf(
+401 | |     mut ux_proto: *const libc::c_char,
+402 | |     mut ux_addr_s: *const libc::c_char,
+403 | |     mut ux_name: *mut libc::c_char,
+404 | |     mut capacity: size_t,
+405 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:418:8
+    |
+418 |     if strcmp(proto.as_mut_ptr(), ux_proto) != 0 as libc::c_int
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:419:12
+    |
+419 |         || strlen(name.as_mut_ptr())
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:421:12
+    |
+421 |         || strlen(name.as_mut_ptr()) == 0 as libc::c_int as libc::c_ulong
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:423:9
+    |
+423 |         *__errno_location() = 22 as libc::c_int;
+    |         ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:423:10
+    |
+423 |         *__errno_location() = 22 as libc::c_int;
+    |          ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:426:8
+    |
+426 |     if strlen(name.as_mut_ptr()) >= capacity {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:427:9
+    |
+427 |         *__errno_location() = 36 as libc::c_int;
+    |         ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:427:10
+    |
+427 |         *__errno_location() = 36 as libc::c_int;
+    |          ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcpy` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:430:5
+    |
+430 |     strcpy(ux_name, name.as_mut_ptr());
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `addr_parse_ux_uxf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:439:12
+    |
+439 |       return addr_parse_ux_uxf(
+    |  ____________^
+440 | |         b"ux\0" as *const u8 as *const libc::c_char,
+441 | |         ux_addr_s,
+442 | |         ux_name,
+443 | |         capacity,
+444 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:434:1
+    |
+434 | / pub unsafe extern "C" fn xcm_addr_parse_ux(
+435 | |     mut ux_addr_s: *const libc::c_char,
+436 | |     mut ux_name: *mut libc::c_char,
+437 | |     mut capacity: size_t,
+438 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `addr_parse_ux_uxf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:452:12
+    |
+452 |       return addr_parse_ux_uxf(
+    |  ____________^
+453 | |         b"uxf\0" as *const u8 as *const libc::c_char,
+454 | |         uxf_addr_s,
+455 | |         uxf_name,
+456 | |         capacity,
+457 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:447:1
+    |
+447 | / pub unsafe extern "C" fn xcm_addr_parse_uxf(
+448 | |     mut uxf_addr_s: *const libc::c_char,
+449 | |     mut uxf_name: *mut libc::c_char,
+450 | |     mut capacity: size_t,
+451 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:465:10
+    |
+465 |     if !(strlen(host_s) == 0 as libc::c_int as libc::c_ulong) {
+    |          ^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:459:1
+    |
+459 | / unsafe extern "C" fn host_parse(
+460 | |     mut host_s: *const libc::c_char,
+461 | |     mut host: *mut xcm_addr_host,
+462 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:466:12
+    |
+466 |         if *host_s.offset(0 as libc::c_int as isize) as libc::c_int == '[' as i32 {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:466:13
+    |
+466 |         if *host_s.offset(0 as libc::c_int as isize) as libc::c_int == '[' as i32 {
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:467:18
+    |
+467 |             if !(strlen(host_s) < (1 as libc::c_int + 1 as libc::c_int) as libc::c_ulong
+    |                  ^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:468:20
+    |
+468 |                   || *host_s
+    |  ____________________^
+469 | |                     .offset(
+470 | |                         (strlen(host_s)).wrapping_sub(1 as libc::c_int as libc::c_ulong)
+471 | |                             as isize,
+472 | |                     ) as libc::c_int != ']' as i32)
+    | |_____________________^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:468:21
+    |
+468 |                   || *host_s
+    |  _____________________^
+469 | |                     .offset(
+470 | |                         (strlen(host_s)).wrapping_sub(1 as libc::c_int as libc::c_ulong)
+471 | |                             as isize,
+472 | |                     ) as libc::c_int != ']' as i32)
+    | |_____________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:470:25
+    |
+470 |                         (strlen(host_s)).wrapping_sub(1 as libc::c_int as libc::c_ulong)
+    |                         ^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:474:41
+    |
+474 |                 let ip6_s_len: size_t = (strlen(host_s))
+    |                                         ^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strncpy` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:480:17
+    |
+480 | /                 strncpy(
+481 | |                     ip6_s.as_mut_ptr(),
+482 | |                     host_s.offset(1 as libc::c_int as isize),
+483 | |                     ip6_s_len,
+484 | |                 );
+    | |_________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:482:21
+    |
+482 |                     host_s.offset(1 as libc::c_int as isize),
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:485:17
+    |
+485 | /                 *ip6_s
+486 | |                     .as_mut_ptr()
+487 | |                     .offset(ip6_s_len as isize) = '\0' as i32 as libc::c_char;
+    | |_______________________________________________^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:485:18
+    |
+485 |                   *ip6_s
+    |  __________________^
+486 | |                     .as_mut_ptr()
+487 | |                     .offset(ip6_s_len as isize) = '\0' as i32 as libc::c_char;
+    | |_______________________________________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:493:20
+    |
+493 |                 if strcmp(ip6_s.as_mut_ptr(), b"*\0" as *const u8 as *const libc::c_char)
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `memcpy` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:496:21
+    |
+496 | /                     memcpy(
+497 | |                         ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
+498 | |                             as *mut libc::c_void,
+499 | |                         (in6addr_any.__in6_u.__u6_addr8).as_ptr() as *const libc::c_void,
+500 | |                         16 as libc::c_int as libc::c_ulong,
+501 | |                     );
+    | |_____________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:497:25
+    |
+497 |                         ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:497:26
+    |
+497 |                         ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:497:26
+    |
+497 |                         ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
+    |                          ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:499:25
+    |
+499 |                         (in6addr_any.__in6_u.__u6_addr8).as_ptr() as *const libc::c_void,
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: use of extern static is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:499:26
+    |
+499 |                         (in6addr_any.__in6_u.__u6_addr8).as_ptr() as *const libc::c_void,
+    |                          ^^^^^^^^^^^ use of extern static
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: extern statics are not controlled by the Rust type system: invalid data, aliasing violations or data races will cause undefined behavior
+
+warning[E0133]: call to unsafe function `inet_pton` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:503:27
+    |
+503 |                   } else if inet_pton(
+    |  ___________________________^
+504 | |                     10 as libc::c_int,
+505 | |                     ip6_s.as_mut_ptr(),
+506 | |                     &mut addr as *mut in6_addr as *mut libc::c_void,
+507 | |                 ) == 1 as libc::c_int
+    | |_________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `memcpy` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:509:21
+    |
+509 | /                     memcpy(
+510 | |                         ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
+511 | |                             as *mut libc::c_void,
+512 | |                         (addr.__in6_u.__u6_addr8).as_mut_ptr() as *const libc::c_void,
+513 | |                         16 as libc::c_int as libc::c_ulong,
+514 | |                     );
+    | |_____________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:510:25
+    |
+510 |                         ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:510:26
+    |
+510 |                         ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:510:26
+    |
+510 |                         ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
+    |                          ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:512:25
+    |
+512 |                         (addr.__in6_u.__u6_addr8).as_mut_ptr() as *const libc::c_void,
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:522:25
+    |
+522 |                         (*host).type_0 = xcm_addr_type_ip;
+    |                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:523:25
+    |
+523 |                         (*host)
+    |                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:532:16
+    |
+532 |             if strcmp(host_s, b"*\0" as *const u8 as *const libc::c_char)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:535:17
+    |
+535 |                 (*host).type_0 = xcm_addr_type_ip;
+    |                 ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:536:17
+    |
+536 |                 (*host).c2rust_unnamed.ip.family = 2 as libc::c_int as sa_family_t;
+    |                 ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:537:17
+    |
+537 |                 (*host).c2rust_unnamed.ip.addr.ip4 = 0 as libc::c_int as in_addr_t;
+    |                 ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `inet_pton` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:541:16
+    |
+541 |               if inet_pton(
+    |  ________________^
+542 | |                 2 as libc::c_int,
+543 | |                 host_s,
+544 | |                 &mut addr_0 as *mut in_addr as *mut libc::c_void,
+545 | |             ) == 1 as libc::c_int
+    | |_____________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:547:17
+    |
+547 |                 (*host).type_0 = xcm_addr_type_ip;
+    |                 ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:548:17
+    |
+548 |                 (*host).c2rust_unnamed.ip.family = 2 as libc::c_int as sa_family_t;
+    |                 ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:549:17
+    |
+549 |                 (*host).c2rust_unnamed.ip.addr.ip4 = addr_0.s_addr;
+    |                 ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `xcm_dns_is_valid_name` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:552:16
+    |
+552 |             if xcm_dns_is_valid_name(host_s) {
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:553:17
+    |
+553 |                 (*host).type_0 = xcm_addr_type_name;
+    |                 ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `strcpy` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:554:17
+    |
+554 |                 strcpy(((*host).c2rust_unnamed.name).as_mut_ptr(), host_s);
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:554:24
+    |
+554 |                 strcpy(((*host).c2rust_unnamed.name).as_mut_ptr(), host_s);
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:554:25
+    |
+554 |                 strcpy(((*host).c2rust_unnamed.name).as_mut_ptr(), host_s);
+    |                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:559:5
+    |
+559 |     *__errno_location() = 22 as libc::c_int;
+    |     ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:559:6
+    |
+559 |     *__errno_location() = 22 as libc::c_int;
+    |      ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `proto_addr_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:577:10
+    |
+577 |       if !(proto_addr_parse(
+    |  __________^
+578 | |         addr_s,
+579 | |         actual_proto.as_mut_ptr(),
+580 | |         ::core::mem::size_of::<[libc::c_char; 33]>() as libc::c_ulong,
+581 | |         paddr.as_mut_ptr(),
+582 | |         ::core::mem::size_of::<[libc::c_char; 579]>() as libc::c_ulong,
+583 | |     ) < 0 as libc::c_int)
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:562:1
+    |
+562 | / unsafe extern "C" fn host_port_parse(
+563 | |     mut proto: *const libc::c_char,
+564 | |     mut addr_s: *const libc::c_char,
+565 | |     mut host: *mut xcm_addr_host,
+566 | |     mut port: *mut uint16_t,
+567 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:585:12
+    |
+585 |         if strcmp(proto, actual_proto.as_mut_ptr()) != 0 as libc::c_int {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strrchr` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:588:24
+    |
+588 |             port_sep = strrchr(paddr.as_mut_ptr(), ':' as i32);
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:592:30
+    |
+592 |                 port_start = port_sep.offset(1 as libc::c_int as isize);
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strtol` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:594:25
+    |
+594 |                 lport = strtol(port_start, &mut end, 10 as libc::c_int) as libc::c_int;
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:595:20
+    |
+595 |                 if *end.offset(0 as libc::c_int as isize) as libc::c_int != '\0' as i32 {
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:595:21
+    |
+595 |                 if *end.offset(0 as libc::c_int as isize) as libc::c_int != '\0' as i32 {
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset_from` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:601:32
+    |
+601 |                     host_len = port_sep.offset_from(paddr.as_mut_ptr()) as libc::c_long
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:608:25
+    |
+608 | /                         *host_start
+609 | |                             .offset(host_len as isize) = '\0' as i32 as libc::c_char;
+    | |______________________________________________________^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:608:26
+    |
+608 |                           *host_start
+    |  __________________________^
+609 | |                             .offset(host_len as isize) = '\0' as i32 as libc::c_char;
+    | |______________________________________________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `host_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:610:28
+    |
+610 |                         if host_parse(host_start, host) < 0 as libc::c_int {
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:613:29
+    |
+613 | ...                   *port = ntohs(lport as uint16_t);
+    |                       ^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `ntohs` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:613:37
+    |
+613 | ...                   *port = ntohs(lport as uint16_t);
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:623:17
+    |
+623 |                 *__errno_location() = 22 as libc::c_int;
+    |                 ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:623:18
+    |
+623 |                 *__errno_location() = 22 as libc::c_int;
+    |                  ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `host_port_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:635:12
+    |
+635 |       return host_port_parse(
+    |  ____________^
+636 | |         b"utls\0" as *const u8 as *const libc::c_char,
+637 | |         utls_addr_s,
+638 | |         host,
+639 | |         port,
+640 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:630:1
+    |
+630 | / pub unsafe extern "C" fn xcm_addr_parse_utls(
+631 | |     mut utls_addr_s: *const libc::c_char,
+632 | |     mut host: *mut xcm_addr_host,
+633 | |     mut port: *mut uint16_t,
+634 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:648:12
+    |
+648 |       return host_port_parse(
+    |  ____________^
+649 | |         b"tls\0" as *const u8 as *const libc::c_char,
+650 | |         tls_addr_s,
+651 | |         host,
+652 | |         port,
+653 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:643:1
+    |
+643 | / pub unsafe extern "C" fn xcm_addr_parse_tls(
+644 | |     mut tls_addr_s: *const libc::c_char,
+645 | |     mut host: *mut xcm_addr_host,
+646 | |     mut port: *mut uint16_t,
+647 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:661:12
+    |
+661 |       return host_port_parse(
+    |  ____________^
+662 | |         b"tcp\0" as *const u8 as *const libc::c_char,
+663 | |         tcp_addr_s,
+664 | |         host,
+665 | |         port,
+666 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:656:1
+    |
+656 | / pub unsafe extern "C" fn xcm_addr_parse_tcp(
+657 | |     mut tcp_addr_s: *const libc::c_char,
+658 | |     mut host: *mut xcm_addr_host,
+659 | |     mut port: *mut uint16_t,
+660 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:674:12
+    |
+674 |       return host_port_parse(
+    |  ____________^
+675 | |         b"sctp\0" as *const u8 as *const libc::c_char,
+676 | |         sctp_addr_s,
+677 | |         host,
+678 | |         port,
+679 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:669:1
+    |
+669 | / pub unsafe extern "C" fn xcm_addr_parse_sctp(
+670 | |     mut sctp_addr_s: *const libc::c_char,
+671 | |     mut host: *mut xcm_addr_host,
+672 | |     mut port: *mut uint16_t,
+673 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:687:12
+    |
+687 |       return host_port_parse(
+    |  ____________^
+688 | |         b"btcp\0" as *const u8 as *const libc::c_char,
+689 | |         btcp_addr_s,
+690 | |         host,
+691 | |         port,
+692 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:682:1
+    |
+682 | / pub unsafe extern "C" fn xcm_addr_parse_btcp(
+683 | |     mut btcp_addr_s: *const libc::c_char,
+684 | |     mut host: *mut xcm_addr_host,
+685 | |     mut port: *mut uint16_t,
+686 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_parse` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:700:12
+    |
+700 |       return host_port_parse(
+    |  ____________^
+701 | |         b"btls\0" as *const u8 as *const libc::c_char,
+702 | |         btls_addr_s,
+703 | |         host,
+704 | |         port,
+705 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:695:1
+    |
+695 | / pub unsafe extern "C" fn xcm_addr_parse_btls(
+696 | |     mut btls_addr_s: *const libc::c_char,
+697 | |     mut host: *mut xcm_addr_host,
+698 | |     mut port: *mut uint16_t,
+699 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `snprintf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:714:31
+    |
+714 |       let mut rc: libc::c_int = snprintf(
+    |  _______________________________^
+715 | |         addr_s,
+716 | |         capacity,
+717 | |         b"%s%c%s%c%d\0" as *const u8 as *const libc::c_char,
+...   |
+722 | |         ntohs(port) as libc::c_int,
+723 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:707:1
+    |
+707 | / unsafe extern "C" fn name_port_make(
+708 | |     mut proto: *const libc::c_char,
+709 | |     mut domain_name: *const libc::c_char,
+710 | |     mut port: uint16_t,
+711 | |     mut addr_s: *mut libc::c_char,
+712 | |     mut capacity: size_t,
+713 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `ntohs` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:722:9
+    |
+722 |         ntohs(port) as libc::c_int,
+    |         ^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:725:9
+    |
+725 |         *__errno_location() = 36 as libc::c_int;
+    |         ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:725:10
+    |
+725 |         *__errno_location() = 36 as libc::c_int;
+    |          ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `inet_ntop` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:738:8
+    |
+738 |       if (inet_ntop(
+    |  ________^
+739 | |         (*ip).family as libc::c_int,
+740 | |         &(*ip).addr.ip4 as *const in_addr_t as *const libc::c_void,
+741 | |         ip_s.as_mut_ptr(),
+742 | |         ::core::mem::size_of::<[libc::c_char; 46]>() as libc::c_ulong as socklen_t,
+743 | |     ))
+    | |______^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:730:1
+    |
+730 | / unsafe extern "C" fn ip_port_make(
+731 | |     mut proto: *const libc::c_char,
+732 | |     mut ip: *const xcm_addr_ip,
+733 | |     mut port: uint16_t,
+734 | |     mut addr_s: *mut libc::c_char,
+735 | |     mut capacity: size_t,
+736 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:739:9
+    |
+739 |         (*ip).family as libc::c_int,
+    |         ^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:740:10
+    |
+740 |         &(*ip).addr.ip4 as *const in_addr_t as *const libc::c_void,
+    |          ^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:740:10
+    |
+740 |         &(*ip).addr.ip4 as *const in_addr_t as *const libc::c_void,
+    |          ^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:746:12
+    |
+746 |         if *__errno_location() == 28 as libc::c_int {
+    |            ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:746:13
+    |
+746 |         if *__errno_location() == 28 as libc::c_int {
+    |             ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:747:13
+    |
+747 |             *__errno_location() = 36 as libc::c_int;
+    |             ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:747:14
+    |
+747 |             *__errno_location() = 36 as libc::c_int;
+    |              ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:752:8
+    |
+752 |     if (*ip).family as libc::c_int == 2 as libc::c_int {
+    |        ^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `snprintf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:753:14
+    |
+753 |           rc = snprintf(
+    |  ______________^
+754 | |             addr_s,
+755 | |             capacity,
+756 | |             b"%s%c%s%c%d\0" as *const u8 as *const libc::c_char,
+...   |
+761 | |             ntohs(port) as libc::c_int,
+762 | |         );
+    | |_________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `ntohs` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:761:13
+    |
+761 |             ntohs(port) as libc::c_int,
+    |             ^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `snprintf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:764:14
+    |
+764 |           rc = snprintf(
+    |  ______________^
+765 | |             addr_s,
+766 | |             capacity,
+767 | |             b"%s%c%c%s%c%c%d\0" as *const u8 as *const libc::c_char,
+...   |
+774 | |             ntohs(port) as libc::c_int,
+775 | |         );
+    | |_________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `ntohs` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:774:13
+    |
+774 |             ntohs(port) as libc::c_int,
+    |             ^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:778:9
+    |
+778 |         *__errno_location() = 36 as libc::c_int;
+    |         ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:778:10
+    |
+778 |         *__errno_location() = 36 as libc::c_int;
+    |          ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:790:11
+    |
+790 |     match (*host).type_0 as libc::c_uint {
+    |           ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:783:1
+    |
+783 | / unsafe extern "C" fn host_port_make(
+784 | |     mut proto: *const libc::c_char,
+785 | |     mut host: *const xcm_addr_host,
+786 | |     mut port: uint16_t,
+787 | |     mut addr_s: *mut libc::c_char,
+788 | |     mut capacity: size_t,
+789 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `name_port_make` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:792:20
+    |
+792 |               return name_port_make(
+    |  ____________________^
+793 | |                 proto,
+794 | |                 ((*host).c2rust_unnamed.name).as_ptr(),
+795 | |                 port,
+796 | |                 addr_s,
+797 | |                 capacity,
+798 | |             );
+    | |_____________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:794:17
+    |
+794 |                 ((*host).c2rust_unnamed.name).as_ptr(),
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:794:18
+    |
+794 |                 ((*host).c2rust_unnamed.name).as_ptr(),
+    |                  ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `ip_port_make` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:801:20
+    |
+801 |               return ip_port_make(
+    |  ____________________^
+802 | |                 proto,
+803 | |                 &(*host).c2rust_unnamed.ip,
+804 | |                 port,
+805 | |                 addr_s,
+806 | |                 capacity,
+807 | |             );
+    | |_____________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:803:18
+    |
+803 |                 &(*host).c2rust_unnamed.ip,
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:803:18
+    |
+803 |                 &(*host).c2rust_unnamed.ip,
+    |                  ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `abort` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:829:17
+    |
+829 |                 abort();
+    |                 ^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `host_port_make` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:842:12
+    |
+842 |       return host_port_make(
+    |  ____________^
+843 | |         b"utls\0" as *const u8 as *const libc::c_char,
+844 | |         host,
+845 | |         port,
+846 | |         utls_addr_s,
+847 | |         capacity,
+848 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:836:1
+    |
+836 | / pub unsafe extern "C" fn xcm_addr_make_utls(
+837 | |     mut host: *const xcm_addr_host,
+838 | |     mut port: uint16_t,
+839 | |     mut utls_addr_s: *mut libc::c_char,
+840 | |     mut capacity: size_t,
+841 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_make` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:857:12
+    |
+857 |       return host_port_make(
+    |  ____________^
+858 | |         b"tls\0" as *const u8 as *const libc::c_char,
+859 | |         host,
+860 | |         port,
+861 | |         tls_addr_s,
+862 | |         capacity,
+863 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:851:1
+    |
+851 | / pub unsafe extern "C" fn xcm_addr_make_tls(
+852 | |     mut host: *const xcm_addr_host,
+853 | |     mut port: uint16_t,
+854 | |     mut tls_addr_s: *mut libc::c_char,
+855 | |     mut capacity: size_t,
+856 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_make` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:872:12
+    |
+872 |       return host_port_make(
+    |  ____________^
+873 | |         b"tcp\0" as *const u8 as *const libc::c_char,
+874 | |         host,
+875 | |         port,
+876 | |         tcp_addr_s,
+877 | |         capacity,
+878 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:866:1
+    |
+866 | / pub unsafe extern "C" fn xcm_addr_make_tcp(
+867 | |     mut host: *const xcm_addr_host,
+868 | |     mut port: uint16_t,
+869 | |     mut tcp_addr_s: *mut libc::c_char,
+870 | |     mut capacity: size_t,
+871 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_make` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:887:12
+    |
+887 |       return host_port_make(
+    |  ____________^
+888 | |         b"sctp\0" as *const u8 as *const libc::c_char,
+889 | |         host,
+890 | |         port,
+891 | |         sctp_addr_s,
+892 | |         capacity,
+893 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:881:1
+    |
+881 | / pub unsafe extern "C" fn xcm_addr_make_sctp(
+882 | |     mut host: *const xcm_addr_host,
+883 | |     mut port: uint16_t,
+884 | |     mut sctp_addr_s: *mut libc::c_char,
+885 | |     mut capacity: size_t,
+886 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:901:8
+    |
+901 |     if strlen(ux_name) > (108 as libc::c_int - 1 as libc::c_int) as libc::c_ulong {
+    |        ^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:895:1
+    |
+895 | / unsafe extern "C" fn addr_make_ux_uxf(
+896 | |     mut ux_proto: *const libc::c_char,
+897 | |     mut ux_name: *const libc::c_char,
+898 | |     mut ux_addr_s: *mut libc::c_char,
+899 | |     mut capacity: size_t,
+900 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:902:9
+    |
+902 |         *__errno_location() = 22 as libc::c_int;
+    |         ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:902:10
+    |
+902 |         *__errno_location() = 22 as libc::c_int;
+    |          ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `snprintf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:905:31
+    |
+905 |       let mut rc: libc::c_int = snprintf(
+    |  _______________________________^
+906 | |         ux_addr_s,
+907 | |         capacity,
+908 | |         b"%s%c%s\0" as *const u8 as *const libc::c_char,
+...   |
+911 | |         ux_name,
+912 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:914:9
+    |
+914 |         *__errno_location() = 36 as libc::c_int;
+    |         ^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `__errno_location` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:914:10
+    |
+914 |         *__errno_location() = 36 as libc::c_int;
+    |          ^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `addr_make_ux_uxf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:925:12
+    |
+925 |       return addr_make_ux_uxf(
+    |  ____________^
+926 | |         b"ux\0" as *const u8 as *const libc::c_char,
+927 | |         ux_name,
+928 | |         ux_addr_s,
+929 | |         capacity,
+930 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:920:1
+    |
+920 | / pub unsafe extern "C" fn xcm_addr_make_ux(
+921 | |     mut ux_name: *const libc::c_char,
+922 | |     mut ux_addr_s: *mut libc::c_char,
+923 | |     mut capacity: size_t,
+924 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `addr_make_ux_uxf` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:938:12
+    |
+938 |       return addr_make_ux_uxf(
+    |  ____________^
+939 | |         b"uxf\0" as *const u8 as *const libc::c_char,
+940 | |         uxf_name,
+941 | |         uxf_addr_s,
+942 | |         capacity,
+943 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:933:1
+    |
+933 | / pub unsafe extern "C" fn xcm_addr_make_uxf(
+934 | |     mut uxf_name: *const libc::c_char,
+935 | |     mut uxf_addr_s: *mut libc::c_char,
+936 | |     mut capacity: size_t,
+937 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_make` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:952:12
+    |
+952 |       return host_port_make(
+    |  ____________^
+953 | |         b"btcp\0" as *const u8 as *const libc::c_char,
+954 | |         host,
+955 | |         port,
+956 | |         btcp_addr_s,
+957 | |         capacity,
+958 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:946:1
+    |
+946 | / pub unsafe extern "C" fn xcm_addr_make_btcp(
+947 | |     mut host: *const xcm_addr_host,
+948 | |     mut port: libc::c_ushort,
+949 | |     mut btcp_addr_s: *mut libc::c_char,
+950 | |     mut capacity: size_t,
+951 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `host_port_make` is unsafe and requires unsafe block
+   --> src/xcm_addr.rs:967:12
+    |
+967 |       return host_port_make(
+    |  ____________^
+968 | |         b"btls\0" as *const u8 as *const libc::c_char,
+969 | |         host,
+970 | |         port,
+971 | |         btls_addr_s,
+972 | |         capacity,
+973 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/xcm_addr.rs:961:1
+    |
+961 | / pub unsafe extern "C" fn xcm_addr_make_btls(
+962 | |     mut host: *const xcm_addr_host,
+963 | |     mut port: libc::c_ushort,
+964 | |     mut btls_addr_s: *mut libc::c_char,
+965 | |     mut capacity: size_t,
+966 | | ) -> libc::c_int {
+    | |________________^
+
+Some errors have detailed explanations: E0133, E0554.
+For more information about an error, try `rustc --explain E0133`.
+warning: `rs-xcm-addr` (lib) generated 164 warnings
+error: could not compile `rs-xcm-addr` (lib) due to 1 previous error; 164 warnings emitted

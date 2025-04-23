@@ -1,0 +1,48 @@
+make  xcmtest
+make[1]: Entering directory '/home/ehhjmou/xcm-translation'
+make[1]: Leaving directory '/home/ehhjmou/xcm-translation'
+make  check-local
+make[1]: Entering directory '/home/ehhjmou/xcm-translation'
+if [ "`id -u`" = 0 ]; then \
+	./xcmtest -c -v -p 8 ; \
+else \
+	./xcmtest -c -v ; \
+fi
+
+thread '<unnamed>' panicked at src/util.rs:347:5:
+ut_mutex_init called in rust file
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at library/core/src/panicking.rs:218:5:
+panic in a function that cannot unwind
+stack backtrace:
+   0:     0x7efcb4ef8e52 - <std::sys::backtrace::BacktraceLock::print::DisplayBacktrace as core::fmt::Display>::fmt::h631c85619891e409
+   1:     0x7efcb4f12f53 - core::fmt::write::h456760ba1da6ccf1
+   2:     0x7efcb4ef6cf3 - std::io::Write::write_fmt::h11502ed5965f7678
+   3:     0x7efcb4ef8ca2 - std::sys::backtrace::BacktraceLock::print::hb4a27be59ea3d630
+   4:     0x7efcb4ef9c42 - std::panicking::default_hook::{{closure}}::h2d27333b9d4e7038
+   5:     0x7efcb4ef9a45 - std::panicking::default_hook::hd847762adb79440e
+   6:     0x7efcb4efa512 - std::panicking::rust_panic_with_hook::h9f07ea8c691e7c4b
+   7:     0x7efcb4efa376 - std::panicking::begin_panic_handler::{{closure}}::haee5e48645d03ec9
+   8:     0x7efcb4ef9349 - std::sys::backtrace::__rust_end_short_backtrace::ha1885e35ba7831e6
+   9:     0x7efcb4efa03d - __rustc[f38bbfe2c9500213]::rust_begin_unwind
+  10:     0x7efcb4f1245d - core::panicking::panic_nounwind_fmt::h2b52b7dd874bd104
+  11:     0x7efcb4f124f2 - core::panicking::panic_nounwind::h9934346721d88646
+  12:     0x7efcb4f125b5 - core::panicking::panic_cannot_unwind::he7af00798c2eee61
+  13:     0x7efcb4eda2c4 - ut_mutex_init
+  14:     0x7efcb4def3a0 - init_ssl
+                               at /home/ehhjmou/xcm-translation/libxcm/tp/tls/xcm_tp_btls.c:284:5
+  15:     0x7efcb4def3a0 - reg
+                               at /home/ehhjmou/xcm-translation/libxcm/tp/tls/xcm_tp_btls.c:298:5
+  16:     0x7efcb4f2371f - call_init
+                               at ./elf/dl-init.c:74:3
+  17:     0x7efcb4f23824 - call_init
+                               at ./elf/dl-init.c:120:14
+  18:     0x7efcb4f23824 - _dl_init
+                               at ./elf/dl-init.c:121:5
+  19:     0x7efcb4f3d5a0 - <unknown>
+thread caused non-unwinding panic. aborting.
+/bin/bash: line 5: 167103 Aborted                 (core dumped) ./xcmtest -c -v -p 8
+make[1]: *** [Makefile:2697: xcmtest-run] Error 134
+make[1]: Leaving directory '/home/ehhjmou/xcm-translation'
+make: *** [Makefile:2359: check-am] Error 2

@@ -8,6 +8,7 @@
     unused_mut
 )]
 #![feature(extern_types)]
+
 unsafe extern "C" {
     pub type ctl;
     pub type xpoll;

@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * Copyright(c) 2024 Ericsson AB
  */
-
+#error "Should not be included in compilation?"
 #include <limits.h>
 
 #include "util.h"

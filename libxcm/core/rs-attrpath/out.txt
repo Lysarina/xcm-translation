@@ -1,0 +1,1316 @@
+   Compiling rs-attrpath v0.1.0 (/home/ehhjmou/xcm-translation/libxcm/core/rs-attrpath)
+warning[E0133]: call to unsafe function `is_special` is unsafe and requires unsafe block
+   --> src/attr_path.rs:160:13
+    |
+160 |     return !is_special(c);
+    |             ^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:158:1
+    |
+158 | unsafe extern "C" fn is_key_char(mut c: libc::c_char) -> bool {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: `#[warn(unsafe_op_in_unsafe_fn)]` on by default
+
+warning[E0133]: call to unsafe function `ut_malloc` is unsafe and requires unsafe block
+   --> src/attr_path.rs:165:37
+    |
+165 |       let mut comp: *mut attr_pcomp = ut_malloc(
+    |  _____________________________________^
+166 | |         ::core::mem::size_of::<attr_pcomp>() as libc::c_ulong,
+167 | |     ) as *mut attr_pcomp;
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:162:1
+    |
+162 | / unsafe extern "C" fn attr_path_key_create(
+163 | |     mut key: *const libc::c_char,
+164 | | ) -> *mut attr_pcomp {
+    | |____________________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:168:5
+    |
+168 |     *comp = {
+    |     ^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `ut_strdup` is unsafe and requires unsafe block
+   --> src/attr_path.rs:172:22
+    |
+172 |                 key: ut_strdup(key),
+    |                      ^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `ut_malloc` is unsafe and requires unsafe block
+   --> src/attr_path.rs:180:37
+    |
+180 |       let mut comp: *mut attr_pcomp = ut_malloc(
+    |  _____________________________________^
+181 | |         ::core::mem::size_of::<attr_pcomp>() as libc::c_ulong,
+182 | |     ) as *mut attr_pcomp;
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:179:1
+    |
+179 | unsafe extern "C" fn attr_path_index_create(mut index: size_t) -> *mut attr_pcomp {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:183:5
+    |
+183 |     *comp = {
+    |     ^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:194:12
+    |
+194 |         if (*comp).type_0 as libc::c_uint
+    |            ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:192:1
+    |
+192 | unsafe extern "C" fn attr_pcomp_destroy(mut comp: *mut attr_pcomp) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: call to unsafe function `ut_free` is unsafe and requires unsafe block
+   --> src/attr_path.rs:197:13
+    |
+197 |             ut_free((*comp).c2rust_unnamed.key as *mut libc::c_void);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:197:21
+    |
+197 |             ut_free((*comp).c2rust_unnamed.key as *mut libc::c_void);
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:197:21
+    |
+197 |             ut_free((*comp).c2rust_unnamed.key as *mut libc::c_void);
+    |                     ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `ut_free` is unsafe and requires unsafe block
+   --> src/attr_path.rs:199:9
+    |
+199 |         ut_free(comp as *mut libc::c_void);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:206:8
+    |
+206 |     if (*comp_a).type_0 as libc::c_uint != (*comp_b).type_0 as libc::c_uint {
+    |        ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:202:1
+    |
+202 | / unsafe extern "C" fn attr_pcomp_equal(
+203 | |     mut comp_a: *mut attr_pcomp,
+204 | |     mut comp_b: *mut attr_pcomp,
+205 | | ) -> bool {
+    | |_________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:206:44
+    |
+206 |     if (*comp_a).type_0 as libc::c_uint != (*comp_b).type_0 as libc::c_uint {
+    |                                            ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:209:8
+    |
+209 |     if (*comp_a).type_0 as libc::c_uint
+    |        ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `strcmp` is unsafe and requires unsafe block
+   --> src/attr_path.rs:212:16
+    |
+212 |         return strcmp((*comp_a).c2rust_unnamed.key, (*comp_b).c2rust_unnamed.key)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:212:23
+    |
+212 |         return strcmp((*comp_a).c2rust_unnamed.key, (*comp_b).c2rust_unnamed.key)
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:212:23
+    |
+212 |         return strcmp((*comp_a).c2rust_unnamed.key, (*comp_b).c2rust_unnamed.key)
+    |                       ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:212:53
+    |
+212 |         return strcmp((*comp_a).c2rust_unnamed.key, (*comp_b).c2rust_unnamed.key)
+    |                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:212:53
+    |
+212 |         return strcmp((*comp_a).c2rust_unnamed.key, (*comp_b).c2rust_unnamed.key)
+    |                                                     ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:215:16
+    |
+215 |         return (*comp_a).c2rust_unnamed.index == (*comp_b).c2rust_unnamed.index
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:215:16
+    |
+215 |         return (*comp_a).c2rust_unnamed.index == (*comp_b).c2rust_unnamed.index
+    |                ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:215:50
+    |
+215 |         return (*comp_a).c2rust_unnamed.index == (*comp_b).c2rust_unnamed.index
+    |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:215:50
+    |
+215 |         return (*comp_a).c2rust_unnamed.index == (*comp_b).c2rust_unnamed.index
+    |                                                  ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:222:12
+    |
+222 |     return (*pcomp).type_0;
+    |            ^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:219:1
+    |
+219 | / pub unsafe extern "C" fn attr_pcomp_get_type(
+220 | |     mut pcomp: *const attr_pcomp,
+221 | | ) -> attr_pcomp_type {
+    | |____________________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:226:12
+    |
+226 |     return (*pcomp).type_0 as libc::c_uint
+    |            ^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:225:1
+    |
+225 | pub unsafe extern "C" fn attr_pcomp_is_key(mut pcomp: *const attr_pcomp) -> bool {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:231:12
+    |
+231 |     return (*pcomp).type_0 as libc::c_uint
+    |            ^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:230:1
+    |
+230 | pub unsafe extern "C" fn attr_pcomp_is_index(mut pcomp: *const attr_pcomp) -> bool {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: call to unsafe function `attr_pcomp_is_key` is unsafe and requires unsafe block
+   --> src/attr_path.rs:238:9
+    |
+238 |     if !attr_pcomp_is_key(pcomp) {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:235:1
+    |
+235 | / pub unsafe extern "C" fn attr_pcomp_get_key(
+236 | |     mut pcomp: *const attr_pcomp,
+237 | | ) -> *const libc::c_char {
+    | |________________________^
+
+warning[E0133]: call to unsafe function `abort` is unsafe and requires unsafe block
+   --> src/attr_path.rs:256:9
+    |
+256 |         abort();
+    |         ^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:258:12
+    |
+258 |     return (*pcomp).c2rust_unnamed.key;
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:258:12
+    |
+258 |     return (*pcomp).c2rust_unnamed.key;
+    |            ^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `attr_pcomp_is_index` is unsafe and requires unsafe block
+   --> src/attr_path.rs:262:9
+    |
+262 |     if !attr_pcomp_is_index(pcomp) {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:261:1
+    |
+261 | pub unsafe extern "C" fn attr_pcomp_get_index(mut pcomp: *const attr_pcomp) -> size_t {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: call to unsafe function `abort` is unsafe and requires unsafe block
+   --> src/attr_path.rs:280:9
+    |
+280 |         abort();
+    |         ^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:282:12
+    |
+282 |     return (*pcomp).c2rust_unnamed.index;
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:282:12
+    |
+282 |     return (*pcomp).c2rust_unnamed.index;
+    |            ^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:291:35
+    |
+291 |         let mut c: libc::c_char = *path_str.offset(key_len as isize);
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:284:1
+    |
+284 | / unsafe extern "C" fn attr_pcomp_parse_key(
+285 | |     mut path_str: *const libc::c_char,
+286 | |     mut comp: *mut *mut attr_pcomp,
+287 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:291:36
+    |
+291 |         let mut c: libc::c_char = *path_str.offset(key_len as isize);
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `is_key_char` is unsafe and requires unsafe block
+   --> src/attr_path.rs:292:48
+    |
+292 |         if c as libc::c_int == '\0' as i32 || !is_key_char(c) {
+    |                                                ^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:303:5
+    |
+303 |     *comp = attr_path_key_create(key.as_mut_ptr());
+    |     ^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `attr_path_key_create` is unsafe and requires unsafe block
+   --> src/attr_path.rs:303:13
+    |
+303 |     *comp = attr_path_key_create(key.as_mut_ptr());
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strtol` is unsafe and requires unsafe block
+   --> src/attr_path.rs:311:35
+    |
+311 |     let mut index: libc::c_long = strtol(path_str, &mut end, 10 as libc::c_int);
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:306:1
+    |
+306 | / unsafe extern "C" fn attr_pcomp_parse_index(
+307 | |     mut path_str: *const libc::c_char,
+308 | |     mut comp: *mut *mut attr_pcomp,
+309 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:312:8
+    |
+312 |     if *end as libc::c_int != ']' as i32 || end == path_str as *mut libc::c_char
+    |        ^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:318:5
+    |
+318 |     *comp = attr_path_index_create(index as size_t);
+    |     ^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `attr_path_index_create` is unsafe and requires unsafe block
+   --> src/attr_path.rs:318:13
+    |
+318 |     *comp = attr_path_index_create(index as size_t);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset_from` is unsafe and requires unsafe block
+   --> src/attr_path.rs:319:13
+    |
+319 |     return (end.offset_from(path_str) as libc::c_long + 1 as libc::c_int as libc::c_long)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/attr_path.rs:327:8
+    |
+327 |     if strlen(path_str) == 0 as libc::c_int as libc::c_ulong {
+    |        ^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:322:1
+    |
+322 | / unsafe extern "C" fn attr_pcomp_parse(
+323 | |     mut path_str: *const libc::c_char,
+324 | |     mut comp: *mut *mut attr_pcomp,
+325 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:330:31
+    |
+330 |     let mut c: libc::c_char = *path_str.offset(0 as libc::c_int as isize);
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:330:32
+    |
+330 |     let mut c: libc::c_char = *path_str.offset(0 as libc::c_int as isize);
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `attr_pcomp_parse_index` is unsafe and requires unsafe block
+   --> src/attr_path.rs:333:14
+    |
+333 |         rc = attr_pcomp_parse_index(path_str.offset(1 as libc::c_int as isize), comp);
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:333:37
+    |
+333 |         rc = attr_pcomp_parse_index(path_str.offset(1 as libc::c_int as isize), comp);
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `attr_pcomp_parse_key` is unsafe and requires unsafe block
+   --> src/attr_path.rs:335:14
+    |
+335 |         rc = attr_pcomp_parse_key(path_str.offset(1 as libc::c_int as isize), comp);
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:335:35
+    |
+335 |         rc = attr_pcomp_parse_key(path_str.offset(1 as libc::c_int as isize), comp);
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `attr_pcomp_parse_key` is unsafe and requires unsafe block
+   --> src/attr_path.rs:347:12
+    |
+347 |     return attr_pcomp_parse_key(path_str, comp);
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:342:1
+    |
+342 | / unsafe extern "C" fn attr_pcomp_parse_root(
+343 | |     mut path_str: *const libc::c_char,
+344 | |     mut comp: *mut *mut attr_pcomp,
+345 | | ) -> libc::c_int {
+    | |________________^
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/attr_path.rs:354:8
+    |
+354 |     if strlen(path_str) > 255 as libc::c_int as libc::c_ulong {
+    |        ^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:350:1
+    |
+350 | / pub unsafe extern "C" fn attr_path_parse(
+351 | |     mut path_str: *const libc::c_char,
+352 | |     mut root: bool,
+353 | | ) -> *mut attr_path {
+    | |___________________^
+
+warning[E0133]: call to unsafe function `ut_calloc` is unsafe and requires unsafe block
+   --> src/attr_path.rs:357:36
+    |
+357 |       let mut path: *mut attr_path = ut_calloc(
+    |  ____________________________________^
+358 | |         ::core::mem::size_of::<attr_path>() as libc::c_ulong,
+359 | |     ) as *mut attr_path;
+    | |_____^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:362:51
+    |
+362 |           let mut comp: *mut *mut attr_pcomp = &mut *((*path).comps)
+    |  ___________________________________________________^
+363 | |             .as_mut_ptr()
+364 | |             .offset((*path).num_comps as isize) as *mut *mut attr_pcomp;
+    | |_______________________________________________^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:362:52
+    |
+362 |           let mut comp: *mut *mut attr_pcomp = &mut *((*path).comps)
+    |  ____________________________________________________^
+363 | |             .as_mut_ptr()
+364 | |             .offset((*path).num_comps as isize) as *mut *mut attr_pcomp;
+    | |_______________________________________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:362:53
+    |
+362 |         let mut comp: *mut *mut attr_pcomp = &mut *((*path).comps)
+    |                                                     ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:364:21
+    |
+364 |             .offset((*path).num_comps as isize) as *mut *mut attr_pcomp;
+    |                     ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/attr_path.rs:365:22
+    |
+365 |         if offset == strlen(path_str) {
+    |                      ^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `attr_pcomp_parse_root` is unsafe and requires unsafe block
+   --> src/attr_path.rs:369:13
+    |
+369 |             attr_pcomp_parse_root(path_str, comp)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `attr_pcomp_parse` is unsafe and requires unsafe block
+   --> src/attr_path.rs:371:13
+    |
+371 |             attr_pcomp_parse(path_str.offset(offset as isize), comp)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:371:30
+    |
+371 |             attr_pcomp_parse(path_str.offset(offset as isize), comp)
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `attr_path_destroy` is unsafe and requires unsafe block
+   --> src/attr_path.rs:375:13
+    |
+375 |             attr_path_destroy(path);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:381:9
+    |
+381 |         (*path).num_comps = ((*path).num_comps).wrapping_add(1);
+    |         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:381:30
+    |
+381 |         (*path).num_comps = ((*path).num_comps).wrapping_add(1);
+    |                              ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:382:9
+    |
+382 |         (*path).num_comps;
+    |         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:393:19
+    |
+393 |         while i < (*path).num_comps {
+    |                   ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:389:1
+    |
+389 | pub unsafe extern "C" fn attr_path_destroy(mut path: *mut attr_path) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: call to unsafe function `attr_pcomp_destroy` is unsafe and requires unsafe block
+   --> src/attr_path.rs:394:13
+    |
+394 |             attr_pcomp_destroy((*path).comps[i as usize]);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:394:32
+    |
+394 |             attr_pcomp_destroy((*path).comps[i as usize]);
+    |                                ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `ut_free` is unsafe and requires unsafe block
+   --> src/attr_path.rs:398:9
+    |
+398 |         ut_free(path as *mut libc::c_void);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:403:12
+    |
+403 |     return (*path).num_comps;
+    |            ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:402:1
+    |
+402 | pub unsafe extern "C" fn attr_path_num_comps(mut path: *const attr_path) -> size_t {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:410:21
+    |
+410 |     if !(comp_num < (*path).num_comps) {
+    |                     ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:406:1
+    |
+406 | / pub unsafe extern "C" fn attr_path_get_comp(
+407 | |     mut path: *const attr_path,
+408 | |     mut comp_num: size_t,
+409 | | ) -> *const attr_pcomp {
+    | |______________________^
+
+warning[E0133]: call to unsafe function `abort` is unsafe and requires unsafe block
+   --> src/attr_path.rs:428:9
+    |
+428 |         abort();
+    |         ^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:430:12
+    |
+430 |     return (*path).comps[comp_num as usize];
+    |            ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:440:15
+    |
+440 |     while i < (*path).num_comps {
+    |               ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:433:1
+    |
+433 | / pub unsafe extern "C" fn attr_path_len(
+434 | |     mut path: *const attr_path,
+435 | |     mut root: bool,
+436 | | ) -> size_t {
+    | |___________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:441:41
+    |
+441 |         let mut comp: *mut attr_pcomp = (*path).comps[i as usize];
+    |                                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:443:18
+    |
+443 |             if !((*comp).type_0 as libc::c_uint
+    |                  ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `abort` is unsafe and requires unsafe block
+   --> src/attr_path.rs:465:17
+    |
+465 |                 abort();
+    |                 ^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/attr_path.rs:467:55
+    |
+467 |             len = (len as libc::c_ulong).wrapping_add(strlen((*comp).c2rust_unnamed.key))
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:467:62
+    |
+467 |             len = (len as libc::c_ulong).wrapping_add(strlen((*comp).c2rust_unnamed.key))
+    |                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:467:62
+    |
+467 |             len = (len as libc::c_ulong).wrapping_add(strlen((*comp).c2rust_unnamed.key))
+    |                                                              ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:470:19
+    |
+470 |         } else if (*comp).type_0 as libc::c_uint
+    |                   ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/attr_path.rs:475:21
+    |
+475 |                     (strlen((*comp).c2rust_unnamed.key))
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:475:29
+    |
+475 |                     (strlen((*comp).c2rust_unnamed.key))
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:475:29
+    |
+475 |                     (strlen((*comp).c2rust_unnamed.key))
+    |                             ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `snprintf` is unsafe and requires unsafe block
+   --> src/attr_path.rs:481:22
+    |
+481 |                       (snprintf(
+    |  ______________________^
+482 | |                         0 as *mut libc::c_char,
+483 | |                         0 as libc::c_int as libc::c_ulong,
+484 | |                         b"%zd\0" as *const u8 as *const libc::c_char,
+485 | |                         (*comp).c2rust_unnamed.index,
+486 | |                     ) + 2 as libc::c_int) as libc::c_ulong,
+    | |_____________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:485:25
+    |
+485 |                         (*comp).c2rust_unnamed.index,
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:485:25
+    |
+485 |                         (*comp).c2rust_unnamed.index,
+    |                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:499:8
+    |
+499 |     if (*path_a).num_comps != (*path_b).num_comps {
+    |        ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:495:1
+    |
+495 | / pub unsafe extern "C" fn attr_path_equal(
+496 | |     mut path_a: *const attr_path,
+497 | |     mut path_b: *const attr_path,
+498 | | ) -> bool {
+    | |_________^
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:499:31
+    |
+499 |     if (*path_a).num_comps != (*path_b).num_comps {
+    |                               ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:504:15
+    |
+504 |     while i < (*path_a).num_comps {
+    |               ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `attr_pcomp_equal` is unsafe and requires unsafe block
+   --> src/attr_path.rs:505:13
+    |
+505 |         if !attr_pcomp_equal((*path_a).comps[i as usize], (*path_b).comps[i as usize]) {
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:505:30
+    |
+505 |         if !attr_pcomp_equal((*path_a).comps[i as usize], (*path_b).comps[i as usize]) {
+    |                              ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:505:59
+    |
+505 |         if !attr_pcomp_equal((*path_a).comps[i as usize], (*path_b).comps[i as usize]) {
+    |                                                           ^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `attr_path_parse` is unsafe and requires unsafe block
+   --> src/attr_path.rs:519:42
+    |
+519 |     let mut other_path: *mut attr_path = attr_path_parse(path_str, root);
+    |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:514:1
+    |
+514 | / pub unsafe extern "C" fn attr_path_equal_str(
+515 | |     mut path: *const attr_path,
+516 | |     mut path_str: *const libc::c_char,
+517 | |     mut root: bool,
+518 | | ) -> bool {
+    | |_________^
+
+warning[E0133]: call to unsafe function `attr_path_equal` is unsafe and requires unsafe block
+   --> src/attr_path.rs:523:27
+    |
+523 |     let mut equal: bool = attr_path_equal(path, other_path);
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `attr_path_destroy` is unsafe and requires unsafe block
+   --> src/attr_path.rs:524:5
+    |
+524 |     attr_path_destroy(other_path);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `attr_path_len` is unsafe and requires unsafe block
+   --> src/attr_path.rs:532:32
+    |
+532 |     let mut capacity: size_t = (attr_path_len(path, root))
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:528:1
+    |
+528 | / pub unsafe extern "C" fn attr_path_to_str(
+529 | |     mut path: *const attr_path,
+530 | |     mut root: bool,
+531 | | ) -> *mut libc::c_char {
+    | |______________________^
+
+warning[E0133]: call to unsafe function `ut_malloc` is unsafe and requires unsafe block
+   --> src/attr_path.rs:535:38
+    |
+535 |     let mut str: *mut libc::c_char = ut_malloc(capacity) as *mut libc::c_char;
+    |                                      ^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:538:15
+    |
+538 |     while i < (*path).num_comps {
+    |               ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:539:41
+    |
+539 |         let mut comp: *mut attr_pcomp = (*path).comps[i as usize];
+    |                                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `snprintf` is unsafe and requires unsafe block
+   --> src/attr_path.rs:543:21
+    |
+543 | /                     snprintf(
+544 | |                         str,
+545 | |                         capacity,
+546 | |                         b"%s\0" as *const u8 as *const libc::c_char,
+547 | |                         (*comp).c2rust_unnamed.key,
+548 | |                     ) as libc::c_ulong,
+    | |_____________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:547:25
+    |
+547 |                         (*comp).c2rust_unnamed.key,
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:547:25
+    |
+547 |                         (*comp).c2rust_unnamed.key,
+    |                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:551:19
+    |
+551 |         } else if (*comp).type_0 as libc::c_uint
+    |                   ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `snprintf` is unsafe and requires unsafe block
+   --> src/attr_path.rs:556:21
+    |
+556 | /                     snprintf(
+557 | |                         str.offset(len as isize),
+558 | |                         capacity.wrapping_sub(len),
+559 | |                         b"%c%s\0" as *const u8 as *const libc::c_char,
+560 | |                         '.' as i32,
+561 | |                         (*comp).c2rust_unnamed.key,
+562 | |                     ) as libc::c_ulong,
+    | |_____________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:557:25
+    |
+557 |                         str.offset(len as isize),
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:561:25
+    |
+561 |                         (*comp).c2rust_unnamed.key,
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:561:25
+    |
+561 |                         (*comp).c2rust_unnamed.key,
+    |                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `snprintf` is unsafe and requires unsafe block
+   --> src/attr_path.rs:567:21
+    |
+567 | /                     snprintf(
+568 | |                         str.offset(len as isize),
+569 | |                         capacity.wrapping_sub(len),
+570 | |                         b"%c%zd%c\0" as *const u8 as *const libc::c_char,
+...   |
+573 | |                         ']' as i32,
+574 | |                     ) as libc::c_ulong,
+    | |_____________________^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:568:25
+    |
+568 |                         str.offset(len as isize),
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: access to union field is unsafe and requires unsafe block
+   --> src/attr_path.rs:572:25
+    |
+572 |                         (*comp).c2rust_unnamed.index,
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ access to union field
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: the field may not be properly initialized: using uninitialized data will cause undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:572:25
+    |
+572 |                         (*comp).c2rust_unnamed.index,
+    |                         ^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:580:5
+    |
+580 |     *str.offset(len as isize) = '\0' as i32 as libc::c_char;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::mut_ptr::<impl *mut T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:580:6
+    |
+580 |     *str.offset(len as isize) = '\0' as i32 as libc::c_char;
+    |      ^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/attr_path.rs:585:8
+    |
+585 |     if strlen(key) == 0 as libc::c_int as libc::c_ulong {
+    |        ^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> src/attr_path.rs:584:1
+    |
+584 | pub unsafe extern "C" fn attr_path_is_valid_key(mut key: *const libc::c_char) -> bool {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning[E0133]: call to unsafe function `strlen` is unsafe and requires unsafe block
+   --> src/attr_path.rs:590:15
+    |
+590 |     while i < strlen(key) {
+    |               ^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> src/attr_path.rs:591:35
+    |
+591 |         let mut c: libc::c_char = *key.offset(i as isize);
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+
+warning[E0133]: call to unsafe function `std::ptr::const_ptr::<impl *const T>::offset` is unsafe and requires unsafe block
+   --> src/attr_path.rs:591:36
+    |
+591 |         let mut c: libc::c_char = *key.offset(i as isize);
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning[E0133]: call to unsafe function `is_key_char` is unsafe and requires unsafe block
+   --> src/attr_path.rs:592:13
+    |
+592 |         if !is_key_char(c) {
+    |             ^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+warning: path statement with no effect
+   --> src/attr_path.rs:297:9
+    |
+297 |         key_len;
+    |         ^^^^^^^^
+    |
+    = note: `#[warn(path_statements)]` on by default
+
+warning: path statement with no effect
+   --> src/attr_path.rs:396:13
+    |
+396 |             i;
+    |             ^^
+
+warning: path statement with no effect
+   --> src/attr_path.rs:490:9
+    |
+490 |         i;
+    |         ^^
+
+warning: path statement with no effect
+   --> src/attr_path.rs:509:9
+    |
+509 |         i;
+    |         ^^
+
+warning: path statement with no effect
+   --> src/attr_path.rs:578:9
+    |
+578 |         i;
+    |         ^^
+
+warning: path statement with no effect
+   --> src/attr_path.rs:596:9
+    |
+596 |         i;
+    |         ^^
+
+For more information about this error, try `rustc --explain E0133`.
+warning: `rs-attrpath` (lib) generated 126 warnings (run `cargo fix --lib -p rs-attrpath` to apply 23 suggestions)
+    Finished `release` profile [optimized] target(s) in 0.24s
