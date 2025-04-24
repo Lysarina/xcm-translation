@@ -54,7 +54,6 @@ libxcm_la_SOURCES = \
 	libxcm/core/xcm_compat.c \
 	libxcm/core/xcm_version.c \
 	libxcm/core/xpoll.c \
-	libxcm/tp/common/active_fd.c \
 	libxcm/tp/common/common_tp.c \
 	libxcm/tp/common/dns_attr.c \
 	libxcm/tp/common/log_tp.c \
@@ -68,6 +67,8 @@ libxcm_la_SOURCES = \
 libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-Wl,--version-script=$(srcdir)/libxcm/libxcm.vs \
 	-version-info $(XCM_VERSION_CURRENT):$(XCM_VERSION_REVISION):$(XCM_VERSION_AGE) \
+	-L$(srcdir)/libxcm/tp/common/rs-active_fd/target/release -lrs_active_fd \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active_fd/target/release \
 	-L$(srcdir)/common/rs-util/target/release -lrs_util \
 	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
 	-L$(srcdir)/libxcm/core/rs-attrpath/target/release -lrs_attrpath \
