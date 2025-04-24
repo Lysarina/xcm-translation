@@ -6,7 +6,7 @@ from scipy import stats
 
 test_count = 165
 
-versions = ["c-code", "rs-2"]
+versions = ["c-code", "rs-3"]
 # files = (10, 5)
 # versions = ["rs-1", "c-code"]
 files = [10, 10]

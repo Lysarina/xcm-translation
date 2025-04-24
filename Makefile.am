@@ -43,7 +43,6 @@ XCMCTL_VERSION_AGE=$(XCMCTL_VERSION_CURRENT)
 
 libxcm_la_SOURCES = \
 	common/slist.c \
-	common/util.c \
 	libxcm/core/timer_mgr.c \
 	libxcm/core/xcm.c \
 	libxcm/core/xcm_addr_compat.c \
@@ -65,6 +64,8 @@ libxcm_la_SOURCES = \
 libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-Wl,--version-script=$(srcdir)/libxcm/libxcm.vs \
 	-version-info $(XCM_VERSION_CURRENT):$(XCM_VERSION_REVISION):$(XCM_VERSION_AGE) \
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
 	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
 	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \
@@ -117,15 +118,17 @@ libxcm_la_LDFLAGS += @LTTNG_LIBS@
 endif
 
 if CTL
-libxcmctl_la_SOURCES = libxcmctl/xcmc.c common/common_ctl.c common/util.c
+libxcmctl_la_SOURCES = libxcmctl/xcmc.c common/common_ctl.c
 libxcmctl_la_LDFLAGS = -Wl,--version-script=$(srcdir)/libxcmctl/libxcmctl.vs \
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
 	-version-info $(XCMCTL_VERSION_CURRENT):$(XCMCTL_VERSION_REVISION):$(XCMCTL_VERSION_AGE) \
 	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release
 libxcmctl_la_CPPFLAGS = $(AM_CPPFLAGS) -DUT_STD_ASSERT -I$(srcdir)/libxcmctl
 endif
 
-xcmpong_SOURCES = tools/xcmpong/main.c common/util.c
+xcmpong_SOURCES = tools/xcmpong/main.c
 # You might think of _CFLAGS setting as a no-op, but in fact this
 # makes 'xcmmon/util.c' to be built in a separate version for
 # 'umpong', which is needed since the other version is built by
@@ -133,6 +136,8 @@ xcmpong_SOURCES = tools/xcmpong/main.c common/util.c
 xcmpong_CFLAGS = $(AM_CFLAGS)
 xcmpong_CPPFLAGS = $(AM_CPPFLAGS) -DUT_STD_ASSERT
 xcmpong_LDFLAGS = @RT_LIBS@ \
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-path/target/release -lrs_attr_path \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-path/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
@@ -142,8 +147,7 @@ xcmpong_LDFLAGS = @RT_LIBS@ \
 xcmpong_LDADD = libxcm.la
 
 if XCM_TOOL
-xcm_SOURCES = tools/xcm/main.c tools/xcm/fdfwd.c tools/common/attr.c \
-	common/util.c
+xcm_SOURCES = tools/xcm/main.c tools/xcm/fdfwd.c tools/common/attr.c
 # You might think of _CFLAGS setting as a no-op, but in fact this
 # makes 'common/util.c' to be built in a separate version for
 # 'xcm', which is needed since the other version is built by
@@ -151,10 +155,12 @@ xcm_SOURCES = tools/xcm/main.c tools/xcm/fdfwd.c tools/common/attr.c \
 xcm_CFLAGS = $(AM_CFLAGS)
 xcm_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/tools/common -DUT_STD_ASSERT
 xcm_LDADD = libxcm.la
-xcm_LDFLAGS = @EVENT_LIBS@
+xcm_LDFLAGS = @EVENT_LIBS@ \
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release
 
 xcmrelay_SOURCES = tools/xcmrelay/main.c tools/xcmrelay/rserver.c \
-	tools/xcmrelay/xrelay.c tools/common/attr.c common/util.c
+	tools/xcmrelay/xrelay.c tools/common/attr.c
 # You might think of _CFLAGS setting as a no-op, but in fact this
 # makes 'common/util.c' to be built in a separate version for
 # 'xcm', which is needed since the other version is built by
@@ -164,13 +170,17 @@ xcmrelay_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/tools/common -DUT_STD_ASSERT
 xcmrelay_LDADD = libxcm.la \
 	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr
 xcmrelay_LDFLAGS = @EVENT_LIBS@ \
-	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release
 endif
 
 if CTL
-xcmctl_SOURCES = tools/xcmctl/main.c common/util.c
+xcmctl_SOURCES = tools/xcmctl/main.c
 xcmctl_CFLAGS = $(AM_CFLAGS)
 xcmctl_CPPFLAGS = $(AM_CPPFLAGS) -DUT_STD_ASSERT
+xcmctl_LDFLAGS = -L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release
 xcmctl_LDADD = libxcmctl.la
 endif
 
@@ -206,7 +216,6 @@ xcmtest_SOURCES = \
 	$(XCMTEST_TESTCASE_SOURCES) \
 	$(UTEST_SOURCES) \
 	common/slist.c \
-	common/util.c \
 	test/src/iowrap.c \
 	test/src/pingpong.c \
 	test/src/testutil.c \
@@ -214,6 +223,8 @@ xcmtest_SOURCES = \
 
 xcmtest_CPPFLAGS=$(AM_CPPFLAGS) $(TEST_CPPFLAGS) -DUT_STD_ASSERT
 xcmtest_LDFLAGS = @RT_LIBS@ @PTHREAD_LIBS@ -ldl -no-install  \
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
 	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
 	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \

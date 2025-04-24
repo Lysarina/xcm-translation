@@ -1,0 +1,12 @@
+[package]
+name = "rs-util"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+libc = "0.2.172"
+
+[lib]
+name = "rs_util"
+path = "src/util.rs"
+crate-type = ["cdylib"]
