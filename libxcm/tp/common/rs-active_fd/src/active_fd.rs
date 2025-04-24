@@ -3,6 +3,7 @@ use std::os::raw::c_int;
 use std::sync::{Mutex, OnceLock};
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct ActiveFd {
     fd: c_int,
     cnt: c_int,
@@ -35,38 +36,34 @@ pub extern "C" fn active_fd_get() -> c_int {
     fd
 }
 
+
 #[no_mangle]
 pub extern "C" fn active_fd_put(fd: c_int) {
-    let list = ACTIVE_FD_LIST.get().unwrap();
-    let mut list = list.lock().unwrap();
+    // let list = ACTIVE_FD_LIST.get().unwrap();
+    let list = ACTIVE_FD_LIST.get_or_init(|| Mutex::new(LinkedList::new()));
 
+    let mut list_guard = list.lock().unwrap();
+
+    let mut new_list = LinkedList::new();
     let mut found = false;
 
-    list.iter_mut().for_each(|entry| {
+    while let Some(mut entry) = list_guard.pop_front() {
         if entry.fd == fd {
             entry.cnt -= 1;
             found = true;
-        }
-    });
 
-    // Remove entries with cnt == 0
-    // Unstable feature
-    // list.retain(|entry| {
-    //     if entry.fd == fd && entry.cnt == 0 {
-    //         unsafe {
-    //             libc::close(fd);
-    //         }
-    //         false
-    //     } else {
-    //         true
-    //     }
-    // });
-
-    list.iter_mut().filter(|entry| entry.cnt == 0).for_each(|entry| {
-        unsafe {
-            libc::close(entry.fd);
+            if entry.cnt == 0 {
+                unsafe { libc::close(entry.fd); }
+                // Do not push back — we’re dropping it
+            } else {
+                new_list.push_back(entry);
+            }
+        } else {
+            new_list.push_back(entry);
         }
-    });
+    }
+
+    *list_guard = new_list;
 
     if !found {
         panic!("active_fd_put: unknown fd {}", fd);
