@@ -42,17 +42,17 @@ unsafe extern "C" {
     fn strchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strrchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
-    // fn log_console_conf(enabled: bool);
-    // fn log_is_enabled(type_0: log_type) -> bool;
-    // fn __log_event(
-    //     type_0: log_type,
-    //     file: *const libc::c_char,
-    //     line: libc::c_int,
-    //     function: *const libc::c_char,
-    //     s: *mut xcm_socket,
-    //     format: *const libc::c_char,
-    //     _: ...
-    // );
+    fn log_console_conf(enabled: bool);
+    fn log_is_enabled(type_0: log_type) -> bool;
+    fn __log_event(
+        type_0: log_type,
+        file: *const libc::c_char,
+        line: libc::c_int,
+        function: *const libc::c_char,
+        s: *mut xcm_socket,
+        format: *const libc::c_char,
+        _: ...
+    );
     fn inet_pton(
         __af: libc::c_int,
         __cp: *const libc::c_char,
@@ -808,24 +808,24 @@ unsafe extern "C" fn host_port_make(
         }
         _ => {
             if 0 as libc::c_int == 0 {
-                // log_console_conf(1 as libc::c_int != 0);
-                // if log_is_enabled(log_type_error) {
-                //     __log_event(
-                //         log_type_error,
-                //         b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm_addr.c\0"
-                //             as *const u8 as *const libc::c_char,
-                //         399 as libc::c_int,
-                //         (*::core::mem::transmute::<
-                //             &[u8; 15],
-                //             &[libc::c_char; 15],
-                //         >(b"host_port_make\0"))
-                //             .as_ptr(),
-                //         0 as *mut xcm_socket,
-                //         b"Assertion \"%s\" failed.\n\0" as *const u8
-                //             as *const libc::c_char,
-                //         b"0\0" as *const u8 as *const libc::c_char,
-                //     );
-                // }
+                log_console_conf(1 as libc::c_int != 0);
+                if log_is_enabled(log_type_error) {
+                    __log_event(
+                        log_type_error,
+                        b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm_addr.c\0"
+                            as *const u8 as *const libc::c_char,
+                        399 as libc::c_int,
+                        (*::core::mem::transmute::<
+                            &[u8; 15],
+                            &[libc::c_char; 15],
+                        >(b"host_port_make\0"))
+                            .as_ptr(),
+                        0 as *mut xcm_socket,
+                        b"Assertion \"%s\" failed.\n\0" as *const u8
+                            as *const libc::c_char,
+                        b"0\0" as *const u8 as *const libc::c_char,
+                    );
+                }
                 abort();
             }
         }

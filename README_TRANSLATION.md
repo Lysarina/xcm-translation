@@ -10,4 +10,5 @@ OBS: gen-results.sh needs to be rerun for these versions, as it was run in chunk
 
 - c-code: original c code
 - rs-1: attr_path.c has been translated to Rust
+- rs-2: attr_path, xcm_dns and xcm_addr have been translated
 

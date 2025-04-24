@@ -8,6 +8,9 @@
     unused_mut
 )]
 #![feature(extern_types)]
+
+use rs_log_attr_tree::log_attr_type_name;
+
 unsafe extern "C" {
     pub type attr_pcomp;
     pub type attr_path;
@@ -99,7 +102,7 @@ unsafe extern "C" {
         buf: *mut libc::c_char,
         capacity: size_t,
     );
-    fn log_attr_type_name(type_0: xcm_attr_type) -> *const libc::c_char;
+    // fn log_attr_type_name(type_0: xcm_attr_type) -> *const libc::c_char;
 }
 pub type size_t = libc::c_ulong;
 pub type attr_pcomp_type = libc::c_uint;

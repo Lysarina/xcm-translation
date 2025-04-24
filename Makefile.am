@@ -44,8 +44,6 @@ XCMCTL_VERSION_AGE=$(XCMCTL_VERSION_CURRENT)
 libxcm_la_SOURCES = \
 	common/slist.c \
 	common/util.c \
-	libxcm/core/log.c \
-	libxcm/core/log_attr_tree.c \
 	libxcm/core/timer_mgr.c \
 	libxcm/core/xcm.c \
 	libxcm/core/xcm_addr_compat.c \
@@ -64,10 +62,13 @@ libxcm_la_SOURCES = \
 	libxcm/tp/tcp/xcm_tp_tcp.c \
 	libxcm/tp/ux/xcm_tp_ux.c
 
-AM_LDFLAGS = -Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-path/target/release
 libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-Wl,--version-script=$(srcdir)/libxcm/libxcm.vs \
 	-version-info $(XCM_VERSION_CURRENT):$(XCM_VERSION_REVISION):$(XCM_VERSION_AGE) \
+	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
+	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log-attr-tree/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-path/target/release -lrs_attr_path \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-path/target/release \
 	-L$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release -lrs_xcm_dns \
@@ -75,7 +76,7 @@ libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
-	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release
 libxcm_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/libxcm/core \
@@ -118,7 +119,9 @@ endif
 if CTL
 libxcmctl_la_SOURCES = libxcmctl/xcmc.c common/common_ctl.c common/util.c
 libxcmctl_la_LDFLAGS = -Wl,--version-script=$(srcdir)/libxcmctl/libxcmctl.vs \
-	-version-info $(XCMCTL_VERSION_CURRENT):$(XCMCTL_VERSION_REVISION):$(XCMCTL_VERSION_AGE)
+	-version-info $(XCMCTL_VERSION_CURRENT):$(XCMCTL_VERSION_REVISION):$(XCMCTL_VERSION_AGE) \
+	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release
 libxcmctl_la_CPPFLAGS = $(AM_CPPFLAGS) -DUT_STD_ASSERT -I$(srcdir)/libxcmctl
 endif
 
@@ -133,10 +136,10 @@ xcmpong_LDFLAGS = @RT_LIBS@ \
 	-L$(srcdir)/libxcm/core/rs-attr-path/target/release -lrs_attr_path \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-path/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
-	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release
-xcmpong_LDADD = libxcm.la 
+xcmpong_LDADD = libxcm.la
 
 if XCM_TOOL
 xcm_SOURCES = tools/xcm/main.c tools/xcm/fdfwd.c tools/common/attr.c \
@@ -202,8 +205,6 @@ XCMTEST_TESTCASE_SOURCES = \
 xcmtest_SOURCES = \
 	$(XCMTEST_TESTCASE_SOURCES) \
 	$(UTEST_SOURCES) \
-	libxcm/core/log.c \
-	libxcm/core/log_attr_tree.c \
 	common/slist.c \
 	common/util.c \
 	test/src/iowrap.c \
@@ -213,12 +214,16 @@ xcmtest_SOURCES = \
 
 xcmtest_CPPFLAGS=$(AM_CPPFLAGS) $(TEST_CPPFLAGS) -DUT_STD_ASSERT
 xcmtest_LDFLAGS = @RT_LIBS@ @PTHREAD_LIBS@ -ldl -no-install  \
+	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
+	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log-attr-tree/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-path/target/release -lrs_attr_path \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-path/target/release \
 	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
-	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release
 xcmtest_LDADD = libxcm.la

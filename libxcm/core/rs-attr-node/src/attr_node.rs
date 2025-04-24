@@ -8,6 +8,8 @@
     unused_mut
 )]
 #![feature(extern_types)]
+
+use rs_attr_path::attr_path_is_valid_key;
 unsafe extern "C" {
     pub type ctl;
     pub type xpoll;
@@ -28,7 +30,7 @@ unsafe extern "C" {
         format: *const libc::c_char,
         _: ...
     );
-    fn attr_path_is_valid_key(key: *const libc::c_char) -> bool;
+    // fn attr_path_is_valid_key(key: *const libc::c_char) -> bool;
 }
 pub type __int64_t = libc::c_long;
 pub type __uint64_t = libc::c_ulong;
