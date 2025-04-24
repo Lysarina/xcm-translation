@@ -108,13 +108,17 @@ for t, v in data_test.items():
 # std_sorted = dict(sorted(std.items(), key=lambda item: item[1], reverse=True))
 # # print(std_sorted)
 
+plot_all_values = True
+
 for t in sig_tests:
     print(t)
     plt.figure(figsize=(10, 6))
-    plt.title(f"Confidence Intervals for {t}", fontsize=14)
-    plt.xlabel('Version', fontsize=12)
-    plt.ylabel('Time (s)', fontsize=12)
-    plt.legend(versions, title="Versions")
+    if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
+    else: 
+        plt.title(f"Confidence Intervals for {t}", fontsize=14)
+        plt.xlabel('Version', fontsize=12)
+        plt.ylabel('Time (s)', fontsize=12)
+    # plt.legend(versions, title="Versions")
 
     # Plot each version's confidence interval
     for i in range(len(versions)):
@@ -124,6 +128,14 @@ for t in sig_tests:
         lower_bound = mean - margin
         upper_bound = mean + margin
         
+        if (plot_all_values): 
+            plt.subplot(2, 2, i+1)
+            plt.plot(data_test[t][i], marker='o')
+            plt.title(f'Run times for {versions[i]}')
+            plt.xlabel('Run')
+            plt.ylabel('Time (s)')
+
+            plt.subplot(2, 2, 4)
         # Plotting the confidence interval as a shaded area
         plt.fill_between([i - 0.1, i + 0.1], lower_bound, upper_bound, color="lightgray", alpha=0.5)
         
@@ -134,8 +146,15 @@ for t in sig_tests:
     # Add legend only for the first plot
     # if r == 0:
     
+    if (plot_all_values):
+        plt.subplot(2, 2, 4)
+        plt.title(f"Confidence Intervals")
+        plt.xlabel('Version')
+        plt.ylabel('Time (s)')
     # Set xticks to be the version indices
     plt.xticks(range(len(versions)), versions, rotation=45)
+
+print(f"Total significantly different tests: {len(sig_tests)}")
 
 plt.tight_layout()
 

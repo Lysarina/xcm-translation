@@ -1,0 +1,388 @@
+make  xcmtest
+make[1]: Entering directory '/home/lysarina/skool/exjobb/xcm-translation'
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-addr_testcases.o -MD -MP -MF test/src/.deps/xcmtest-addr_testcases.Tpo -c -o test/src/xcmtest-addr_testcases.o `test -f 'test/src/addr_testcases.c' || echo './'`test/src/addr_testcases.c
+mv -f test/src/.deps/xcmtest-addr_testcases.Tpo test/src/.deps/xcmtest-addr_testcases.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-attr_map_testcases.o -MD -MP -MF test/src/.deps/xcmtest-attr_map_testcases.Tpo -c -o test/src/xcmtest-attr_map_testcases.o `test -f 'test/src/attr_map_testcases.c' || echo './'`test/src/attr_map_testcases.c
+mv -f test/src/.deps/xcmtest-attr_map_testcases.Tpo test/src/.deps/xcmtest-attr_map_testcases.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-attr_path_testcases.o -MD -MP -MF test/src/.deps/xcmtest-attr_path_testcases.Tpo -c -o test/src/xcmtest-attr_path_testcases.o `test -f 'test/src/attr_path_testcases.c' || echo './'`test/src/attr_path_testcases.c
+mv -f test/src/.deps/xcmtest-attr_path_testcases.Tpo test/src/.deps/xcmtest-attr_path_testcases.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-attr_tree_testcases.o -MD -MP -MF test/src/.deps/xcmtest-attr_tree_testcases.Tpo -c -o test/src/xcmtest-attr_tree_testcases.o `test -f 'test/src/attr_tree_testcases.c' || echo './'`test/src/attr_tree_testcases.c
+mv -f test/src/.deps/xcmtest-attr_tree_testcases.Tpo test/src/.deps/xcmtest-attr_tree_testcases.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-slist_testcases.o -MD -MP -MF test/src/.deps/xcmtest-slist_testcases.Tpo -c -o test/src/xcmtest-slist_testcases.o `test -f 'test/src/slist_testcases.c' || echo './'`test/src/slist_testcases.c
+mv -f test/src/.deps/xcmtest-slist_testcases.Tpo test/src/.deps/xcmtest-slist_testcases.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-xcm_testcases.o -MD -MP -MF test/src/.deps/xcmtest-xcm_testcases.Tpo -c -o test/src/xcmtest-xcm_testcases.o `test -f 'test/src/xcm_testcases.c' || echo './'`test/src/xcm_testcases.c
+mv -f test/src/.deps/xcmtest-xcm_testcases.Tpo test/src/.deps/xcmtest-xcm_testcases.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/utest/xcmtest-utest.o -MD -MP -MF test/src/utest/.deps/xcmtest-utest.Tpo -c -o test/src/utest/xcmtest-utest.o `test -f 'test/src/utest/utest.c' || echo './'`test/src/utest/utest.c
+mv -f test/src/utest/.deps/xcmtest-utest.Tpo test/src/utest/.deps/xcmtest-utest.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/utest/xcmtest-utestreport.o -MD -MP -MF test/src/utest/.deps/xcmtest-utestreport.Tpo -c -o test/src/utest/xcmtest-utestreport.o `test -f 'test/src/utest/utestreport.c' || echo './'`test/src/utest/utestreport.c
+mv -f test/src/utest/.deps/xcmtest-utestreport.Tpo test/src/utest/.deps/xcmtest-utestreport.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/utest/xcmtest-utesthumanreport.o -MD -MP -MF test/src/utest/.deps/xcmtest-utesthumanreport.Tpo -c -o test/src/utest/xcmtest-utesthumanreport.o `test -f 'test/src/utest/utesthumanreport.c' || echo './'`test/src/utest/utesthumanreport.c
+mv -f test/src/utest/.deps/xcmtest-utesthumanreport.Tpo test/src/utest/.deps/xcmtest-utesthumanreport.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/xcmtest-slist.o -MD -MP -MF common/.deps/xcmtest-slist.Tpo -c -o common/xcmtest-slist.o `test -f 'common/slist.c' || echo './'`common/slist.c
+mv -f common/.deps/xcmtest-slist.Tpo common/.deps/xcmtest-slist.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/xcmtest-util.o -MD -MP -MF common/.deps/xcmtest-util.Tpo -c -o common/xcmtest-util.o `test -f 'common/util.c' || echo './'`common/util.c
+mv -f common/.deps/xcmtest-util.Tpo common/.deps/xcmtest-util.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-iowrap.o -MD -MP -MF test/src/.deps/xcmtest-iowrap.Tpo -c -o test/src/xcmtest-iowrap.o `test -f 'test/src/iowrap.c' || echo './'`test/src/iowrap.c
+mv -f test/src/.deps/xcmtest-iowrap.Tpo test/src/.deps/xcmtest-iowrap.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-pingpong.o -MD -MP -MF test/src/.deps/xcmtest-pingpong.Tpo -c -o test/src/xcmtest-pingpong.o `test -f 'test/src/pingpong.c' || echo './'`test/src/pingpong.c
+mv -f test/src/.deps/xcmtest-pingpong.Tpo test/src/.deps/xcmtest-pingpong.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-testutil.o -MD -MP -MF test/src/.deps/xcmtest-testutil.Tpo -c -o test/src/xcmtest-testutil.o `test -f 'test/src/testutil.c' || echo './'`test/src/testutil.c
+mv -f test/src/.deps/xcmtest-testutil.Tpo test/src/.deps/xcmtest-testutil.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-tnet.o -MD -MP -MF test/src/.deps/xcmtest-tnet.Tpo -c -o test/src/xcmtest-tnet.o `test -f 'test/src/tnet.c' || echo './'`test/src/tnet.c
+mv -f test/src/.deps/xcmtest-tnet.Tpo test/src/.deps/xcmtest-tnet.Po
+/bin/bash ./libtool  --tag=CC   --mode=link gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -lrt -lpthread -ldl -no-install -L./libxcm/core/rs-log/target/release -lrs_log -Wl,-rpath,./libxcm/core/rs-log/target/release -L./libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree -Wl,-rpath,./libxcm/core/rs-log-attr-tree/target/release -L./libxcm/core/rs-attr-path/target/release -lrs_attr_path -Wl,-rpath,./libxcm/core/rs-attr-path/target/release -L./libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr -Wl,-rpath,./libxcm/core/rs-xcm-addr/target/release -L./libxcm/core/rs-attr-node/target/release -lrs_attr_node -Wl,-rpath,./libxcm/core/rs-attr-node/target/release -L./libxcm/core/rs-attr-tree/target/release -lrs_attr_tree -Wl,-rpath,./libxcm/core/rs-attr-tree/target/release -L/usr/local/lib -o xcmtest test/src/xcmtest-addr_testcases.o test/src/xcmtest-attr_map_testcases.o test/src/xcmtest-attr_path_testcases.o test/src/xcmtest-attr_tree_testcases.o test/src/xcmtest-slist_testcases.o test/src/xcmtest-xcm_testcases.o test/src/utest/xcmtest-utest.o test/src/utest/xcmtest-utestreport.o test/src/utest/xcmtest-utesthumanreport.o common/xcmtest-slist.o common/xcmtest-util.o test/src/xcmtest-iowrap.o test/src/xcmtest-pingpong.o test/src/xcmtest-testutil.o test/src/xcmtest-tnet.o libxcm.la libxcmctl.la 
+libtool: link: gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -Wl,-rpath -Wl,./libxcm/core/rs-log/target/release -Wl,-rpath -Wl,./libxcm/core/rs-log-attr-tree/target/release -Wl,-rpath -Wl,./libxcm/core/rs-attr-path/target/release -Wl,-rpath -Wl,./libxcm/core/rs-xcm-addr/target/release -Wl,-rpath -Wl,./libxcm/core/rs-attr-node/target/release -Wl,-rpath -Wl,./libxcm/core/rs-attr-tree/target/release -o xcmtest test/src/xcmtest-addr_testcases.o test/src/xcmtest-attr_map_testcases.o test/src/xcmtest-attr_path_testcases.o test/src/xcmtest-attr_tree_testcases.o test/src/xcmtest-slist_testcases.o test/src/xcmtest-xcm_testcases.o test/src/utest/xcmtest-utest.o test/src/utest/xcmtest-utestreport.o test/src/utest/xcmtest-utesthumanreport.o common/xcmtest-slist.o common/xcmtest-util.o test/src/xcmtest-iowrap.o test/src/xcmtest-pingpong.o test/src/xcmtest-testutil.o test/src/xcmtest-tnet.o  -lrt -lpthread -ldl -L./libxcm/core/rs-log/target/release -lrs_log -L./libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree -L./libxcm/core/rs-attr-path/target/release -lrs_attr_path -L./libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr -L./libxcm/core/rs-attr-node/target/release -lrs_attr_node -L./libxcm/core/rs-attr-tree/target/release -lrs_attr_tree -L/usr/local/lib ./.libs/libxcm.so ./.libs/libxcmctl.so -Wl,-rpath -Wl,/home/lysarina/skool/exjobb/xcm-translation/.libs
+make[1]: Leaving directory '/home/lysarina/skool/exjobb/xcm-translation'
+make  check-local
+make[1]: Entering directory '/home/lysarina/skool/exjobb/xcm-translation'
+if [ "`id -u`" = 0 ]; then \
+	./xcmtest -c -v -p 8 ; \
+else \
+	./xcmtest -c -v ; \
+fi
+addr:supported: STARTED
+addr:proto_parse: STARTED
+addr:parse_tcp: STARTED
+addr:parse_sctp: STARTED
+addr:parse_tls: STARTED
+addr:parse_utls: STARTED
+addr:parse_btcp: STARTED
+addr:parse_btls: STARTED
+addr:supported: [1;32mOK[0m <0.001890 s>
+addr:proto_parse: [1;32mOK[0m <0.001751 s>
+addr:parse_ux: STARTED
+addr:parse_uxf: STARTED
+addr:parse_tcp: [1;32mOK[0m <0.002490 s>
+addr:parse_sctp: [1;32mOK[0m <0.002319 s>
+addr:parse_tls: [1;32mOK[0m <0.002141 s>
+addr:parse_btcp: [1;32mOK[0m <0.001801 s>
+addr:make_tcp: STARTED
+addr:make_sctp: STARTED
+addr:make_tls: STARTED
+addr:make_utls: STARTED
+addr:parse_btls: [1;32mOK[0m <0.002914 s>
+addr:parse_ux: [1;32mOK[0m <0.002074 s>
+addr:parse_uxf: [1;32mOK[0m <0.001897 s>
+addr:make_tcp: [1;32mOK[0m <0.001140 s>
+addr:make_sctp: [1;32mOK[0m <0.000966 s>
+addr:make_btcp: STARTED
+addr:make_btls: STARTED
+addr:tcp6_parse: STARTED
+addr:sctp6_parse: STARTED
+addr:tls6_parse: STARTED
+addr:parse_utls: [1;32mOK[0m <0.004764 s>
+addr:make_tls: [1;32mOK[0m <0.002275 s>
+addr:make_utls: [1;32mOK[0m <0.002106 s>
+addr:make_btcp: [1;32mOK[0m <0.001327 s>
+addr:utls6_parse: STARTED
+addr:tcp_parse: STARTED
+addr:tls_parse: STARTED
+addr:utls_parse: STARTED
+addr:make_btls: [1;32mOK[0m <0.003065 s>
+addr:tcp6_parse: [1;32mOK[0m <0.003074 s>
+addr:sctp6_parse: [1;32mOK[0m <0.003053 s>
+addr:tls6_parse: [1;32mOK[0m <0.003017 s>
+addr:utls6_parse: [1;32mOK[0m <0.002240 s>
+addr:tcp_parse: [1;32mOK[0m <0.002078 s>
+addr:tls_parse: [1;32mOK[0m <0.001097 s>
+addr:tcp6_make: STARTED
+addr:sctp6_make: STARTED
+addr:tls6_make: STARTED
+addr:utls6_make: STARTED
+addr:make_ux: STARTED
+addr:make_uxf: STARTED
+addr:tcp_make: STARTED
+addr:utls_parse: [1;32mOK[0m <0.003423 s>
+addr:tcp6_make: [1;32mOK[0m <0.002401 s>
+addr:sctp6_make: [1;32mOK[0m <0.002278 s>
+addr:tls6_make: [1;32mOK[0m <0.002099 s>
+addr:utls6_make: [1;32mOK[0m <0.001146 s>
+addr:tls_make: STARTED
+addr:utls_make: STARTED
+attr_map:access_bool: STARTED
+attr_map:access_int64: STARTED
+attr_map:access_double: STARTED
+addr:make_ux: [1;32mOK[0m <0.003202 s>
+addr:make_uxf: [1;32mOK[0m <0.003367 s>
+addr:tcp_make: [1;32mOK[0m <0.003177 s>
+addr:tls_make: [1;32mOK[0m <0.002372 s>
+addr:utls_make: [1;32mOK[0m <0.002189 s>
+attr_map:access_bool: [1;32mOK[0m <0.001567 s>
+attr_map:access_int64: [1;32mOK[0m <0.001042 s>
+attr_map:access_double: [1;32mOK[0m <0.000865 s>
+attr_map:access_str: STARTED
+attr_map:access_bin: STARTED
+attr_map:equal: STARTED
+attr_map:foreach: STARTED
+attr_map:exists: STARTED
+attr_map:add_all: STARTED
+attr_map:clone: STARTED
+attr_path:parse: STARTED
+attr_map:access_str: [1;32mOK[0m <0.002556 s>
+attr_map:equal: [1;32mOK[0m <0.002158 s>
+attr_map:foreach: [1;32mOK[0m <0.001346 s>
+attr_map:exists: [1;32mOK[0m <0.001161 s>
+attr_path:parse_unparse: STARTED
+attr_path:parse_error: STARTED
+attr_path:equal: STARTED
+attr_tree:basic: STARTED
+attr_map:add_all: [1;32mOK[0m <0.003533 s>
+attr_map:clone: [1;32mOK[0m <0.002895 s>
+attr_path:parse: [1;32mOK[0m <0.002680 s>
+attr_path:parse_unparse: [1;32mOK[0m <0.001943 s>
+attr_path:equal: [1;32mOK[0m <0.001213 s>
+attr_tree:basic: [1;32mOK[0m <0.000901 s>
+attr_tree:list: STARTED
+slist:join: STARTED
+slist:split: STARTED
+xcm:basic: STARTED
+xcm:bulk_transfer: STARTED
+xcm:async_server: STARTED
+attr_path:parse_error: [1;32mOK[0m <0.002780 s>
+attr_tree:list: [1;32mOK[0m <0.001216 s>
+xcm:forking_server: STARTED
+slist:join: [1;32mOK[0m <0.001336 s>
+slist:split: [1;32mOK[0m <0.001180 s>
+attr_map:access_bin: [1;32mOK[0m <0.009658 s>
+xcm:basic: [1;32mOK[0m <1.005827 s>
+xcm:bulk_transfer: [1;32mOK[0m <4.329641 s>
+xcm:forking_server: [1;32mOK[0m <4.785397 s>
+xcm:async_server: [1;32mOK[0m <7.693637 s>
+xcm:dns: SERIALIZED STARTED
+xcm:dns: [1;32mOK[0m <3.578944 s>
+xcm:dns_algorithm_smoke_test: SERIALIZED STARTED
+xcm:dns_algorithm_smoke_test: [1;32mOK[0m <7.149635 s>
+xcm:dns_multiple_address_probing: STARTED
+xcm:tcp_dns_timeout: STARTED
+xcm:btcp_dns_timeout: STARTED
+xcm:tls_dns_timeout: STARTED
+xcm:btls_dns_timeout: STARTED
+xcm:utls_dns_timeout: STARTED
+xcm:tcp_connect_timeout: STARTED
+xcm:net_ns_switch: STARTED
+xcm:net_ns_switch: [1;32mOK[0m <0.394033 s>
+xcm:nonexistent_attr: STARTED
+xcm:dns_multiple_address_probing: [1;32mOK[0m <0.497139 s>
+xcm:invalid_attr: STARTED
+xcm:nonexistent_attr: [1;32mOK[0m <0.144609 s>
+xcm:invalid_generic_attr_type: STARTED
+xcm:invalid_generic_attr_type: [1;32mOK[0m <0.158213 s>
+xcm:invalid_tp_attr_type: STARTED
+xcm:invalid_attr: [1;32mOK[0m <0.240105 s>
+xcm:backpressure_with_slow_server: STARTED
+xcm:invalid_tp_attr_type: [1;32mOK[0m <0.163756 s>
+xcm:full_listen_queue_doesnt_block_connect: STARTED
+xcm:full_listen_queue_doesnt_block_connect: [1;32mOK[0m <4.282990 s>
+xcm:non_blocking_non_orderly_tls_close: STARTED
+xcm:non_blocking_non_orderly_tls_close: [1;32mOK[0m <0.165464 s>
+xcm:ops_on_closed_connections: STARTED
+xcm:ops_on_closed_connections: [1;32mOK[0m <4.537839 s>
+xcm:relay: STARTED
+xcm:relay: [1;32mOK[0m <0.840818 s>
+xcm:server_socket_address_immediate_reuse: STARTED
+xcm:server_socket_address_immediate_reuse: [1;32mOK[0m <0.123032 s>
+xcm:multiple_server_sockets_on_the_same_address: STARTED
+xcm:multiple_server_sockets_on_the_same_address: [1;32mOK[0m <0.291286 s>
+xcm:non_blocking_connect_with_finish: STARTED
+xcm:btcp_dns_timeout: [1;32mOK[0m <12.215095 s>
+xcm:unresponsive_server_doesnt_block_nonblocking_connect: STARTED
+xcm:utls_dns_timeout: [1;32mOK[0m <12.247936 s>
+xcm:non_blocking_connect_lazy: STARTED
+xcm:tls_dns_timeout: [1;32mOK[0m <12.252694 s>
+xcm:invalid_service: STARTED
+xcm:tcp_dns_timeout: [1;32mOK[0m <12.274949 s>
+xcm:unknown_proto: STARTED
+xcm:btls_dns_timeout: [1;32mOK[0m <12.301261 s>
+xcm:invalid_await_and_fd_argument: STARTED
+xcm:invalid_service: [1;32mOK[0m <0.124867 s>
+xcm:invalid_address: STARTED
+xcm:invalid_await_and_fd_argument: [1;32mOK[0m <0.204583 s>
+xcm:connection_refused: STARTED
+xcm:unknown_proto: [1;32mOK[0m <0.248641 s>
+xcm:undersized_receive_buffer: STARTED
+xcm:unresponsive_server_doesnt_block_nonblocking_connect: [1;32mOK[0m <0.365960 s>
+xcm:oversized_send: STARTED
+xcm:invalid_address: [1;32mOK[0m <0.281151 s>
+xcm:zerosized_send: STARTED
+xcm:connection_refused: [1;32mOK[0m <0.238390 s>
+xcm:non_established_non_blocking_connect: STARTED
+xcm:undersized_receive_buffer: [1;32mOK[0m <0.328836 s>
+xcm:tcp_dead_peer_detection: STARTED
+xcm:oversized_send: [1;32mOK[0m <0.276965 s>
+xcm:tls_dead_peer_detection: STARTED
+xcm:zerosized_send: [1;32mOK[0m <2.790092 s>
+xcm:tcp_keepalive_attr: STARTED
+xcm:non_established_non_blocking_connect: [1;32mOK[0m <4.326276 s>
+xcm:tls_keepalive_attr: STARTED
+xcm:tcp_connect_timeout: [1;32mOK[0m <18.401107 s>
+xcm:tcp_net_hiccup: STARTED
+xcm:non_blocking_connect_with_finish: [1;32mOK[0m <8.184949 s>
+xcm:tls_net_hiccup: STARTED
+xcm:non_blocking_connect_lazy: [1;32mOK[0m <8.221819 s>
+xcm:dscp_marking: STARTED
+xcm:dscp_marking: [1;32mOK[0m <0.222278 s>
+xcm:bind_to_source_addr: STARTED
+xcm:bind_to_source_addr: [1;32mOK[0m <0.178483 s>
+xcm:ipv6_link_local: STARTED
+xcm:ipv6_link_local: [1;32mOK[0m <0.707004 s>
+xcm:disallow_link_local_on_ipv4: STARTED
+xcm:disallow_link_local_on_ipv4: [1;32mOK[0m <0.245731 s>
+xcm:disallow_bind_on_accept: STARTED
+xcm:disallow_bind_on_accept: [1;32mOK[0m <0.204804 s>
+xcm:tcp_dynamic_port_allocation: STARTED
+xcm:tcp_dynamic_port_allocation: [1;32mOK[0m <0.144542 s>
+xcm:tls_dynamic_port_allocation: STARTED
+xcm:tls_dynamic_port_allocation: [1;32mOK[0m <0.171716 s>
+xcm:utls_dynamic_port_allocation: STARTED
+xcm:utls_dynamic_port_allocation: [1;32mOK[0m <0.172576 s>
+xcm:utls_dynamic_local_is_unix: STARTED
+xcm:utls_dynamic_local_is_unix: [1;32mOK[0m <0.489217 s>
+xcm:utls_tls_fallback: STARTED
+xcm:utls_tls_fallback: [1;32mOK[0m <0.337565 s>
+xcm:tls_wrong_cert_directory: STARTED
+xcm:tls_wrong_cert_directory: [1;32mOK[0m <0.158294 s>
+xcm:tls_missing_certificate: STARTED
+xcm:tls_missing_certificate: [1;32mOK[0m <0.201085 s>
+xcm:backpressure_with_slow_server: [1;32mOK[0m <40.544158 s>
+xcm:tcp_keepalive_attr: [1;32mOK[0m <26.184481 s>
+xcm:tcp_net_hiccup: [1;32mOK[0m <23.685296 s>
+xcm:tls_net_hiccup: [1;32mOK[0m <24.019681 s>
+xcm:tls_keepalive_attr: [1;32mOK[0m <26.273475 s>
+xcm:tls_dead_peer_detection: [1;32mOK[0m <38.224483 s>
+xcm:tcp_dead_peer_detection: [1;32mOK[0m <39.192973 s>
+xcm:utls_remote_addr: SERIALIZED STARTED
+xcm:utls_remote_addr: [1;32mOK[0m <0.143185 s>
+xcm:tls_shared_leaf: STARTED
+xcm:tls_shared_root_ca: STARTED
+xcm:tls_shared_root_ca_with_attrs: STARTED
+xcm:tls_accept_attrs_override_server_attrs: STARTED
+xcm:tls_key_and_certificates_mixed_up: STARTED
+xcm:tls_partial_env_var_fallback: STARTED
+xcm:tls_different_root_ca: STARTED
+xcm:tls_one_way_mistrust: STARTED
+xcm:tls_key_and_certificates_mixed_up: [1;32mOK[0m <0.342686 s>
+xcm:tls_leaf_not_yet_valid: STARTED
+xcm:tls_shared_leaf: [1;32mOK[0m <0.582871 s>
+xcm:tls_leaf_expired: STARTED
+xcm:tls_accept_attrs_override_server_attrs: [1;32mOK[0m <0.613975 s>
+xcm:tls_ca_not_yet_valid: STARTED
+xcm:tls_partial_env_var_fallback: [1;32mOK[0m <0.628169 s>
+xcm:tls_ca_expired: STARTED
+xcm:tls_shared_root_ca_with_attrs: [1;32mOK[0m <0.875291 s>
+xcm:tls_local_leaf_validity_ignored: STARTED
+xcm:tls_shared_root_ca: [1;32mOK[0m <0.877202 s>
+xcm:tls_disable_expiration_doesnt_disable_auth: STARTED
+xcm:tls_different_root_ca: [1;32mOK[0m <0.940666 s>
+xcm:tls_auth_conf: STARTED
+xcm:tls_one_way_mistrust: [1;32mOK[0m <1.064502 s>
+xcm:tls_auth_disabled_no_longer_requires_tc: STARTED
+xcm:tls_leaf_not_yet_valid: [1;32mOK[0m <0.880577 s>
+xcm:tls_sub_ca: STARTED
+xcm:tls_auth_disabled_no_longer_requires_tc: [1;32mOK[0m <0.532973 s>
+xcm:tls_no_root_but_trusted_sub_ca: STARTED
+xcm:tls_leaf_expired: [1;32mOK[0m <1.047828 s>
+xcm:tls_certificate_and_key_mismatch: STARTED
+xcm:tls_ca_expired: [1;32mOK[0m <1.057376 s>
+xcm:tls_big_bundle: STARTED
+xcm:tls_local_leaf_validity_ignored: [1;32mOK[0m <0.843848 s>
+xcm:tls_multiple_ca_same_subject: STARTED
+xcm:tls_disable_expiration_doesnt_disable_auth: [1;32mOK[0m <0.866922 s>
+xcm:tls_crl_reject_revoked_leaf_and_intermediate: STARTED
+xcm:tls_ca_not_yet_valid: [1;32mOK[0m <1.137448 s>
+xcm:tls_missing_empty_invalid_crl: STARTED
+xcm:tls_missing_empty_invalid_crl: [1;32mOK[0m <0.286129 s>
+xcm:tls_zero_revocations_crl: STARTED
+xcm:tls_no_root_but_trusted_sub_ca: [1;32mOK[0m <0.771181 s>
+xcm:tls_detect_crl_changes: STARTED
+xcm:tls_auth_conf: [1;32mOK[0m <1.482682 s>
+xcm:tls_sub_ca: [1;32mOK[0m <1.245466 s>
+xcm:tls_crl_reject_revoked_leaf_and_intermediate: [1;32mOK[0m <0.733223 s>
+xcm:tls_multiple_ca_same_subject: [1;32mOK[0m <0.800449 s>
+xcm:tls_certificate_and_key_mismatch: [1;32mOK[0m <0.897267 s>
+xcm:tls_zero_revocations_crl: [1;32mOK[0m <0.636679 s>
+xcm:tls_detect_crl_changes: [1;32mOK[0m <0.559203 s>
+xcm:tls_big_bundle: [1;32mOK[0m <1.438007 s>
+xcm:tls_name_verification: SERIALIZED STARTED
+xcm:tls_name_verification: [1;32mOK[0m <0.723025 s>
+xcm:tls_invalid_name_verification_conf: STARTED
+xcm:tls_role_reversal: STARTED
+xcm:tls_extended_key_usage: STARTED
+xcm:tls_invalid_name_verification_conf: [1;32mOK[0m <0.151406 s>
+xcm:tls_extended_key_usage: [1;32mOK[0m <0.520517 s>
+xcm:tls_role_reversal: [1;32mOK[0m <4.211345 s>
+xcm:serialized_utls_unique_ux_names_with_ns: SERIALIZED STARTED
+xcm:serialized_utls_unique_ux_names_with_ns: [1;32mOK[0m <0.639383 s>
+xcm:tls_per_namespace_cert: SERIALIZED STARTED
+xcm:tls_per_namespace_cert: [1;32mOK[0m <0.528515 s>
+xcm:tls_per_namespace_cert_thread: SERIALIZED STARTED
+xcm:tls_per_namespace_cert_thread: [1;32mOK[0m <0.684634 s>
+xcm:tls_detect_cert_dir_env_var_changes: STARTED
+xcm:tls_detect_cert_dir_env_var_changes: [1;32mOK[0m <0.144821 s>
+xcm:tls_detect_changes_to_cert_files: SERIALIZED STARTED
+xcm:tls_detect_changes_to_cert_files: [1;32mOK[0m <0.490040 s>
+xcm:tls_change_cert_files_like_crazy: SERIALIZED STARTED
+xcm:tls_change_cert_files_like_crazy: [1;32mOK[0m <3.320374 s>
+xcm:tls_get_peer_names: STARTED
+xcm:tls_get_peer_subject_key_id: STARTED
+xcm:tls_get_subject_alternative_names: STARTED
+xcm:tls_credentials_by_value: STARTED
+xcm:tls_invalid_credential_values: STARTED
+xcm:garbled_tcp_input: STARTED
+xcm:garbled_tls_input: STARTED
+xcm:tls_multi_record_message: STARTED
+xcm:tls_multi_record_message: [1;32mOK[0m <0.386090 s>
+xcm:long_ux_names: STARTED
+xcm:tls_credentials_by_value: [1;32mOK[0m <0.517471 s>
+xcm:long_uxf_names: STARTED
+xcm:tls_invalid_credential_values: [1;32mOK[0m <0.637020 s>
+xcm:uxf_empty_addrs: STARTED
+xcm:tls_get_subject_alternative_names: [1;32mOK[0m <0.759845 s>
+xcm:ux_autobound_addrs: STARTED
+xcm:tls_get_peer_names: [1;32mOK[0m <0.839876 s>
+xcm:ux_credless_connect: STARTED
+xcm:uxf_empty_addrs: [1;32mOK[0m <0.280345 s>
+xcm:uxf_credless_connect: STARTED
+xcm:tls_get_peer_subject_key_id: [1;32mOK[0m <0.963577 s>
+xcm:uxf_existing_socket_file: STARTED
+xcm:long_ux_names: [1;32mOK[0m <0.662725 s>
+xcm:uxf_existing_non_socket_file: STARTED
+xcm:ux_autobound_addrs: [1;32mOK[0m <0.348030 s>
+xcm:lossy_network: STARTED
+xcm:ux_credless_connect: [1;32mOK[0m <0.328984 s>
+xcm:null_close: STARTED
+xcm:long_uxf_names: [1;32mOK[0m <0.655013 s>
+xcm:basic_with_incorrect_ctl_dir: STARTED
+xcm:uxf_existing_socket_file: [1;32mOK[0m <0.316964 s>
+xcm:ctl_iter: STARTED
+xcm:uxf_credless_connect: [1;32mOK[0m <0.374582 s>
+xcm:ctl_open_nonexisting: STARTED
+xcm:uxf_existing_non_socket_file: [1;32mOK[0m <0.407631 s>
+xcm:ctl_concurrent_clients_idle_socket: STARTED
+xcm:null_close: [1;32mOK[0m <0.387461 s>
+xcm:ctl_concurrent_clients_active_socket: STARTED
+xcm:ctl_open_nonexisting: [1;32mOK[0m <0.378605 s>
+xcm:version: STARTED
+xcm:garbled_tcp_input: [1;32mOK[0m <1.785915 s>
+xcm:version: [1;32mOK[0m <0.216103 s>
+xcm:basic_with_incorrect_ctl_dir: [1;32mOK[0m <1.119133 s>
+xcm:ctl_concurrent_clients_idle_socket: [1;32mOK[0m <0.896300 s>
+xcm:ctl_concurrent_clients_active_socket: [1;32mOK[0m <0.889013 s>
+xcm:garbled_tls_input: [1;32mOK[0m <4.320414 s>
+xcm:lossy_network: [1;32mOK[0m <4.565879 s>
+xcm:ctl_iter: [1;32mOK[0m <4.442186 s>
+
+165 tests run in 90.2 s; 165 successes, 0 failures, 0 timed out, and 0 not run.
+./test/tools/verify_versioning.py ./include/xcm.h \
+	./README.md . \
+	0 26 \
+	1 11 \
+	1
+ABI version: 0.26.
+Implementation version: 1.11.1
+Header file: ./include/xcm.h
+Pathfinder ABI documented to be version 0.26.
+Pathfinder library implementation documented to be version 1.11.1.
+README documentation link points towards version 0.26.
+Shared library file is at "./.libs/libxcm.so.0.26.0", as expected.
+All good.
+make[1]: Leaving directory '/home/lysarina/skool/exjobb/xcm-translation'
