@@ -6,6 +6,8 @@ edition = "2024"
 [dependencies]
 libc = "0.2.171"
 rs-attr-path = {path="../rs-attr-path"}
+xcm-rust-common = { path = "../../../xcm-rust-common/" }
+
 
 [lib]
 path = "src/attr_node.rs"

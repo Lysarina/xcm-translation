@@ -14,10 +14,18 @@ version = "0.1.0"
 dependencies = [
  "libc",
  "rs-attr-path",
+ "xcm-rust-common",
 ]
 
 [[package]]
 name = "rs-attr-path"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "xcm-rust-common"
 version = "0.1.0"
 dependencies = [
  "libc",
