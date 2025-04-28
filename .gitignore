@@ -7,7 +7,6 @@
 *.pyc
 *.la
 .libs/
-target/
 
 test/xcmtest.c
 
@@ -43,3 +42,7 @@ xcmpong
 xcmtest
 
 test/data/
+
+# Rust additions
+target/
+res.txt

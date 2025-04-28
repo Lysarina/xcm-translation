@@ -6,10 +6,12 @@ perf.py reads the output files and performs some statistics; it finds the tests 
 
 ## Versions
 
-OBS: gen-results.sh needs to be rerun for these versions, as it was run in chunks rather than one continuous test.
+OBS: rs-1 was run in chunks rather than one continuous test.
 
-- c-code: original c code
+- original-c: original c code
 - rs-1: attr_path.c has been translated to Rust
 - rs-2: attr_path, xcm_dns and xcm_addr have been translated
-- rs-3: attr_path, xcm_dns, xcm_addr, attr_node, attr_tree, log, log_attr_tree and util have been translated
+- rs-3: rs-2 + attr_node, attr_tree, log, log_attr_tree and util have been translated
 - rs-4: rs-3 but util is still in C
+- rs-5: rs-3 + xcm_tp, ctl, common_ctl, xpoll, active_fd have been translated (the four last are needed by xcm_tp). CRASHES
+- rs-6: rs-3 + ctl, common_ctl, xpoll, active_fd have been translated (i.e. rs-5 without xcm_tp)

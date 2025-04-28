@@ -1,0 +1,12 @@
+[package]
+name = "rs-ctl"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+libc = "0.2.171"
+rs-common-ctl = { path = "../../../common/rs-common-ctl" }
+
+[lib]
+path="src/ctl.rs"
+crate-type = ["cdylib"]
