@@ -62,6 +62,8 @@ libxcm_la_SOURCES = \
 libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-Wl,--version-script=$(srcdir)/libxcm/libxcm.vs \
 	-version-info $(XCM_VERSION_CURRENT):$(XCM_VERSION_REVISION):$(XCM_VERSION_AGE) \
+	-L$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release \
 	-L$(srcdir)/libxcm/tp/common/rs-active_fd/target/release -lrs_active_fd \
 	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active_fd/target/release \
 	-L$(srcdir)/common/rs-util/target/release -lrs_util \
@@ -82,8 +84,29 @@ libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release \
 	-L$(srcdir)/libxcm/core/rs-xpoll/target/release -lrs_xpoll \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xpoll/target/release \
-	-L$(srcdir)/libxcm/tp/common/rs-active-fd/target/release -lrs_active_fd \
-	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active-fd/target/release
+	\
+	-L$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release \
+	-L$(srcdir)/libxcm/tp/common/rs-active_fd/target/release -lrs_active_fd \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active_fd/target/release \
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
+	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
+	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log-attr-tree/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-path/target/release -lrs_attr_path \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-path/target/release \
+	-L$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release -lrs_xcm_dns \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release \
+	-L$(srcdir)/libxcm/core/rs-xpoll/target/release -lrs_xpoll \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xpoll/target/release 
 libxcm_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/libxcm/core \
 	-I$(srcdir)/libxcm/tp/common -I$(srcdir)/libxcm/tp/ux \
 	-I$(srcdir)/libxcm/tp/tcp -I$(srcdir)/libxcm/tp/dns
@@ -114,6 +137,8 @@ if CTL
 # libxcm_la_SOURCES += common/common_ctl.c
 libxcm_la_CPPFLAGS += -I$(srcdir)/libxcm/ctl
 libxcm_la_LDFLAGS += -L$(srcdir)/common/rs-common-ctl/target/release -lrs_common_ctl \
+	-L$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release \
 	-Wl,-rpath,$(srcdir)/common/rs-common-ctl/target/release \
 	-L$(srcdir)/libxcm/ctl/rs-ctl/target/release -lrs_ctl \
 	-Wl,-rpath,$(srcdir)/libxcm/ctl/rs-ctl/target/release
@@ -155,7 +180,32 @@ xcmpong_LDFLAGS = @RT_LIBS@ \
 	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
-	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release \
+	-L$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release \
+	\
+	-L$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release \
+	-L$(srcdir)/libxcm/tp/common/rs-active_fd/target/release -lrs_active_fd \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active_fd/target/release \
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
+	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
+	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log-attr-tree/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-path/target/release -lrs_attr_path \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-path/target/release \
+	-L$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release -lrs_xcm_dns \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release \
+	-L$(srcdir)/libxcm/core/rs-xpoll/target/release -lrs_xpoll \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xpoll/target/release 
 xcmpong_LDADD = libxcm.la
 
 if XCM_TOOL
@@ -241,6 +291,8 @@ xcmtest_CPPFLAGS=$(AM_CPPFLAGS) $(TEST_CPPFLAGS) -DUT_STD_ASSERT
 xcmtest_LDFLAGS = @RT_LIBS@ @PTHREAD_LIBS@ -ldl -no-install  \
 	-L$(srcdir)/common/rs-util/target/release -lrs_util \
 	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
+	-L$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release \
 	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
@@ -248,7 +300,26 @@ xcmtest_LDFLAGS = @RT_LIBS@ @PTHREAD_LIBS@ -ldl -no-install  \
 	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
 	-L$(srcdir)/libxcm/tp/common/rs-active_fd/target/release -lrs_active_fd \
-	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active_fd/target/release
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active_fd/target/release \
+	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
+	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log-attr-tree/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-path/target/release -lrs_attr_path \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-path/target/release \
+	\
+	-L$(srcdir)/common/rs-util/target/release -lrs_util \
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
+	-L$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release \
+	-L$(srcdir)/libxcm/core/rs-attr-node/target/release -lrs_attr_node \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
+	-L$(srcdir)/libxcm/tp/common/rs-active_fd/target/release -lrs_active_fd \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active_fd/target/release \
 	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
 	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \
