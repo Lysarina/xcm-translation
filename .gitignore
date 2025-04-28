@@ -41,3 +41,5 @@ xcm
 xcmctl
 xcmpong
 xcmtest
+
+test/data/
