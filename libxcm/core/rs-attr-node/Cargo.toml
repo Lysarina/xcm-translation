@@ -1,0 +1,12 @@
+[package]
+name = "rs-attr-node"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+libc = "0.2.171"
+rs-attr-path = {path="../rs-attr-path"}
+
+[lib]
+path = "src/attr_node.rs"
+crate-type = ["cdylib"]

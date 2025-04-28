@@ -9,6 +9,10 @@
 )]
 #![feature(extern_types)]
 
+<<<<<<< HEAD:libxcm/core/rs-attrpath/src/attr_path.rs
+=======
+
+>>>>>>> translation:libxcm/core/rs-attr-path/src/attr_path.rs
 unsafe extern "C" {
     pub type ctl;
     pub type xpoll;
@@ -236,23 +240,23 @@ pub unsafe extern "C" fn attr_pcomp_get_key(
     mut pcomp: *const attr_pcomp,
 ) -> *const libc::c_char {
     if !attr_pcomp_is_key(pcomp) {
-        // log_console_conf(true);
-        // if log_is_enabled(log_type_error) {
-        //     __log_event(
-        //         log_type_error,
-        //         b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/attr_path.c\0"
-        //             as *const u8 as *const libc::c_char,
-        //         100 as libc::c_int,
-        //         (*::core::mem::transmute::<
-        //             &[u8; 19],
-        //             &[libc::c_char; 19],
-        //         >(b"attr_pcomp_get_key\0"))
-        //             .as_ptr(),
-        //         0 as *mut xcm_socket,
-        //         b"Assertion \"%s\" failed.\n\0" as *const u8 as *const libc::c_char,
-        //         b"attr_pcomp_is_key(pcomp)\0" as *const u8 as *const libc::c_char,
-        //     );
-        // }
+        log_console_conf(true);
+        if log_is_enabled(log_type_error) {
+            __log_event(
+                log_type_error,
+                b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/attr_path.c\0"
+                    as *const u8 as *const libc::c_char,
+                100 as libc::c_int,
+                (*::core::mem::transmute::<
+                    &[u8; 19],
+                    &[libc::c_char; 19],
+                >(b"attr_pcomp_get_key\0"))
+                    .as_ptr(),
+                0 as *mut xcm_socket,
+                b"Assertion \"%s\" failed.\n\0" as *const u8 as *const libc::c_char,
+                b"attr_pcomp_is_key(pcomp)\0" as *const u8 as *const libc::c_char,
+            );
+        }
         abort();
     }
     return (*pcomp).c2rust_unnamed.key;
@@ -260,23 +264,23 @@ pub unsafe extern "C" fn attr_pcomp_get_key(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_pcomp_get_index(mut pcomp: *const attr_pcomp) -> size_t {
     if !attr_pcomp_is_index(pcomp) {
-        // log_console_conf(1 as libc::c_int != 0);
-        // if log_is_enabled(log_type_error) {
-        //     __log_event(
-        //         log_type_error,
-        //         b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/attr_path.c\0"
-        //             as *const u8 as *const libc::c_char,
-        //         107 as libc::c_int,
-        //         (*::core::mem::transmute::<
-        //             &[u8; 21],
-        //             &[libc::c_char; 21],
-        //         >(b"attr_pcomp_get_index\0"))
-        //             .as_ptr(),
-        //         0 as *mut xcm_socket,
-        //         b"Assertion \"%s\" failed.\n\0" as *const u8 as *const libc::c_char,
-        //         b"attr_pcomp_is_index(pcomp)\0" as *const u8 as *const libc::c_char,
-        //     );
-        // }
+        log_console_conf(1 as libc::c_int != 0);
+        if log_is_enabled(log_type_error) {
+            __log_event(
+                log_type_error,
+                b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/attr_path.c\0"
+                    as *const u8 as *const libc::c_char,
+                107 as libc::c_int,
+                (*::core::mem::transmute::<
+                    &[u8; 21],
+                    &[libc::c_char; 21],
+                >(b"attr_pcomp_get_index\0"))
+                    .as_ptr(),
+                0 as *mut xcm_socket,
+                b"Assertion \"%s\" failed.\n\0" as *const u8 as *const libc::c_char,
+                b"attr_pcomp_is_index(pcomp)\0" as *const u8 as *const libc::c_char,
+            );
+        }
         abort();
     }
     return (*pcomp).c2rust_unnamed.index;
@@ -408,23 +412,23 @@ pub unsafe extern "C" fn attr_path_get_comp(
     mut comp_num: size_t,
 ) -> *const attr_pcomp {
     if !(comp_num < (*path).num_comps) {
-        // log_console_conf(1 as libc::c_int != 0);
-        // if log_is_enabled(log_type_error) {
-        //     __log_event(
-        //         log_type_error,
-        //         b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/attr_path.c\0"
-        //             as *const u8 as *const libc::c_char,
-        //         242 as libc::c_int,
-        //         (*::core::mem::transmute::<
-        //             &[u8; 19],
-        //             &[libc::c_char; 19],
-        //         >(b"attr_path_get_comp\0"))
-        //             .as_ptr(),
-        //         0 as *mut xcm_socket,
-        //         b"Assertion \"%s\" failed.\n\0" as *const u8 as *const libc::c_char,
-        //         b"comp_num < path->num_comps\0" as *const u8 as *const libc::c_char,
-        //     );
-        // }
+        log_console_conf(1 as libc::c_int != 0);
+        if log_is_enabled(log_type_error) {
+            __log_event(
+                log_type_error,
+                b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/attr_path.c\0"
+                    as *const u8 as *const libc::c_char,
+                242 as libc::c_int,
+                (*::core::mem::transmute::<
+                    &[u8; 19],
+                    &[libc::c_char; 19],
+                >(b"attr_path_get_comp\0"))
+                    .as_ptr(),
+                0 as *mut xcm_socket,
+                b"Assertion \"%s\" failed.\n\0" as *const u8 as *const libc::c_char,
+                b"comp_num < path->num_comps\0" as *const u8 as *const libc::c_char,
+            );
+        }
         abort();
     }
     return (*path).comps[comp_num as usize];
@@ -443,25 +447,25 @@ pub unsafe extern "C" fn attr_path_len(
             if !((*comp).type_0 as libc::c_uint
                 == attr_pcomp_type_key as libc::c_int as libc::c_uint)
             {
-                // log_console_conf(1 as libc::c_int != 0);
-                // if log_is_enabled(log_type_error) {
-                //     __log_event(
-                //         log_type_error,
-                //         b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/attr_path.c\0"
-                //             as *const u8 as *const libc::c_char,
-                //         255 as libc::c_int,
-                //         (*::core::mem::transmute::<
-                //             &[u8; 14],
-                //             &[libc::c_char; 14],
-                //         >(b"attr_path_len\0"))
-                //             .as_ptr(),
-                //         0 as *mut xcm_socket,
-                //         b"Assertion \"%s\" failed.\n\0" as *const u8
-                //             as *const libc::c_char,
-                //         b"comp->type == attr_pcomp_type_key\0" as *const u8
-                //             as *const libc::c_char,
-                //     );
-                // }
+                log_console_conf(1 as libc::c_int != 0);
+                if log_is_enabled(log_type_error) {
+                    __log_event(
+                        log_type_error,
+                        b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/attr_path.c\0"
+                            as *const u8 as *const libc::c_char,
+                        255 as libc::c_int,
+                        (*::core::mem::transmute::<
+                            &[u8; 14],
+                            &[libc::c_char; 14],
+                        >(b"attr_path_len\0"))
+                            .as_ptr(),
+                        0 as *mut xcm_socket,
+                        b"Assertion \"%s\" failed.\n\0" as *const u8
+                            as *const libc::c_char,
+                        b"comp->type == attr_pcomp_type_key\0" as *const u8
+                            as *const libc::c_char,
+                    );
+                }
                 abort();
             }
             len = (len as libc::c_ulong).wrapping_add(strlen((*comp).c2rust_unnamed.key))

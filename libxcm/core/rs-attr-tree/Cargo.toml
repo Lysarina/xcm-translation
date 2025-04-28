@@ -1,0 +1,13 @@
+[package]
+name = "rs-attr-tree"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+libc = "0.2.171"
+rs-attr-path = {path="../rs-attr-path"}
+rs-log-attr-tree = {path="../rs-log-attr-tree"}
+
+[lib]
+path="src/attr_tree.rs"
+crate-type = ["cdylib"]
