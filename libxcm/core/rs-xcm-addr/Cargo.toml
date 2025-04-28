@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 libc = "0.2.171"
+rs-xcm-dns = {path="../../tp/dns/rs-xcm-dns"}
 
 [lib]
 path="src/xcm_addr.rs"

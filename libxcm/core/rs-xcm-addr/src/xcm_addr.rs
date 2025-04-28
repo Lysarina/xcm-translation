@@ -8,6 +8,9 @@
     unused_mut
 )]
 #![feature(extern_types)]
+
+use rs_xcm_dns::xcm_dns_is_valid_name;
+
 unsafe extern "C" {
     pub type ctl;
     pub type xpoll;
@@ -64,7 +67,7 @@ unsafe extern "C" {
         __buf: *mut libc::c_char,
         __len: socklen_t,
     ) -> *const libc::c_char;
-    fn xcm_dns_is_valid_name(name: *const libc::c_char) -> bool;
+    // fn xcm_dns_is_valid_name(name: *const libc::c_char) -> bool;
     fn __ctype_b_loc() -> *mut *const libc::c_ushort;
 }
 pub type __uint8_t = libc::c_uchar;

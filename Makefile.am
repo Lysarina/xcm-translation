@@ -49,7 +49,6 @@ libxcm_la_SOURCES = \
 	libxcm/core/xcm_attr_map.c \
 	libxcm/core/xcm_compat.c \
 	libxcm/core/xcm_version.c \
-	libxcm/tp/common/xcm_tp.c \
 	libxcm/tp/common/common_tp.c \
 	libxcm/tp/common/dns_attr.c \
 	libxcm/tp/common/log_tp.c \
@@ -78,6 +77,8 @@ libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release \
+	-L$(srcdir)/libxcm/tp/common/rs-xcm-tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm-tp/target/release \
 	-L$(srcdir)/libxcm/core/rs-xpoll/target/release -lrs_xpoll \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xpoll/target/release \
 	-L$(srcdir)/libxcm/tp/common/rs-active-fd/target/release -lrs_active_fd \
@@ -235,6 +236,8 @@ xcmtest_CPPFLAGS=$(AM_CPPFLAGS) $(TEST_CPPFLAGS) -DUT_STD_ASSERT
 xcmtest_LDFLAGS = @RT_LIBS@ @PTHREAD_LIBS@ -ldl -no-install  \
 	-L$(srcdir)/common/rs-util/target/release -lrs_util \
 	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
+	-L$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release -lrs_xcm_dns \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release \
 	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
 	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \

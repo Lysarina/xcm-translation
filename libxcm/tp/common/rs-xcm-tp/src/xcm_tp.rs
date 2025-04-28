@@ -5,7 +5,8 @@
     non_snake_case,
     non_upper_case_globals,
     unused_assignments,
-    unused_mut
+    unused_mut,
+    static_mut_refs
 )]
 #![feature(extern_types)]
 unsafe extern "C" {
@@ -259,11 +260,11 @@ static mut next_id_lock: pthread_mutex_t = pthread_mutex_t {
 static mut next_id: int64_t = 0 as libc::c_int as int64_t;
 unsafe extern "C" fn get_next_sock_id() -> int64_t {
     let mut nid: int64_t = 0;
-    ut_mutex_lock(&raw mut next_id_lock);
+    ut_mutex_lock(&mut next_id_lock);
     let fresh0 = next_id;
     next_id = next_id + 1;
     nid = fresh0;
-    ut_mutex_unlock(&raw mut next_id_lock);
+    ut_mutex_unlock(&mut next_id_lock);
     return nid;
 }
 #[unsafe(no_mangle)]
@@ -1335,7 +1336,7 @@ pub unsafe extern "C" fn xcm_tp_proto_by_name(
     while (i as libc::c_ulong) < num_protos {
         if strcmp((protos[i as usize].name).as_mut_ptr(), proto_name) == 0 as libc::c_int
         {
-            return (&raw mut protos).offset(i as isize) as *mut xcm_tp_proto;
+            return &mut *protos.as_mut_ptr().offset(i as isize) as *mut xcm_tp_proto;
         }
         i += 1;
         i;
