@@ -9,10 +9,7 @@
 )]
 #![feature(extern_types)]
 
-<<<<<<< HEAD:libxcm/core/rs-attrpath/src/attr_path.rs
-=======
 
->>>>>>> translation:libxcm/core/rs-attr-path/src/attr_path.rs
 unsafe extern "C" {
     pub type ctl;
     pub type xpoll;
