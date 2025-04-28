@@ -1,5 +1,5 @@
 [package]
-name = "rs-core"
+name = "rs-xcm"
 version = "0.1.0"
 edition = "2024"
 
@@ -8,3 +8,4 @@ libc = "0.2.171"
 
 [lib]
 path="src/xcm.rs"
+crate-type = ["cdylib"]

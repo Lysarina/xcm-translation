@@ -7,7 +7,7 @@
     unused_assignments,
     unused_mut
 )]
-#![feature(c_variadic, core_intrinsics, extern_types)]
+#![feature(c_variadic, extern_types)]
 
 use std::sync::atomic::{AtomicBool, Ordering};
 
@@ -267,10 +267,11 @@ pub type xcm_attr_cb = Option::<
         *mut libc::c_void,
     ) -> (),
 >;
+// static mut version_logged: bool = 0 as libc::c_int != 0;
 static version_logged: AtomicBool = AtomicBool::new(false);
 unsafe extern "C" fn assure_library_version_logged() {
     if !version_logged.load(Ordering::Relaxed) {
-    // if !::core::intrinsics::atomic_load_relaxed(&raw const version_logged) {
+    // if !::core::intrinsics::atomic_load_relaxed(&mut version_logged as *mut bool) {
         if log_is_enabled(log_type_debug) {
             __log_event(
                 log_type_debug,
@@ -291,7 +292,7 @@ unsafe extern "C" fn assure_library_version_logged() {
         }
         version_logged.store(true, Ordering::Relaxed);
         // ::core::intrinsics::atomic_store_relaxed(
-        //     &raw mut version_logged,
+        //     &mut version_logged,
         //     1 as libc::c_int != 0,
         // );
     }
