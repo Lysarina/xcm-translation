@@ -262,7 +262,7 @@ unsafe extern "C" fn fd_create() -> *mut active_fd {
         (*active_fds.lh_first).elem.le_prev = &mut (*active_fd).elem.le_next;
     }
     active_fds.lh_first = active_fd;
-    (*active_fd).elem.le_prev = &mut active_fds.lh_first;
+    (*active_fd).elem.le_prev = &raw mut active_fds.lh_first;
     if log_is_enabled(log_type_debug) {
         __log_event(
             log_type_debug,
@@ -281,18 +281,18 @@ unsafe extern "C" fn fd_create() -> *mut active_fd {
 }
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn active_fd_get() -> libc::c_int {
-    ut_mutex_lock(&mut active_fd_lock);
+    ut_mutex_lock(&raw mut active_fd_lock);
     let mut active_fd: *mut active_fd = fd_retrieve();
     if active_fd.is_null() {
         active_fd = fd_create();
     }
-    ut_mutex_unlock(&mut active_fd_lock);
+    ut_mutex_unlock(&raw mut active_fd_lock);
     return if !active_fd.is_null() { (*active_fd).fd } else { -(1 as libc::c_int) };
 }
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn active_fd_put(mut fd: libc::c_int) {
     let mut current_block: u64;
-    ut_mutex_lock(&mut active_fd_lock);
+    ut_mutex_lock(&raw mut active_fd_lock);
     let mut active_fd: *mut active_fd = 0 as *mut active_fd;
     active_fd = active_fds.lh_first;
     loop {
@@ -363,5 +363,5 @@ pub unsafe extern "C" fn active_fd_put(mut fd: libc::c_int) {
         }
         _ => {}
     }
-    ut_mutex_unlock(&mut active_fd_lock);
+    ut_mutex_unlock(&raw mut active_fd_lock);
 }
