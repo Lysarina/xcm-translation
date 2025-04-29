@@ -30,49 +30,45 @@ unsafe extern "C" {
         format: *const libc::c_char,
         _: ...
     );
-    // fn active_fd_get() -> libc::c_int;
-    // fn active_fd_put(fd: libc::c_int);
     fn __errno_location() -> *mut libc::c_int;
     fn abort() -> !;
     fn strerror(_: libc::c_int) -> *mut libc::c_char;
-    fn ut_malloc(size: size_t) -> *mut libc::c_void;
-    fn ut_realloc(ptr: *mut libc::c_void, size: size_t) -> *mut libc::c_void;
+    fn ut_malloc(size: libc::c_ulong) -> *mut libc::c_void;
+    fn ut_realloc(ptr: *mut libc::c_void, size: libc::c_ulong) -> *mut libc::c_void;
     fn ut_free(ptr: *mut libc::c_void);
     fn ut_fatal() -> !;
     fn ut_close(fd: libc::c_int);
 }
 pub type int64_t = libc::c_long;
-pub type uint32_t = libc::c_uint;
 pub type uint64_t = libc::c_ulong;
 pub type size_t = libc::c_ulong;
-pub type EPOLL_EVENTS = libc::c_uint;
-pub const EPOLLET: EPOLL_EVENTS = 2147483648;
-pub const EPOLLONESHOT: EPOLL_EVENTS = 1073741824;
-pub const EPOLLWAKEUP: EPOLL_EVENTS = 536870912;
-pub const EPOLLEXCLUSIVE: EPOLL_EVENTS = 268435456;
-pub const EPOLLRDHUP: EPOLL_EVENTS = 8192;
-pub const EPOLLHUP: EPOLL_EVENTS = 16;
-pub const EPOLLERR: EPOLL_EVENTS = 8;
-pub const EPOLLMSG: EPOLL_EVENTS = 1024;
-pub const EPOLLWRBAND: EPOLL_EVENTS = 512;
-pub const EPOLLWRNORM: EPOLL_EVENTS = 256;
-pub const EPOLLRDBAND: EPOLL_EVENTS = 128;
-pub const EPOLLRDNORM: EPOLL_EVENTS = 64;
-pub const EPOLLOUT: EPOLL_EVENTS = 4;
-pub const EPOLLPRI: EPOLL_EVENTS = 2;
-pub const EPOLLIN: EPOLL_EVENTS = 1;
+pub const EPOLLET: libc::c_uint = 2147483648;
+pub const EPOLLONESHOT: libc::c_uint = 1073741824;
+pub const EPOLLWAKEUP: libc::c_uint = 536870912;
+pub const EPOLLEXCLUSIVE: libc::c_uint = 268435456;
+pub const EPOLLRDHUP: libc::c_uint = 8192;
+pub const EPOLLHUP: libc::c_uint = 16;
+pub const EPOLLERR: libc::c_uint = 8;
+pub const EPOLLMSG: libc::c_uint = 1024;
+pub const EPOLLWRBAND: libc::c_uint = 512;
+pub const EPOLLWRNORM: libc::c_uint = 256;
+pub const EPOLLRDBAND: libc::c_uint = 128;
+pub const EPOLLRDNORM: libc::c_uint = 64;
+pub const EPOLLOUT: libc::c_uint = 4;
+pub const EPOLLPRI: libc::c_uint = 2;
+pub const EPOLLIN: libc::c_uint = 1;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union epoll_data {
     pub ptr: *mut libc::c_void,
     pub fd: libc::c_int,
-    pub u32_0: uint32_t,
-    pub u64_0: uint64_t,
+    pub u32_0: libc::c_uint,
+    pub u64_0: libc::c_ulong,
 }
 #[derive(Copy, Clone)]
 #[repr(C, packed)]
 pub struct epoll_event {
-    pub events: uint32_t,
+    pub events: libc::c_uint,
     pub data: epoll_data,
 }
 #[derive(Copy, Clone)]
@@ -101,6 +97,7 @@ pub struct xpoll_fd_reg {
     pub fd: libc::c_int,
     pub event: libc::c_int,
 }
+// Below remove duplicates
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct xcm_socket {
@@ -383,7 +380,7 @@ unsafe extern "C" fn reg_epoll_mod(
         let mut nevent: epoll_event = {
             
             epoll_event {
-                events: new_event as uint32_t,
+                events: new_event as libc::c_uint,
                 data: epoll_data {
                     ptr: std::ptr::null_mut::<libc::c_void>(),
                 },
@@ -438,7 +435,7 @@ unsafe extern "C" fn reg_epoll_mod(
         let mut nevent_0: epoll_event = {
             
             epoll_event {
-                events: new_event as uint32_t,
+                events: new_event as libc::c_uint,
                 data: epoll_data {
                     ptr: std::ptr::null_mut::<libc::c_void>(),
                 },
