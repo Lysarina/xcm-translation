@@ -8,4 +8,4 @@ libc = "0.2.171"
 
 [lib]
 path="src/log.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]

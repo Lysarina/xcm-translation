@@ -16,9 +16,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "rs-log"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "rs-xpoll"
 version = "0.1.0"
 dependencies = [
  "libc",
  "rs-active-fd",
+ "rs-log",
 ]
