@@ -44,3 +44,8 @@ xcmtest
 # Rust additions
 target/
 res.txt
+xcmrelay
+missing
+py-compile
+python/config.py
+test/data
