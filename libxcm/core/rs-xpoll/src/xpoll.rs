@@ -41,12 +41,9 @@ unsafe extern "C" {
     fn ut_fatal() -> !;
     fn ut_close(fd: libc::c_int);
 }
-pub type __uint32_t = libc::c_uint;
-pub type __int64_t = libc::c_long;
-pub type __uint64_t = libc::c_ulong;
-pub type int64_t = __int64_t;
-pub type uint32_t = __uint32_t;
-pub type uint64_t = __uint64_t;
+pub type int64_t = libc::c_long;
+pub type uint32_t = libc::c_uint;
+pub type uint64_t = libc::c_ulong;
 pub type size_t = libc::c_ulong;
 pub type EPOLL_EVENTS = libc::c_uint;
 pub const EPOLLET: EPOLL_EVENTS = 2147483648;
@@ -72,12 +69,11 @@ pub union epoll_data {
     pub u32_0: uint32_t,
     pub u64_0: uint64_t,
 }
-pub type epoll_data_t = epoll_data;
 #[derive(Copy, Clone)]
 #[repr(C, packed)]
 pub struct epoll_event {
     pub events: uint32_t,
-    pub data: epoll_data_t,
+    pub data: epoll_data,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -197,7 +193,7 @@ unsafe extern "C" fn log_xpoll_fd_event_str(
     }
 }
 unsafe extern "C" fn log_xpoll_ring_str(ringing: bool) -> *const libc::c_char {
-    if ringing as libc::c_int != 0 {
+    if ringing {
         b"ringing\0" as *const u8 as *const libc::c_char
     } else {
         b"idle\0" as *const u8 as *const libc::c_char
@@ -253,8 +249,8 @@ pub unsafe extern "C" fn xpoll_create(log_ref: *mut libc::c_void) -> *mut xpoll 
             fd_regs: std::ptr::null_mut::<xpoll_fd_reg>(),
             fd_regs_capacity: 0,
             num_fd_regs: 0,
-            active_fd: -(1 as libc::c_int),
-            active_fd_reg_id: -(1 as libc::c_int),
+            active_fd: -1,
+            active_fd_reg_id: -1,
             bell_regs: std::ptr::null_mut::<xpoll_bell_reg>(),
             bell_regs_capacity: 0,
             num_bell_regs: 0,
@@ -267,7 +263,7 @@ pub unsafe extern "C" fn xpoll_create(log_ref: *mut libc::c_void) -> *mut xpoll 
 pub unsafe extern "C" fn xpoll_destroy(xpoll: *mut xpoll) { unsafe {
     if !xpoll.is_null() {
         ut_close((*xpoll).epoll_fd);
-        if (*xpoll).active_fd >= 0 as libc::c_int {
+        if (*xpoll).active_fd >= 0 {
             active_fd_put((*xpoll).active_fd);
         }
         ut_free((*xpoll).fd_regs as *mut libc::c_void);
@@ -291,7 +287,7 @@ unsafe extern "C" fn regs_extend_capacity(
     ) as *mut xpoll_fd_reg;
     let mut i: libc::c_int = (*xpoll).fd_regs_capacity;
     while i < new_capacity {
-        (*((*xpoll).fd_regs).offset(i as isize)).fd = -(1 as libc::c_int);
+        (*((*xpoll).fd_regs).offset(i as isize)).fd = -1;
         i += 1;
     }
     (*xpoll).fd_regs_capacity = new_capacity;
@@ -306,16 +302,16 @@ unsafe extern "C" fn find_fd(xpoll: *mut xpoll, fd: libc::c_int) -> libc::c_int 
         }
         i += 1;
     }
-    -(1 as libc::c_int)
+    -1
 }}
 unsafe extern "C" fn has_fd(xpoll: *mut xpoll, fd: libc::c_int) -> bool { unsafe {
-    find_fd(xpoll, fd) >= 0 as libc::c_int
+    find_fd(xpoll, fd) >= 0
 }}
 unsafe extern "C" fn find_free_fd_reg_idx(xpoll: *mut xpoll) -> libc::c_int { unsafe {
-    find_fd(xpoll, -(1 as libc::c_int))
+    find_fd(xpoll, -1)
 }}
 unsafe extern "C" fn next_capacity(current_capacity: libc::c_int) -> libc::c_int {
-    (current_capacity + 1 as libc::c_int) * 2 as libc::c_int
+    (current_capacity + 1) * 2
 }
 unsafe extern "C" fn allocate_fd_reg_idx(xpoll: *mut xpoll) -> libc::c_int { unsafe {
     let new_reg_idx: libc::c_int;
@@ -334,7 +330,7 @@ unsafe extern "C" fn deallocate_fd_reg_idx(
 ) { unsafe {
     let reg: *mut xpoll_fd_reg = &mut *((*xpoll).fd_regs).offset(reg_idx as isize)
         as *mut xpoll_fd_reg;
-    (*reg).fd = -(1 as libc::c_int);
+    (*reg).fd = -1;
     (*xpoll).num_fd_regs -= 1;
 }}
 unsafe extern "C" fn reg_epoll_mod(
@@ -364,7 +360,7 @@ unsafe extern "C" fn reg_epoll_mod(
         }
         return;
     }
-    if (*reg).event == 0 as libc::c_int && new_event != 0 as libc::c_int {
+    if (*reg).event == 0 && new_event != 0 {
         if log_is_enabled(log_type_debug) {
             __log_event(
                 log_type_debug,
@@ -395,11 +391,11 @@ unsafe extern "C" fn reg_epoll_mod(
         };
         let rc: libc::c_int = epoll_ctl(
             (*xpoll).epoll_fd,
-            1 as libc::c_int,
+            1,
             (*reg).fd,
             &mut nevent,
         );
-        if rc != 0 as libc::c_int {
+        if rc != 0 {
             log_console_conf(true);
             if log_is_enabled(log_type_error) {
                 __log_event(
@@ -419,7 +415,7 @@ unsafe extern "C" fn reg_epoll_mod(
             }
             abort();
         }
-    } else if (*reg).event != 0 as libc::c_int && new_event != 0 as libc::c_int {
+    } else if (*reg).event != 0 && new_event != 0 {
         if log_is_enabled(log_type_debug) {
             __log_event(
                 log_type_debug,
@@ -448,8 +444,8 @@ unsafe extern "C" fn reg_epoll_mod(
                 },
             }
         };
-        if epoll_ctl((*xpoll).epoll_fd, 3 as libc::c_int, (*reg).fd, &mut nevent_0)
-            < 0 as libc::c_int
+        if epoll_ctl((*xpoll).epoll_fd, 3, (*reg).fd, &mut nevent_0)
+            < 0
         {
             if log_is_enabled(log_type_error) {
                 __log_event(
@@ -495,15 +491,15 @@ unsafe extern "C" fn reg_epoll_mod(
         let mut _oerrno: libc::c_int = *__errno_location();
         let rc_0: libc::c_int = epoll_ctl(
             (*xpoll).epoll_fd,
-            2 as libc::c_int,
+            2,
             (*reg).fd,
             std::ptr::null_mut::<epoll_event>(),
         );
         let epoll_errno: libc::c_int = *__errno_location();
         *__errno_location() = _oerrno;
-        if rc_0 < 0 as libc::c_int
-            && (epoll_errno != 9 as libc::c_int && epoll_errno != 2 as libc::c_int
-                && epoll_errno != 1 as libc::c_int)
+        if rc_0 < 0
+            && (epoll_errno != 9 && epoll_errno != 2 
+                && epoll_errno != 1)
         {
             if log_is_enabled(log_type_error) {
                 __log_event(
@@ -536,7 +532,7 @@ pub unsafe extern "C" fn xpoll_fd_reg_add(
     fd: libc::c_int,
     event: libc::c_int,
 ) -> libc::c_int { unsafe {
-    if fd < 0 as libc::c_int {
+    if fd < 0 {
         log_console_conf(true);
         if log_is_enabled(log_type_error) {
             __log_event(
@@ -583,7 +579,7 @@ pub unsafe extern "C" fn xpoll_fd_reg_add(
         
         xpoll_fd_reg {
             fd,
-            event: 0 as libc::c_int,
+            event: 0,
         }
     };
     if log_is_enabled(log_type_debug) {
@@ -613,7 +609,7 @@ unsafe extern "C" fn get_fd_reg(
     xpoll: *mut xpoll,
     reg_idx: libc::c_int,
 ) -> *mut xpoll_fd_reg { unsafe {
-    if !(reg_idx >= 0 as libc::c_int && reg_idx < (*xpoll).fd_regs_capacity) {
+    if !(reg_idx >= 0 && reg_idx < (*xpoll).fd_regs_capacity) {
         log_console_conf(true);
         if log_is_enabled(log_type_error) {
             __log_event(
@@ -636,7 +632,7 @@ unsafe extern "C" fn get_fd_reg(
     }
     let reg: *mut xpoll_fd_reg = &mut *((*xpoll).fd_regs).offset(reg_idx as isize)
         as *mut xpoll_fd_reg;
-    if (*reg).fd < 0 as libc::c_int {
+    if (*reg).fd < 0 {
         log_console_conf(true);
         if log_is_enabled(log_type_error) {
             __log_event(
@@ -713,7 +709,7 @@ pub unsafe extern "C" fn xpoll_fd_reg_del(
             (*xpoll).epoll_fd,
         );
     }
-    reg_epoll_mod(xpoll, reg, 0 as libc::c_int);
+    reg_epoll_mod(xpoll, reg, 0);
     deallocate_fd_reg_idx(xpoll, reg_idx);
 }}
 #[unsafe(no_mangle)]
@@ -721,7 +717,7 @@ pub unsafe extern "C" fn xpoll_fd_reg_del_if_valid(
     xpoll: *mut xpoll,
     reg_id: libc::c_int,
 ) { unsafe {
-    if reg_id >= 0 as libc::c_int {
+    if reg_id >= 0 {
         xpoll_fd_reg_del(xpoll, reg_id);
     }
 }}
@@ -752,7 +748,7 @@ unsafe extern "C" fn find_free_bell_reg_idx(xpoll: *mut xpoll) -> libc::c_int { 
         }
         i += 1;
     }
-    -(1 as libc::c_int)
+    -1
 }}
 unsafe extern "C" fn allocate_bell_reg_idx(xpoll: *mut xpoll) -> libc::c_int { unsafe {
     let new_reg_idx: libc::c_int;
@@ -782,7 +778,7 @@ unsafe extern "C" fn has_ringing_bell(xpoll: *mut xpoll) -> bool { unsafe {
     while i < (*xpoll).bell_regs_capacity {
         let reg: *mut xpoll_bell_reg = &mut *((*xpoll).bell_regs).offset(i as isize)
             as *mut xpoll_bell_reg;
-        if !(*reg).free && (*reg).ringing as libc::c_int != 0 {
+        if !(*reg).free && (*reg).ringing {
             return true;
         }
         i += 1;
@@ -790,29 +786,29 @@ unsafe extern "C" fn has_ringing_bell(xpoll: *mut xpoll) -> bool { unsafe {
     false
 }}
 unsafe extern "C" fn update_active_fd(xpoll: *mut xpoll) { unsafe {
-    if (*xpoll).num_bell_regs == 0 as libc::c_int
-        && (*xpoll).active_fd >= 0 as libc::c_int
+    if (*xpoll).num_bell_regs == 0
+        && (*xpoll).active_fd >= 0
     {
         xpoll_fd_reg_del(xpoll, (*xpoll).active_fd_reg_id);
-        (*xpoll).active_fd_reg_id = -(1 as libc::c_int);
+        (*xpoll).active_fd_reg_id = -1;
         active_fd_put((*xpoll).active_fd);
-        (*xpoll).active_fd = -(1 as libc::c_int);
-    } else if (*xpoll).num_bell_regs > 0 as libc::c_int
-        && (*xpoll).active_fd < 0 as libc::c_int
+        (*xpoll).active_fd = -1;
+    } else if (*xpoll).num_bell_regs > 0
+        && (*xpoll).active_fd < 0
     {
         (*xpoll).active_fd = active_fd_get();
         (*xpoll)
             .active_fd_reg_id = xpoll_fd_reg_add(
             xpoll,
             (*xpoll).active_fd,
-            0 as libc::c_int,
+            0,
         );
     }
-    if (*xpoll).active_fd >= 0 as libc::c_int {
-        let event: libc::c_int = if has_ringing_bell(xpoll) as libc::c_int != 0 {
+    if (*xpoll).active_fd >= 0 {
+        let event: libc::c_int = if has_ringing_bell(xpoll) {
             EPOLLIN as libc::c_int
         } else {
-            0 as libc::c_int
+            0
         };
         xpoll_fd_reg_mod(xpoll, (*xpoll).active_fd_reg_id, event);
     }
@@ -852,7 +848,7 @@ unsafe extern "C" fn get_bell_reg(
     xpoll: *mut xpoll,
     reg_idx: libc::c_int,
 ) -> *mut xpoll_bell_reg { unsafe {
-    if !(reg_idx >= 0 as libc::c_int && reg_idx < (*xpoll).bell_regs_capacity) {
+    if !(reg_idx >= 0 && reg_idx < (*xpoll).bell_regs_capacity) {
         log_console_conf(true);
         if log_is_enabled(log_type_error) {
             __log_event(
@@ -924,7 +920,7 @@ pub unsafe extern "C" fn xpoll_bell_reg_mod(
             (*xpoll).epoll_fd,
         );
     }
-    if (*reg).ringing as libc::c_int != ringing as libc::c_int {
+    if (*reg).ringing != ringing {
         (*reg).ringing = ringing;
         update_active_fd(xpoll);
     }
@@ -981,7 +977,7 @@ pub unsafe extern "C" fn xpoll_bell_reg_del_if_valid(
     xpoll: *mut xpoll,
     reg_id: libc::c_int,
 ) { unsafe {
-    if reg_id >= 0 as libc::c_int {
+    if reg_id >= 0 {
         xpoll_bell_reg_del(xpoll, reg_id);
     }
 }}
