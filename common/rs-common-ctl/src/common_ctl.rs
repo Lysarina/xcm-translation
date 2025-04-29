@@ -8,6 +8,9 @@
     unused_mut
 )]
 #![feature(extern_types)]
+
+use rs_log;
+
 unsafe extern "C" {
     pub type ctl;
     pub type xpoll;

@@ -13,4 +13,12 @@ name = "rs-common-ctl"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "rs-log",
+]
+
+[[package]]
+name = "rs-log"
+version = "0.1.0"
+dependencies = [
+ "libc",
 ]
