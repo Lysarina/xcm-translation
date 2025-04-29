@@ -57,12 +57,12 @@ unsafe extern "C" {
     fn xcm_tp_socket_send(
         s: *mut xcm_socket,
         buf: *const libc::c_void,
-        len: size_t,
+        len: libc::c_ulong,
     ) -> libc::c_int;
     fn xcm_tp_socket_receive(
         s: *mut xcm_socket,
         buf: *mut libc::c_void,
-        capacity: size_t,
+        capacity: libc::c_ulong,
     ) -> libc::c_int;
     fn xcm_tp_socket_update(s: *mut xcm_socket);
     fn xcm_tp_socket_finish(s: *mut xcm_socket) -> libc::c_int;
@@ -85,7 +85,7 @@ unsafe extern "C" {
         path: *const libc::c_char,
         type_0: xcm_attr_type,
         value: *const libc::c_void,
-        len: size_t,
+        len: libc::c_ulong,
         log_ref: *mut libc::c_void,
     ) -> libc::c_int;
     fn attr_tree_get_value(
@@ -93,7 +93,7 @@ unsafe extern "C" {
         path: *const libc::c_char,
         type_0: *mut xcm_attr_type,
         value: *mut libc::c_void,
-        capacity: size_t,
+        capacity: libc::c_ulong,
         log_ref: *mut libc::c_void,
     ) -> libc::c_int;
     fn attr_tree_get_list_len(
@@ -140,23 +140,18 @@ pub struct __va_list_tag {
     pub overflow_arg_area: *mut libc::c_void,
     pub reg_save_area: *mut libc::c_void,
 }
-pub type size_t = libc::c_ulong;
-pub type __int64_t = libc::c_long;
-pub type __uint64_t = libc::c_ulong;
-pub type int64_t = __int64_t;
 pub type xcm_attr_type = libc::c_uint;
 pub const xcm_attr_type_double: xcm_attr_type = 5;
 pub const xcm_attr_type_bin: xcm_attr_type = 4;
 pub const xcm_attr_type_str: xcm_attr_type = 3;
 pub const xcm_attr_type_int64: xcm_attr_type = 2;
 pub const xcm_attr_type_bool: xcm_attr_type = 1;
-pub type uint64_t = __uint64_t;
 pub type xcm_attr_map_foreach_cb = Option::<
     unsafe extern "C" fn(
         *const libc::c_char,
         xcm_attr_type,
         *const libc::c_void,
-        size_t,
+        libc::c_ulong,
         *mut libc::c_void,
     ) -> (),
 >;
@@ -165,14 +160,14 @@ pub type xcm_attr_map_foreach_cb = Option::<
 pub struct xcm_socket {
     pub proto: *const xcm_tp_proto,
     pub type_0: xcm_socket_type,
-    pub sock_id: int64_t,
+    pub sock_id: libc::c_long,
     pub auto_enable_ctl: bool,
     pub auto_update: bool,
     pub is_blocking: bool,
     pub xpoll: *mut xpoll,
     pub condition: libc::c_int,
     pub ctl: *mut ctl,
-    pub skipped_ctl_calls: uint64_t,
+    pub skipped_ctl_calls: libc::c_ulong,
 }
 pub type xcm_socket_type = libc::c_uint;
 pub const xcm_socket_type_server: xcm_socket_type = 1;
@@ -201,10 +196,10 @@ pub struct xcm_tp_ops {
         unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
     >,
     pub send: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, size_t) -> libc::c_int,
+        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, libc::c_ulong) -> libc::c_int,
     >,
     pub receive: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, size_t) -> libc::c_int,
+        unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, libc::c_ulong) -> libc::c_int,
     >,
     pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
     pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
@@ -220,13 +215,13 @@ pub struct xcm_tp_ops {
     pub set_local_addr: Option::<
         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
     >,
-    pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> size_t>,
-    pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> int64_t>,
+    pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_ulong>,
+    pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> libc::c_long>,
     pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
     pub attr_populate: Option::<
         unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
     >,
-    pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> size_t>,
+    pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> libc::c_ulong>,
 }
 pub type xcm_tp_cnt = libc::c_uint;
 pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
@@ -260,7 +255,7 @@ pub type xcm_attr_cb = Option::<
         *const libc::c_char,
         xcm_attr_type,
         *mut libc::c_void,
-        size_t,
+        libc::c_ulong,
         *mut libc::c_void,
     ) -> (),
 >;
@@ -386,7 +381,7 @@ unsafe extern "C" fn set_attr_cb(
     attr_name: *const libc::c_char,
     attr_type: xcm_attr_type,
     attr_value: *const libc::c_void,
-    attr_value_len: size_t,
+    attr_value_len: libc::c_ulong,
     user: *mut libc::c_void,
 ) { unsafe {
     let state: *mut set_attr_state = user as *mut set_attr_state;
@@ -415,7 +410,7 @@ unsafe extern "C" fn set_user_attrs(
                     *const libc::c_char,
                     xcm_attr_type,
                     *const libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                     *mut libc::c_void,
                 ) -> (),
         ),
@@ -661,7 +656,7 @@ pub unsafe extern "C" fn xcm_accept_a(
 unsafe extern "C" fn bytestream_bsend(
     conn_s: *mut xcm_socket,
     buf: *const libc::c_void,
-    len: size_t,
+    len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let mut sent: libc::c_int = 0 as libc::c_int;
     loop {
@@ -670,7 +665,7 @@ unsafe extern "C" fn bytestream_bsend(
         let rc: libc::c_int = xcm_tp_socket_send(
             conn_s,
             buf.offset(sent as isize),
-            left as size_t,
+            left as libc::c_ulong,
         );
         if rc < 0 as libc::c_int {
             if *__errno_location() != 11 as libc::c_int {
@@ -693,7 +688,7 @@ unsafe extern "C" fn bytestream_bsend(
 unsafe extern "C" fn msg_bsend(
     conn_s: *mut xcm_socket,
     buf: *const libc::c_void,
-    len: size_t,
+    len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     loop {
         let s_rc: libc::c_int = xcm_tp_socket_send(conn_s, buf, len);
@@ -715,7 +710,7 @@ unsafe extern "C" fn msg_bsend(
 pub unsafe extern "C" fn xcm_send(
     conn_s: *mut xcm_socket,
     buf: *const libc::c_void,
-    len: size_t,
+    len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if (*conn_s).type_0 as libc::c_uint
         != xcm_socket_type_conn as libc::c_int as libc::c_uint
@@ -754,7 +749,7 @@ pub unsafe extern "C" fn xcm_send(
 pub unsafe extern "C" fn xcm_receive(
     conn_s: *mut xcm_socket,
     buf: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if (*conn_s).type_0 as libc::c_uint
         != xcm_socket_type_conn as libc::c_int as libc::c_uint
@@ -1076,7 +1071,7 @@ pub unsafe extern "C" fn xcm_attr_set(
     name: *const libc::c_char,
     type_0: xcm_attr_type,
     value: *const libc::c_void,
-    len: size_t,
+    len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let attr_tree: *mut attr_tree = build_attr_tree(s);
     let rc: libc::c_int = attr_tree_set_value(
@@ -1108,14 +1103,14 @@ pub unsafe extern "C" fn xcm_attr_set_bool(
 pub unsafe extern "C" fn xcm_attr_set_int64(
     s: *mut xcm_socket,
     name: *const libc::c_char,
-    mut value: int64_t,
+    mut value: libc::c_long,
 ) -> libc::c_int { unsafe {
     xcm_attr_set(
         s,
         name,
         xcm_attr_type_int64,
-        &mut value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     )
 }}
 #[unsafe(no_mangle)]
@@ -1152,7 +1147,7 @@ pub unsafe extern "C" fn xcm_attr_get(
     name: *const libc::c_char,
     type_0: *mut xcm_attr_type,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let attr_tree: *mut attr_tree = build_attr_tree(s);
     let rc: libc::c_int = attr_tree_get_value(
@@ -1171,7 +1166,7 @@ unsafe extern "C" fn attr_get_with_type(
     name: *const libc::c_char,
     required_type: xcm_attr_type,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let mut actual_type: xcm_attr_type = 0 as xcm_attr_type;
     let rc: libc::c_int = xcm_attr_get(s, name, &mut actual_type, value, capacity);
@@ -1205,14 +1200,14 @@ pub unsafe extern "C" fn xcm_attr_get_bool(
 pub unsafe extern "C" fn xcm_attr_get_int64(
     s: *mut xcm_socket,
     name: *const libc::c_char,
-    value: *mut int64_t,
+    value: *mut libc::c_long,
 ) -> libc::c_int { unsafe {
     attr_get_with_type(
         s,
         name,
         xcm_attr_type_int64,
         value as *mut libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     )
 }}
 #[unsafe(no_mangle)]
@@ -1234,7 +1229,7 @@ pub unsafe extern "C" fn xcm_attr_get_str(
     s: *mut xcm_socket,
     name: *const libc::c_char,
     value: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let mut type_0: xcm_attr_type = 0 as xcm_attr_type;
     let rc: libc::c_int = xcm_attr_get(
@@ -1258,7 +1253,7 @@ pub unsafe extern "C" fn xcm_attr_get_bin(
     s: *mut xcm_socket,
     name: *const libc::c_char,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let mut type_0: xcm_attr_type = 0 as xcm_attr_type;
     let rc: libc::c_int = xcm_attr_get(s, name, &mut type_0, value, capacity);
@@ -1290,7 +1285,7 @@ pub unsafe extern "C" fn xcm_attr_getf(
     s: *mut xcm_socket,
     type_0: *mut xcm_attr_type,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
     name_fmt: *const libc::c_char,
     args: ...
 ) -> libc::c_int { unsafe {
@@ -1305,7 +1300,7 @@ unsafe extern "C" fn attr_vgetf_with_type(
     s: *mut xcm_socket,
     required_type: xcm_attr_type,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
     name_fmt: *const libc::c_char,
     mut ap: ::core::ffi::VaList,
 ) -> libc::c_int { unsafe {
@@ -1342,7 +1337,7 @@ pub unsafe extern "C" fn xcm_attr_getf_bool(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_attr_getf_int64(
     s: *mut xcm_socket,
-    value: *mut int64_t,
+    value: *mut libc::c_long,
     name_fmt: *const libc::c_char,
     args: ...
 ) -> libc::c_int { unsafe {
@@ -1352,7 +1347,7 @@ pub unsafe extern "C" fn xcm_attr_getf_int64(
         s,
         xcm_attr_type_int64,
         value as *mut libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
         name_fmt,
         ap.as_va_list(),
     );
@@ -1381,7 +1376,7 @@ pub unsafe extern "C" fn xcm_attr_getf_double(
 pub unsafe extern "C" fn xcm_attr_getf_str(
     s: *mut xcm_socket,
     value: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
     name_fmt: *const libc::c_char,
     args: ...
 ) -> libc::c_int { unsafe {
@@ -1401,7 +1396,7 @@ pub unsafe extern "C" fn xcm_attr_getf_str(
 pub unsafe extern "C" fn xcm_attr_getf_bin(
     s: *mut xcm_socket,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
     name_fmt: *const libc::c_char,
     args: ...
 ) -> libc::c_int { unsafe {
