@@ -15,3 +15,6 @@ OBS: rs-1 was run in chunks rather than one continuous test.
 - rs-4: rs-3 but util is still in C
 - rs-5: rs-3 + xcm_tp, ctl, common_ctl, xpoll, active_fd have been translated (the four last are needed by xcm_tp). CRASHES
 - rs-6: rs-3 + ctl, common_ctl, xpoll, active_fd have been translated (i.e. rs-5 without xcm_tp)
+- rs-7: rs-5 but no longer uses raw pointers => does not crash
+- rs-8: rs-7 + xcm & common_tp have been translated
+- full-c2rust-translation: done with files

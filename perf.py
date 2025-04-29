@@ -6,10 +6,12 @@ from scipy import stats
 
 test_count = 165
 
-versions = ["original-c", "rs-8"]
+versions = ["original-c", "full-c2rust-translation"]
 # files = (10, 5)
 # versions = ["rs-1", "c-code"]
 files = [10, 10]
+
+warmups = 1
 
 test_times = re.compile(".*<.*>") # find test times
 total_time = re.compile("165 tests run in .*") #catch whole res line
@@ -22,7 +24,7 @@ for v in range(len(versions)):
     data[v] = {}
     data[v]["total"] = []
     data_test["total"].append([])
-    for i in range(1, files[v]+1):
+    for i in range(warmups+1, files[v]+1):
         with open(f"perf_results/{versions[v]}-res-{i}.txt") as f:
             content = f.read()
             # Find all tests and their respective times
@@ -30,7 +32,7 @@ for v in range(len(versions)):
             for test_match in test_times.findall(content):
                 time = re.sub(r"[\" s>\"]", "", test_match.split("<")[1])
                 test_name = ":".join(test_match.split(":")[:2])
-                if (i == 1): 
+                if (i == warmups+1): 
                     data[v][test_name] = []
                     if (v == 0): data_test[test_name] = []
                     data_test[test_name].append([])
@@ -110,6 +112,8 @@ for t, v in data_test.items():
 
 plot_all_values = True
 
+count = 0
+
 for t in sig_tests:
     print(t)
     plt.figure(figsize=(10, 6))
@@ -124,7 +128,7 @@ for t in sig_tests:
     for i in range(len(versions)):
         mean = np.mean(data_test[t][i])
         sem = stats.sem(data_test[t][i])  # Standard error of the mean
-        margin = sem * stats.t.ppf((1 + confidence) / 2.0, files[i] - 1)
+        margin = sem * stats.t.ppf((1 + confidence) / 2.0, files[i] - 1 - warmups)
         lower_bound = mean - margin
         upper_bound = mean + margin
         
@@ -153,6 +157,10 @@ for t in sig_tests:
         plt.ylabel('Time (s)')
     # Set xticks to be the version indices
     plt.xticks(range(len(versions)), versions, rotation=45)
+
+    count += 1
+    if count > 50:
+        break
 
 print(f"Total significantly different tests: {len(sig_tests)}")
 
