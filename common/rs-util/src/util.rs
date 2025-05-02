@@ -9,31 +9,18 @@
 use std::ffi::CStr;
 use std::fs::File;
 use std::io::{self, Read};
-use libc::{accept4, timespec, pollfd, timeval, sockaddr,
-    pthread_mutexattr_t, pthread_mutex_t, FILE, DIR, dirent,
-    stat, PATH_MAX};
+use libc::{__errno_location, clock_gettime, pthread_mutex_init, pthread_mutex_lock,
+    pthread_mutex_unlock, fprintf, snprintf, malloc, realloc, free, abort, exit,
+    memcpy, memset, strcpy, strdup, strndup, strlen, strerror, send, getsockopt,
+    close, syscall, closedir, opendir, readdir, fcntl, poll, accept4, timespec,
+    pollfd, timeval, sockaddr, pthread_mutex_t, FILE, stat, PATH_MAX};
 
 unsafe extern "C" {
-    fn __errno_location() -> *mut libc::c_int;
-    fn clock_gettime(__clock_id: libc::c_int, __tp: *mut timespec) -> libc::c_int;
-    fn pthread_mutex_init(
-        __mutex: *mut pthread_mutex_t,
-        __mutexattr: *const pthread_mutexattr_t,
-    ) -> libc::c_int;
-    fn pthread_mutex_lock(__mutex: *mut pthread_mutex_t) -> libc::c_int;
-    fn pthread_mutex_unlock(__mutex: *mut pthread_mutex_t) -> libc::c_int;
     static mut stderr: *mut FILE;
-    fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn vfprintf(
         _: *mut FILE,
         _: *const libc::c_char,
         _: ::core::ffi::VaList,
-    ) -> libc::c_int;
-    fn snprintf(
-        _: *mut libc::c_char,
-        _: libc::c_ulong,
-        _: *const libc::c_char,
-        _: ...
     ) -> libc::c_int;
     fn vsnprintf(
         _: *mut libc::c_char,
@@ -46,47 +33,8 @@ unsafe extern "C" {
         __f: *const libc::c_char,
         __arg: ::core::ffi::VaList,
     ) -> libc::c_int;
-    fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
-    fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
-    fn free(_: *mut libc::c_void);
-    fn abort() -> !;
-    fn exit(_: libc::c_int) -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-    fn strdup(_: *const libc::c_char) -> *mut libc::c_char;
-    fn strndup(_: *const libc::c_char, _: libc::c_ulong) -> *mut libc::c_char;
-    fn strlen(_: *const libc::c_char) -> libc::c_ulong;
-    fn strerror(_: libc::c_int) -> *mut libc::c_char;
-    fn send(
-        __fd: libc::c_int,
-        __buf: *const libc::c_void,
-        __n: libc::c_ulong,
-        __flags: libc::c_int,
-    ) -> libc::c_long;
-    fn getsockopt(
-        __fd: libc::c_int,
-        __level: libc::c_int,
-        __optname: libc::c_int,
-        __optval: *mut libc::c_void,
-        __optlen: *mut libc::c_uint,
-    ) -> libc::c_int;
-    fn close(__fd: libc::c_int) -> libc::c_int;
-    fn syscall(__sysno: libc::c_long, _: ...) -> libc::c_long;
-    fn closedir(__dirp: *mut DIR) -> libc::c_int;
-    fn opendir(__name: *const libc::c_char) -> *mut DIR;
-    fn readdir(__dirp: *mut DIR) -> *mut dirent;
-    fn fcntl(__fd: libc::c_int, __cmd: libc::c_int, _: ...) -> libc::c_int;
-    fn poll(__fds: *mut pollfd, __nfds: libc::c_ulong, __timeout: libc::c_int) -> libc::c_int;
 }
+
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_mutex_init(m: *mut pthread_mutex_t) { unsafe {
     let rc = pthread_mutex_init(m, std::ptr::null());
@@ -114,7 +62,7 @@ pub unsafe extern "C" fn ut_gettid() -> libc::c_int { unsafe {
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_malloc(size: libc::c_ulong) -> *mut libc::c_void { unsafe {
-    let ptr: *mut libc::c_void = malloc(size);
+    let ptr: *mut libc::c_void = malloc(size as usize);
     if ptr.is_null() {
         ut_mem_exhausted();
     }
@@ -125,7 +73,7 @@ pub unsafe extern "C" fn ut_realloc(
     mut ptr: *mut libc::c_void,
     size: libc::c_ulong,
 ) -> *mut libc::c_void { unsafe {
-    ptr = realloc(ptr, size);
+    ptr = realloc(ptr, size as usize);
     if ptr.is_null() {
         ut_mem_exhausted();
     }
@@ -134,7 +82,7 @@ pub unsafe extern "C" fn ut_realloc(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_calloc(size: libc::c_ulong) -> *mut libc::c_void { unsafe {
     let ptr: *mut libc::c_void = ut_malloc(size);
-    memset(ptr, 0, size);
+    memset(ptr, 0, size as usize);
     ptr
 }}
 #[unsafe(no_mangle)]
@@ -150,7 +98,7 @@ pub unsafe extern "C" fn ut_strndup(
     str: *const libc::c_char,
     n: libc::c_ulong,
 ) -> *mut libc::c_char { unsafe {
-    let copy: *mut libc::c_char = strndup(str, n);
+    let copy: *mut libc::c_char = strndup(str, n as usize);
     if copy.is_null() {
         ut_mem_exhausted();
     }
@@ -162,7 +110,7 @@ pub unsafe extern "C" fn ut_memdup(
     size: libc::c_ulong,
 ) -> *mut libc::c_void { unsafe {
     let copy: *mut libc::c_void = ut_malloc(size);
-    memcpy(copy, ptr, size);
+    memcpy(copy, ptr, size as usize);
     copy
 }}
 #[unsafe(no_mangle)]
@@ -220,9 +168,9 @@ pub unsafe extern "C" fn ut_send_all(
         let bytes_written: libc::c_long = send(
             fd,
             buf.offset(offset as isize),
-            count.wrapping_sub(offset as libc::c_ulong),
+            count.wrapping_sub(offset as libc::c_ulong) as usize,
             flags,
-        );
+        ) as libc::c_long;
         if bytes_written < 0 {
             return -1;
         }
@@ -240,7 +188,7 @@ pub unsafe extern "C" fn ut_vaprintf(
     format: *const libc::c_char,
     mut ap: ::core::ffi::VaList,
 ) { unsafe {
-    let len: libc::c_ulong = strlen(buf);
+    let len: libc::c_ulong = strlen(buf) as libc::c_ulong;
     let used: libc::c_ulong = len.wrapping_add(1);
     if used > capacity {
         abort();
@@ -381,7 +329,7 @@ pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int 
     // Format: /proc/<tid>/ns/net
     snprintf(
         self_net_ns.as_mut_ptr(),
-        self_net_ns.len() as libc::c_ulong,
+        self_net_ns.len(),
         c"/proc/%d/ns/net".as_ptr() as *const libc::c_char,
         ut_gettid(),
     );
@@ -421,7 +369,7 @@ pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int 
         let mut ns_file = vec![0 as libc::c_char; path_len as usize];
         snprintf(
             ns_file.as_mut_ptr(),
-            ns_file.len() as libc::c_ulong,
+            ns_file.len(),
             c"/run/netns/%s".as_ptr() as *const libc::c_char,
             d_name,
         );

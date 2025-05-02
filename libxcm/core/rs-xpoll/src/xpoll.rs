@@ -4,73 +4,14 @@
     non_upper_case_globals,
     clippy::missing_safety_doc
 )]
-#![feature(extern_types)]
 
-use rs_active_fd::active_fd_get;
-use rs_active_fd::active_fd_put;
+use libc::{abort, strerror, epoll_event, EPOLLIN, epoll_create1, epoll_ctl, __errno_location};
 
-unsafe extern "C" {
-    pub type ctl;
-    pub type attr_tree;
-    fn epoll_create1(__flags: libc::c_int) -> libc::c_int;
-    fn epoll_ctl(
-        __epfd: libc::c_int,
-        __op: libc::c_int,
-        __fd: libc::c_int,
-        __event: *mut epoll_event,
-    ) -> libc::c_int;
-    fn log_console_conf(enabled: bool);
-    fn log_is_enabled(type_0: log_type) -> bool;
-    fn __log_event(
-        type_0: log_type,
-        file: *const libc::c_char,
-        line: libc::c_int,
-        function: *const libc::c_char,
-        s: *mut xcm_socket,
-        format: *const libc::c_char,
-        _: ...
-    );
-    fn __errno_location() -> *mut libc::c_int;
-    fn abort() -> !;
-    fn strerror(_: libc::c_int) -> *mut libc::c_char;
-    fn ut_malloc(size: libc::c_ulong) -> *mut libc::c_void;
-    fn ut_realloc(ptr: *mut libc::c_void, size: libc::c_ulong) -> *mut libc::c_void;
-    fn ut_free(ptr: *mut libc::c_void);
-    fn ut_fatal() -> !;
-    fn ut_close(fd: libc::c_int);
-}
-pub type int64_t = libc::c_long;
-pub type uint64_t = libc::c_ulong;
-pub type size_t = libc::c_ulong;
-pub const EPOLLET: libc::c_uint = 2147483648;
-pub const EPOLLONESHOT: libc::c_uint = 1073741824;
-pub const EPOLLWAKEUP: libc::c_uint = 536870912;
-pub const EPOLLEXCLUSIVE: libc::c_uint = 268435456;
-pub const EPOLLRDHUP: libc::c_uint = 8192;
-pub const EPOLLHUP: libc::c_uint = 16;
-pub const EPOLLERR: libc::c_uint = 8;
-pub const EPOLLMSG: libc::c_uint = 1024;
-pub const EPOLLWRBAND: libc::c_uint = 512;
-pub const EPOLLWRNORM: libc::c_uint = 256;
-pub const EPOLLRDBAND: libc::c_uint = 128;
-pub const EPOLLRDNORM: libc::c_uint = 64;
-pub const EPOLLOUT: libc::c_uint = 4;
-pub const EPOLLPRI: libc::c_uint = 2;
-pub const EPOLLIN: libc::c_uint = 1;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub union epoll_data {
-    pub ptr: *mut libc::c_void,
-    pub fd: libc::c_int,
-    pub u32_0: libc::c_uint,
-    pub u64_0: libc::c_ulong,
-}
-#[derive(Copy, Clone)]
-#[repr(C, packed)]
-pub struct epoll_event {
-    pub events: libc::c_uint,
-    pub data: epoll_data,
-}
+use xcm_rust_common::xcm_tp::xcm_socket;
+use rs_active_fd::{active_fd_get, active_fd_put};
+use rs_util::{ut_malloc, ut_realloc, ut_free, ut_fatal, ut_close};
+use rs_log::{__log_event, log_is_enabled, log_console_conf, log_type_debug, log_type_error};
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct xpoll {
@@ -97,87 +38,6 @@ pub struct xpoll_fd_reg {
     pub fd: libc::c_int,
     pub event: libc::c_int,
 }
-// Below remove duplicates
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_socket {
-    pub proto: *const xcm_tp_proto,
-    pub type_0: xcm_socket_type,
-    pub sock_id: int64_t,
-    pub auto_enable_ctl: bool,
-    pub auto_update: bool,
-    pub is_blocking: bool,
-    pub xpoll: *mut xpoll,
-    pub condition: libc::c_int,
-    pub ctl: *mut ctl,
-    pub skipped_ctl_calls: uint64_t,
-}
-pub type xcm_socket_type = libc::c_uint;
-pub const xcm_socket_type_server: xcm_socket_type = 1;
-pub const xcm_socket_type_conn: xcm_socket_type = 0;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_tp_proto {
-    pub name: [libc::c_char; 33],
-    pub ops: *const xcm_tp_ops,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_tp_ops {
-    pub init: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
-    >,
-    pub connect: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub server: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub accept: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
-    >,
-    pub send: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, size_t) -> libc::c_int,
-    >,
-    pub receive: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, size_t) -> libc::c_int,
-    >,
-    pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
-    pub get_transport: Option::<
-        unsafe extern "C" fn(*mut xcm_socket) -> *const libc::c_char,
-    >,
-    pub get_remote_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
-    >,
-    pub get_local_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
-    >,
-    pub set_local_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> size_t>,
-    pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> int64_t>,
-    pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub attr_populate: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
-    >,
-    pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> size_t>,
-}
-pub type xcm_tp_cnt = libc::c_uint;
-pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
-pub const xcm_tp_cnt_to_lower_msgs: xcm_tp_cnt = 6;
-pub const xcm_tp_cnt_from_app_msgs: xcm_tp_cnt = 5;
-pub const xcm_tp_cnt_to_app_msgs: xcm_tp_cnt = 4;
-pub const xcm_tp_cnt_from_lower_bytes: xcm_tp_cnt = 3;
-pub const xcm_tp_cnt_to_lower_bytes: xcm_tp_cnt = 2;
-pub const xcm_tp_cnt_from_app_bytes: xcm_tp_cnt = 1;
-pub const xcm_tp_cnt_to_app_bytes: xcm_tp_cnt = 0;
-pub type log_type = libc::c_uint;
-pub const log_type_error: log_type = 1;
-pub const log_type_debug: log_type = 0;
 #[inline]
 unsafe extern "C" fn log_xpoll_fd_event_str(
     event: libc::c_int,
@@ -381,9 +241,7 @@ unsafe extern "C" fn reg_epoll_mod(
             
             epoll_event {
                 events: new_event as libc::c_uint,
-                data: epoll_data {
-                    ptr: std::ptr::null_mut::<libc::c_void>(),
-                },
+                u64: 0
             }
         };
         let rc: libc::c_int = epoll_ctl(
@@ -436,9 +294,7 @@ unsafe extern "C" fn reg_epoll_mod(
             
             epoll_event {
                 events: new_event as libc::c_uint,
-                data: epoll_data {
-                    ptr: std::ptr::null_mut::<libc::c_void>(),
-                },
+                u64: 0
             }
         };
         if epoll_ctl((*xpoll).epoll_fd, 3, (*reg).fd, &mut nevent_0)
