@@ -134,7 +134,7 @@ pub unsafe extern "C" fn ut_realloc(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_calloc(size: libc::c_ulong) -> *mut libc::c_void { unsafe {
     let ptr: *mut libc::c_void = ut_malloc(size);
-    memset(ptr, 0 as libc::c_int, size);
+    memset(ptr, 0, size);
     ptr
 }}
 #[unsafe(no_mangle)]
@@ -215,7 +215,7 @@ pub unsafe extern "C" fn ut_send_all(
     count: libc::c_ulong,
     flags: libc::c_int,
 ) -> libc::c_int { unsafe {
-    let mut offset: libc::c_long = 0 as libc::c_int as libc::c_long;
+    let mut offset: libc::c_long = 0;
     loop {
         let bytes_written: libc::c_long = send(
             fd,
@@ -223,7 +223,7 @@ pub unsafe extern "C" fn ut_send_all(
             count.wrapping_sub(offset as libc::c_ulong),
             flags,
         );
-        if bytes_written < 0 as libc::c_int as libc::c_long {
+        if bytes_written < 0 {
             return -1;
         }
         offset += bytes_written;
@@ -241,7 +241,7 @@ pub unsafe extern "C" fn ut_vaprintf(
     mut ap: ::core::ffi::VaList,
 ) { unsafe {
     let len: libc::c_ulong = strlen(buf);
-    let used: libc::c_ulong = len.wrapping_add(1 as libc::c_int as libc::c_ulong);
+    let used: libc::c_ulong = len.wrapping_add(1);
     if used > capacity {
         abort();
     }
@@ -297,18 +297,18 @@ pub unsafe extern "C" fn ut_set_blocking(
     fd: libc::c_int,
     should_block: bool,
 ) -> libc::c_int { unsafe {
-    let mut flags: libc::c_int = fcntl(fd, 3 as libc::c_int, 0 as libc::c_int);
+    let mut flags: libc::c_int = fcntl(fd, 3, 0);
     if should_block {
-        flags &= !(0o4000 as libc::c_int);
+        flags &= !(2048);
     } else {
-        flags |= 0o4000 as libc::c_int;
+        flags |= 2048;
     }
-    fcntl(fd, 4 as libc::c_int, flags)
+    fcntl(fd, 4, flags)
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_is_blocking(fd: libc::c_int) -> bool { unsafe {
-    let flags: libc::c_int = fcntl(fd, 3 as libc::c_int, 0 as libc::c_int);
-    (if flags & 0o4000 as libc::c_int != 0 {
+    let flags: libc::c_int = fcntl(fd, 3, 0);
+    (if flags & 2048 != 0 {
         0
     } else {
         1
@@ -316,8 +316,7 @@ pub unsafe extern "C" fn ut_is_blocking(fd: libc::c_int) -> bool { unsafe {
 }}
 unsafe extern "C" fn socket_error(fd: libc::c_int) -> libc::c_int { unsafe {
     let mut socket_errno: libc::c_int = 0;
-    let mut len: libc::c_uint = ::core::mem::size_of::<libc::c_int>() as libc::c_ulong
-        as libc::c_uint;
+    let mut len: libc::c_uint = ::core::mem::size_of::<libc::c_int>() as libc::c_uint;
     if getsockopt(
         fd,
         1,
@@ -340,7 +339,7 @@ pub unsafe extern "C" fn ut_established(fd: libc::c_int) -> libc::c_int { unsafe
         
         pollfd {
             fd,
-            events: 0x4 as libc::c_int as libc::c_short,
+            events: 4,
             revents: 0,
         }
     };
@@ -362,7 +361,7 @@ pub unsafe extern "C" fn ut_is_readable(fd: libc::c_int) -> bool { unsafe {
         
         pollfd {
             fd,
-            events: 0x1 as libc::c_int as libc::c_short,
+            events: 1 as libc::c_short,
             revents: 0,
         }
     };
@@ -471,27 +470,22 @@ unsafe extern "C" fn load_file(
     let mut capacity: libc::c_ulong = 0;
     let mut len: libc::c_long = 0;
 
-    // Convert the filename from a raw C string to a Rust String
     let c_str = match CStr::from_ptr(filename).to_str() {
         Ok(s) => s,
-        Err(_) => return -1, // Error handling if C string is not valid UTF-8
+        Err(_) => return -1,
     };
     let file = match File::open(c_str) {
         Ok(f) => f,
-        Err(_) => return -1, // Error handling if file can't be opened
+        Err(_) => return -1,
     };
-
     *data = std::ptr::null_mut();
-
     let mut reader = io::BufReader::new(file);
-
     loop {
         capacity += 256;
         *data = ut_realloc(
             *data as *mut libc::c_void,
             capacity + spare_capacity,
         ) as *mut libc::c_char;
-
         // Read data into the buffer
         let buffer = std::slice::from_raw_parts_mut(*data as *mut u8, capacity as usize);
         let bytes_read = match reader.read(&mut buffer[len as usize..]) {
@@ -499,19 +493,14 @@ unsafe extern "C" fn load_file(
             Err(_) => {
                 ut_free(*data as *mut libc::c_void);
                 *data = std::ptr::null_mut();
-                return -1; // Error during reading
+                return -1;
             }
         };
-
         len += bytes_read as libc::c_long;
-
-        // If fewer than the expected number of bytes were read, check for EOF or error
         if bytes_read < 256 {
             break;
         }
     }
-
-    // Return the number of bytes read
     len
 }}
 #[unsafe(no_mangle)]
@@ -528,7 +517,7 @@ pub unsafe extern "C" fn ut_load_text_file(
 ) -> libc::c_long { unsafe {
     let mut rc: libc::c_long = load_file(filename, data, 1);
     if rc >= 0 {
-        *(*data).offset(rc as isize) = '\0' as i32 as libc::c_char;
+        *(*data).offset(rc as isize) = 0 as libc::c_char;
         rc += 1;
     }
     rc
@@ -544,5 +533,5 @@ pub unsafe extern "C" fn ut_die(fmt: *const libc::c_char, args: ...) -> ! { unsa
         b": %s.\n\0" as *const u8 as *const libc::c_char,
         strerror(*__errno_location()),
     );
-    exit(1 as libc::c_int);
+    exit(1 );
 }}
