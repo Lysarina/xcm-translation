@@ -6,10 +6,12 @@
 )]
 #![feature(c_variadic, extern_types)]
 
-use std::mem;
+use std::ffi::CStr;
+use std::fs::File;
+use std::io::{self, Read};
 use libc::{accept4, timespec, pollfd, timeval, sockaddr,
     pthread_mutexattr_t, pthread_mutex_t, FILE, DIR, dirent,
-    stat};
+    stat, PATH_MAX};
 
 unsafe extern "C" {
     fn __errno_location() -> *mut libc::c_int;
@@ -21,8 +23,6 @@ unsafe extern "C" {
     fn pthread_mutex_lock(__mutex: *mut pthread_mutex_t) -> libc::c_int;
     fn pthread_mutex_unlock(__mutex: *mut pthread_mutex_t) -> libc::c_int;
     static mut stderr: *mut FILE;
-    fn fclose(__stream: *mut FILE) -> libc::c_int;
-    fn fopen(_: *const libc::c_char, _: *const libc::c_char) -> *mut FILE;
     fn fprintf(_: *mut FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
     fn vfprintf(
         _: *mut FILE,
@@ -46,13 +46,6 @@ unsafe extern "C" {
         __f: *const libc::c_char,
         __arg: ::core::ffi::VaList,
     ) -> libc::c_int;
-    fn fread(
-        _: *mut libc::c_void,
-        _: libc::c_ulong,
-        _: libc::c_ulong,
-        _: *mut FILE,
-    ) -> libc::c_ulong;
-    fn ferror(__stream: *mut FILE) -> libc::c_int;
     fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
     fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
     fn free(_: *mut libc::c_void);
@@ -327,15 +320,15 @@ unsafe extern "C" fn socket_error(fd: libc::c_int) -> libc::c_int { unsafe {
         as libc::c_uint;
     if getsockopt(
         fd,
-        1 as libc::c_int,
-        4 as libc::c_int,
+        1,
+        4,
         &mut socket_errno as *mut libc::c_int as *mut libc::c_void,
         &mut len,
-    ) < 0 as libc::c_int
+    ) < 0
     {
         return -1;
     }
-    if socket_errno != 0 as libc::c_int {
+    if socket_errno != 0 {
         *__errno_location() = socket_errno;
         return -1;
     }
@@ -352,10 +345,10 @@ pub unsafe extern "C" fn ut_established(fd: libc::c_int) -> libc::c_int { unsafe
         }
     };
     let mut _errno: libc::c_int = *__errno_location();
-    poll(&mut pfd, 1 as libc::c_int as libc::c_ulong, 0 as libc::c_int);
+    poll(&mut pfd, 1, 0);
     *__errno_location() = _errno;
-    if pfd.revents as libc::c_int & 0x4 as libc::c_int != 0
-        || pfd.revents as libc::c_int & 0x8 as libc::c_int != 0
+    if pfd.revents & 4 != 0
+        || pfd.revents & 8 != 0
     {
         socket_error(fd)
     } else {
@@ -384,13 +377,13 @@ pub unsafe extern "C" fn ut_is_readable(fd: libc::c_int) -> bool { unsafe {
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int { unsafe {
-    let mut self_net_ns = [0 as libc::c_char; 4096];
+    let mut self_net_ns = [0 as libc::c_char; PATH_MAX as usize];
 
     // Format: /proc/<tid>/ns/net
     snprintf(
         self_net_ns.as_mut_ptr(),
         self_net_ns.len() as libc::c_ulong,
-        b"/proc/%d/ns/net\0".as_ptr() as *const libc::c_char,
+        c"/proc/%d/ns/net".as_ptr() as *const libc::c_char,
         ut_gettid(),
     );
 
@@ -399,7 +392,7 @@ pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int 
         return -1;
     }
 
-    let ns_dir = opendir(b"/run/netns\0".as_ptr() as *const libc::c_char);
+    let ns_dir = opendir(c"/run/netns".as_ptr() as *const libc::c_char);
     if ns_dir.is_null() {
         if *__errno_location() == libc::ENOENT {
             *name = 0; // Set to empty string
@@ -422,7 +415,7 @@ pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int 
             continue;
         }
 
-        let path_len = strlen(b"/run/netns\0".as_ptr() as *const libc::c_char)
+        let path_len = strlen(c"/run/netns".as_ptr() as *const libc::c_char)
             + strlen(d_name)
             + 2; // for '/' and null terminator
 
@@ -430,7 +423,7 @@ pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int 
         snprintf(
             ns_file.as_mut_ptr(),
             ns_file.len() as libc::c_ulong,
-            b"/run/netns/%s\0".as_ptr() as *const libc::c_char,
+            c"/run/netns/%s".as_ptr() as *const libc::c_char,
             d_name,
         );
 
@@ -475,49 +468,51 @@ unsafe extern "C" fn load_file(
     data: *mut *mut libc::c_char,
     spare_capacity: libc::c_ulong,
 ) -> libc::c_long { unsafe {
-    let current_block: u64;
-    let mut capacity: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
-    let mut len: libc::c_long = 0 as libc::c_int as libc::c_long;
-    let f: *mut FILE = fopen(filename, b"r\0" as *const u8 as *const libc::c_char);
-    if !f.is_null() {
-        *data = std::ptr::null_mut::<libc::c_char>();
-        loop {
-            capacity = capacity.wrapping_add(256 as libc::c_int as libc::c_ulong);
-            *data = ut_realloc(
-                *data as *mut libc::c_void,
-                capacity.wrapping_add(spare_capacity),
-            ) as *mut libc::c_char;
-            let b: libc::c_ulong = fread(
-                (*data).offset(len as isize) as *mut libc::c_void,
-                1 as libc::c_ulong,
-                256 as libc::c_ulong,
-                f,
-            );
-            len = (len as libc::c_ulong).wrapping_add(b) as libc::c_long as libc::c_long;
-            if b >= 256 as libc::c_ulong {
-                continue;
-            }
-            if ferror(f) != 0 {
-                current_block = 13661517195515771617;
-                break;
-            } else {
-                current_block = 3276175668257526147;
-                break;
-            }
-        }
-        match current_block {
-            13661517195515771617 => {
+    let mut capacity: libc::c_ulong = 0;
+    let mut len: libc::c_long = 0;
+
+    // Convert the filename from a raw C string to a Rust String
+    let c_str = match CStr::from_ptr(filename).to_str() {
+        Ok(s) => s,
+        Err(_) => return -1, // Error handling if C string is not valid UTF-8
+    };
+    let file = match File::open(c_str) {
+        Ok(f) => f,
+        Err(_) => return -1, // Error handling if file can't be opened
+    };
+
+    *data = std::ptr::null_mut();
+
+    let mut reader = io::BufReader::new(file);
+
+    loop {
+        capacity += 256;
+        *data = ut_realloc(
+            *data as *mut libc::c_void,
+            capacity + spare_capacity,
+        ) as *mut libc::c_char;
+
+        // Read data into the buffer
+        let buffer = std::slice::from_raw_parts_mut(*data as *mut u8, capacity as usize);
+        let bytes_read = match reader.read(&mut buffer[len as usize..]) {
+            Ok(b) => b,
+            Err(_) => {
                 ut_free(*data as *mut libc::c_void);
-                *data = std::ptr::null_mut::<libc::c_char>();
-                fclose(f);
+                *data = std::ptr::null_mut();
+                return -1; // Error during reading
             }
-            _ => {
-                fclose(f);
-                return len;
-            }
+        };
+
+        len += bytes_read as libc::c_long;
+
+        // If fewer than the expected number of bytes were read, check for EOF or error
+        if bytes_read < 256 {
+            break;
         }
     }
-    -(1 as libc::c_int) as libc::c_long
+
+    // Return the number of bytes read
+    len
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_load_file(
