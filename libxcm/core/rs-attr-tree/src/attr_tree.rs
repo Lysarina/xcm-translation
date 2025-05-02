@@ -1095,12 +1095,10 @@ use rs_log_attr_tree::log_attr_type_name;
 use rs_util::*;
 use rs_log::*;
 
-use xcm_rust_common::xcm_tp::*;
+use xcm_rust_common::xcm_tp::xcm_socket;
 use xcm_rust_common::xcm_attr::*;
-// use xcm_rust_common::log::*;
 use xcm_rust_common::c_functions::*;
-// use xcm_rust_common::attr_tree_types::attr_tree;
-// use xcm_rust_common::attr_node_types::*;
+
 use xcm_rust_common::*;
 
 unsafe extern "C" {
@@ -1138,10 +1136,7 @@ pub type xcm_attr_cb = Option::<
         *mut libc::c_void,
     ) -> (),
 >;
-// pub type attr_node_type = libc::c_uint;
-// pub const attr_node_type_list: attr_node_type = 2;
-// pub const attr_node_type_dict: attr_node_type = 1;
-// pub const attr_node_type_value: attr_node_type = 0;
+
 pub type attr_set = Option::<
     unsafe extern "C" fn(
         *mut xcm_socket,
@@ -1164,9 +1159,7 @@ pub type attr_dict_foreach_cb = Option::<
 pub type attr_list_foreach_cb = Option::<
     unsafe extern "C" fn(libc::c_ulong, *mut attr_node, *mut libc::c_void) -> (),
 >;
-// pub type log_type = libc::c_uint;
-// pub const log_type_error: log_type = 1;
-// pub const log_type_debug: log_type = 0;
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct foreach_param {

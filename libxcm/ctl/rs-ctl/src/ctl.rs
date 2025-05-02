@@ -11,12 +11,14 @@
 
 use rs_common_ctl::ctl_get_dir;
 use rs_common_ctl::ctl_derive_path;
-use rs_log::*;;
-use rs_util::*;;
+use rs_log::*;
+use rs_util::*;
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::c_functions::*;
+use xcm_rust_common::xpoll;
 
 use libc::__errno_location;
+use libc::sockaddr;
 
 unsafe extern "C" {
     // pub type xpoll;
@@ -290,12 +292,12 @@ pub const log_type_error: log_type = 1;
 pub const log_type_debug: log_type = 0;
 pub type socklen_t = __socklen_t;
 pub type __socklen_t = libc::c_uint;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct sockaddr {
-    pub sa_family: sa_family_t,
-    pub sa_data: [libc::c_char; 14],
-}
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct sockaddr {
+//     pub sa_family: sa_family_t,
+//     pub sa_data: [libc::c_char; 14],
+// }
 pub type sa_family_t = libc::c_ushort;
 pub const SOCK_NONBLOCK: __socket_type = 2048;
 pub const SOCK_SEQPACKET: __socket_type = 5;

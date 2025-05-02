@@ -20,6 +20,7 @@ name = "rs-log"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "xcm-rust-common",
 ]
 
 [[package]]
@@ -29,4 +30,11 @@ dependencies = [
  "libc",
  "rs-active-fd",
  "rs-log",
+]
+
+[[package]]
+name = "xcm-rust-common"
+version = "0.1.0"
+dependencies = [
+ "libc",
 ]

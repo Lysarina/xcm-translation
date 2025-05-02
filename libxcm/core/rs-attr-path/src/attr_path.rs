@@ -7,7 +7,6 @@
 #![feature(extern_types)]
 
 use xcm_rust_common::c_functions::*;
-// use xcm_rust_common::log::*;
 use xcm_rust_common::xcm_tp::*;
 use rs_util::*;
 use rs_log::*;
@@ -19,11 +18,11 @@ pub const attr_pcomp_type_key: attr_pcomp_type = 0;
 #[repr(C)]
 pub struct attr_pcomp {
     pub type_0: attr_pcomp_type,
-    pub c2rust_unnamed: C2RustUnnamed_attr_path,
+    pub c2rust_unnamed: C2RustUnnamed,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub union C2RustUnnamed_attr_path {
+pub union C2RustUnnamed {
     pub key: *mut libc::c_char,
     pub index: libc::c_ulong,
 }
@@ -52,7 +51,7 @@ unsafe extern "C" fn attr_path_key_create(
         
         attr_pcomp {
             type_0: attr_pcomp_type_key,
-            c2rust_unnamed: C2RustUnnamed_attr_path {
+            c2rust_unnamed: C2RustUnnamed {
                 key: ut_strdup(key),
             },
         }
@@ -67,7 +66,7 @@ unsafe extern "C" fn attr_path_index_create(index: libc::c_ulong) -> *mut attr_p
         
         attr_pcomp {
             type_0: attr_pcomp_type_index,
-            c2rust_unnamed: C2RustUnnamed_attr_path { index },
+            c2rust_unnamed: C2RustUnnamed { index },
         }
     };
     comp

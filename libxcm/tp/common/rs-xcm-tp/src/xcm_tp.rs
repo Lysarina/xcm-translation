@@ -7,11 +7,11 @@
 
 use xcm_rust_common::*;
 use xcm_rust_common::c_functions::*;
-// use xcm_rust_common::ut::*;
 use rs_util::*;
-// use xcm_rust_common::log::*;
 use rs_log::*;
-use rs_attr_tree::*;
+use rs_attr_tree::attr_get;
+use rs_attr_tree::attr_set;
+
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::xcm_attr::*;
 
