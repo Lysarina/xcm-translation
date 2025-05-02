@@ -7,7 +7,7 @@ pub type __uint64_t = libc::c_ulong;
 pub type int64_t = __int64_t;
 pub type uint64_t = __uint64_t;
 
-// DELETE THIS AND REPLACE WITH RS-LOG IMPORT --
+
 pub mod log {
     use super::xcm_tp::xcm_socket;
     unsafe extern "C" {
@@ -28,9 +28,8 @@ pub mod log {
     pub const log_type_error: log_type = 1;
     pub const log_type_debug: log_type = 0;
 }
-// --
 
-// DELETE THIS AND REPLACE WITH LIBC CALLS IN FUNCTIONS --
+
 pub mod c_functions {
     unsafe extern "C" {
 
@@ -56,9 +55,7 @@ pub mod c_functions {
         ) -> libc::c_long;
     }
 }
-// --
 
-// DELETE AND REPLACE WITH RS-UTIL IMPORT --
 pub mod ut {
     use super::*;
     unsafe extern "C" {
@@ -69,7 +66,6 @@ pub mod ut {
         pub fn ut_strdup(str: *const libc::c_char) -> *mut libc::c_char;
     }
 }
-// --
 
 use crate::xcm_tp::xcm_socket;
 unsafe extern "C" {
@@ -100,6 +96,33 @@ pub mod xcm_attr {
     pub const xcm_attr_type_str: xcm_attr_type = 3;
     pub const xcm_attr_type_int64: xcm_attr_type = 2;
     pub const xcm_attr_type_bool: xcm_attr_type = 1;
+}
+
+pub mod attr_node {
+
+    use super::xcm_tp::*;
+
+    pub type attr_node_type = libc::c_uint;
+    pub const attr_node_type_list: attr_node_type = 2;
+    pub const attr_node_type_dict: attr_node_type = 1;
+    pub const attr_node_type_value: attr_node_type = 0;
+
+    pub type attr_set = Option::<
+    unsafe extern "C" fn(
+        *mut xcm_socket,
+        *mut libc::c_void,
+        *const libc::c_void,
+        libc::c_ulong,
+    ) -> libc::c_int,
+    >;
+    pub type attr_get = Option::<
+        unsafe extern "C" fn(
+            *mut xcm_socket,
+            *mut libc::c_void,
+            *mut libc::c_void,
+            libc::c_ulong,
+        ) -> libc::c_int,
+    >;
 }
 
 pub mod xcm_tp {
