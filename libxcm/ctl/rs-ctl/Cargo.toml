@@ -9,6 +9,7 @@ rs-common-ctl = { path = "../../../common/rs-common-ctl" }
 rs-util = { path = "../../../common/rs-util"}
 rs-log = {path = "../../core/rs-log"}
 xcm-rust-common = { path = "../../../xcm-rust-common"}
+rs-xpoll = { path = "../../core/rs-xpoll"}
 
 [lib]
 path="src/ctl.rs"

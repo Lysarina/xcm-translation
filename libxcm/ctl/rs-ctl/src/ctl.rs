@@ -15,21 +15,22 @@ use rs_log::*;
 use rs_util::*;
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::c_functions::*;
-use xcm_rust_common::xpoll;
+use xcm_rust_common::xpoll_mod::*;
+use rs_xpoll::*;
 
 use libc::__errno_location;
 use libc::sockaddr;
 
 unsafe extern "C" {
     // pub type xpoll;
-    pub type attr_tree;
-    fn xpoll_fd_reg_add(
-        xpoll: *mut xpoll,
-        fd: libc::c_int,
-        event: libc::c_int,
-    ) -> libc::c_int;
-    fn xpoll_fd_reg_mod(xpoll: *mut xpoll, reg_id: libc::c_int, event: libc::c_int);
-    fn xpoll_fd_reg_del(xpoll: *mut xpoll, reg_id: libc::c_int);
+    // pub type attr_tree;
+    // fn xpoll_fd_reg_add(
+    //     xpoll: *mut xpoll,
+    //     fd: libc::c_int,
+    //     event: libc::c_int,
+    // ) -> libc::c_int;
+    // fn xpoll_fd_reg_mod(xpoll: *mut xpoll, reg_id: libc::c_int, event: libc::c_int);
+    // fn xpoll_fd_reg_del(xpoll: *mut xpoll, reg_id: libc::c_int);
     // fn ctl_get_dir(buf: *mut libc::c_char, capacity: size_t);
     // fn ctl_derive_path(
     //     ctl_dir: *const libc::c_char,
