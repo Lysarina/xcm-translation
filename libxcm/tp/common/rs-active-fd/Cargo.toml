@@ -1,11 +1,13 @@
 [package]
 name = "rs-active-fd"
 version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-libc = "0.2.171"
+edition = "2021"
 
 [lib]
-path="src/active_fd.rs"
-crate-type = ["cdylib"]
+name = "rs_active_fd"
+path = "src/active_fd.rs"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+libc = "0.2.172"
+

@@ -5,6 +5,8 @@ edition = "2024"
 
 [dependencies]
 libc = "0.2.171"
+rs-active-fd = {path="../../tp/common/rs-active-fd"}
+rs-log = {path="../rs-log"}
 
 [lib]
 path="src/xpoll.rs"
