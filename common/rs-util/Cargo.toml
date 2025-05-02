@@ -5,10 +5,9 @@ edition = "2024"
 
 [dependencies]
 libc = "0.2.172"
-xcm-rust-common = { path = "../../xcm-rust-common"}
-rs-log = { path = "../../libxcm/core/rs-log" }
+xcm-rust-common = {path = "../../xcm-rust-common"}
 
 [lib]
 name = "rs_util"
 path = "src/util.rs"
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib"]
