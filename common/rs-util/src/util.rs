@@ -384,67 +384,73 @@ pub unsafe extern "C" fn ut_is_readable(fd: libc::c_int) -> bool { unsafe {
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int { unsafe {
-    let current_block: u64;
-    let mut self_net_ns: [libc::c_char; 4096] = [0; 4096];
+    let mut self_net_ns = [0 as libc::c_char; 4096];
+
+    // Format: /proc/<tid>/ns/net
     snprintf(
         self_net_ns.as_mut_ptr(),
-        ::core::mem::size_of::<[libc::c_char; 4096]>() as libc::c_ulong,
-        b"/proc/%d/ns/net\0" as *const u8 as *const libc::c_char,
+        self_net_ns.len() as libc::c_ulong,
+        b"/proc/%d/ns/net\0".as_ptr() as *const libc::c_char,
         ut_gettid(),
     );
-    let mut self_ns_st: stat = mem::zeroed();
-    if stat(self_net_ns.as_mut_ptr(), &mut self_ns_st) < 0 as libc::c_int {
+
+    let mut self_ns_st: stat = std::mem::zeroed();
+    if stat(self_net_ns.as_ptr(), &mut self_ns_st) < 0 {
         return -1;
     }
-    let ns_dir: *mut DIR = opendir(
-        b"/run/netns\0" as *const u8 as *const libc::c_char,
-    );
-    if ns_dir.is_null() {
-        if *__errno_location() == 2 {
-            *name.offset(0 as libc::c_int as isize) = '\0' as i32 as libc::c_char;
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-    let mut rc: libc::c_int = -(1 as libc::c_int);
-    *__errno_location() = 0 as libc::c_int;
-    let mut e: *mut dirent;
-    loop {
-        e = readdir(ns_dir);
-        if e.is_null() {
-            current_block = 17407779659766490442;
-            break;
-        }
-        let vla = (strlen(b"/run/netns\0" as *const u8 as *const libc::c_char))
-            .wrapping_add(strlen(((*e).d_name).as_mut_ptr()))
-            .wrapping_add(2 as libc::c_int as libc::c_ulong) as usize;
-        let mut ns_file: Vec::<libc::c_char> = ::std::vec::from_elem(0, vla);
-        snprintf(
-            ns_file.as_mut_ptr(),
-            (vla * ::core::mem::size_of::<libc::c_char>()) as libc::c_ulong,
-            b"%s/%s\0" as *const u8 as *const libc::c_char,
-            b"/run/netns\0" as *const u8 as *const libc::c_char,
-            ((*e).d_name).as_mut_ptr(),
-        );
-        let mut ns_st: stat = mem::zeroed(); 
 
-        if stat(ns_file.as_mut_ptr(), &mut ns_st) < 0 as libc::c_int {
-            current_block = 1624237813134515024;
+    let ns_dir = opendir(b"/run/netns\0".as_ptr() as *const libc::c_char);
+    if ns_dir.is_null() {
+        if *__errno_location() == libc::ENOENT {
+            *name = 0; // Set to empty string
+            return 0;
+        }
+        return -1;
+    }
+
+    *__errno_location() = 0;
+    let mut rc = -1;
+
+    loop {
+        let entry = readdir(ns_dir);
+        if entry.is_null() {
             break;
         }
-        if !(self_ns_st.st_dev == ns_st.st_dev && self_ns_st.st_ino == ns_st.st_ino) {
+
+        let d_name = (*entry).d_name.as_ptr();
+        if *d_name == 0 {
             continue;
         }
-        strcpy(name, ((*e).d_name).as_mut_ptr());
-        rc = 0 as libc::c_int;
-        current_block = 1624237813134515024;
-        break;
+
+        let path_len = strlen(b"/run/netns\0".as_ptr() as *const libc::c_char)
+            + strlen(d_name)
+            + 2; // for '/' and null terminator
+
+        let mut ns_file = vec![0 as libc::c_char; path_len as usize];
+        snprintf(
+            ns_file.as_mut_ptr(),
+            ns_file.len() as libc::c_ulong,
+            b"/run/netns/%s\0".as_ptr() as *const libc::c_char,
+            d_name,
+        );
+
+        let mut ns_st: stat = std::mem::zeroed();
+        if stat(ns_file.as_ptr(), &mut ns_st) < 0 {
+            break;
+        }
+
+        if self_ns_st.st_dev == ns_st.st_dev && self_ns_st.st_ino == ns_st.st_ino {
+            strcpy(name, d_name);
+            rc = 0;
+            break;
+        }
     }
-    if current_block == 17407779659766490442 && *__errno_location() == 0 as libc::c_int {
-        *name.offset(0 as libc::c_int as isize) = '\0' as i32 as libc::c_char;
-        rc = 0 as libc::c_int;
+
+    if rc != 0 && *__errno_location() == 0 {
+        *name = 0;
+        rc = 0;
     }
+
     closedir(ns_dir);
     rc
 }}
