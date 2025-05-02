@@ -7,7 +7,7 @@
 #![feature(extern_types)]
 
 use xcm_rust_common::c_functions::*;
-use xcm_rust_common::log::*;
+// use xcm_rust_common::log::*;
 use xcm_rust_common::xcm_tp::*;
 use rs_util::*;
 use rs_log::*;

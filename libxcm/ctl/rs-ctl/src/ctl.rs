@@ -11,9 +11,15 @@
 
 use rs_common_ctl::ctl_get_dir;
 use rs_common_ctl::ctl_derive_path;
+use rs_log::*;;
+use rs_util::*;;
+use xcm_rust_common::xcm_tp::*;
+use xcm_rust_common::c_functions::*;
+
+use libc::__errno_location;
 
 unsafe extern "C" {
-    pub type xpoll;
+    // pub type xpoll;
     pub type attr_tree;
     fn xpoll_fd_reg_add(
         xpoll: *mut xpoll,
@@ -30,32 +36,32 @@ unsafe extern "C" {
     //     buf: *mut libc::c_char,
     //     capacity: size_t,
     // );
-    fn log_console_conf(enabled: bool);
-    fn log_is_enabled(type_0: log_type) -> bool;
-    fn __log_event(
-        type_0: log_type,
-        file: *const libc::c_char,
-        line: libc::c_int,
-        function: *const libc::c_char,
-        s: *mut xcm_socket,
-        format: *const libc::c_char,
-        _: ...
-    );
-    fn __errno_location() -> *mut libc::c_int;
-    fn abort() -> !;
-    fn memcpy(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-    fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    fn strerror(_: libc::c_int) -> *mut libc::c_char;
+    // fn log_console_conf(enabled: bool);
+    // fn log_is_enabled(type_0: log_type) -> bool;
+    // fn __log_event(
+    //     type_0: log_type,
+    //     file: *const libc::c_char,
+    //     line: libc::c_int,
+    //     function: *const libc::c_char,
+    //     s: *mut xcm_socket,
+    //     format: *const libc::c_char,
+    //     _: ...
+    // );
+    // fn __errno_location() -> *mut libc::c_int;
+    // fn abort() -> !;
+    // fn memcpy(
+    //     _: *mut libc::c_void,
+    //     _: *const libc::c_void,
+    //     _: libc::c_ulong,
+    // ) -> *mut libc::c_void;
+    // fn memset(
+    //     _: *mut libc::c_void,
+    //     _: libc::c_int,
+    //     _: libc::c_ulong,
+    // ) -> *mut libc::c_void;
+    // fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
+    // fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
+    // fn strerror(_: libc::c_int) -> *mut libc::c_char;
     fn socket(
         __domain: libc::c_int,
         __type: libc::c_int,
@@ -82,17 +88,17 @@ unsafe extern "C" {
     fn listen(__fd: libc::c_int, __n: libc::c_int) -> libc::c_int;
     fn getpid() -> __pid_t;
     fn unlink(__name: *const libc::c_char) -> libc::c_int;
-    fn ut_malloc(size: size_t) -> *mut libc::c_void;
-    fn ut_calloc(size: size_t) -> *mut libc::c_void;
-    fn ut_free(ptr: *mut libc::c_void);
-    fn ut_close(fd: libc::c_int);
-    fn ut_is_readable(fd: libc::c_int) -> bool;
-    fn ut_accept(
-        sockfd: libc::c_int,
-        addr: *mut sockaddr,
-        addrlen: *mut socklen_t,
-        flags: libc::c_uint,
-    ) -> libc::c_int;
+    // fn ut_malloc(size: size_t) -> *mut libc::c_void;
+    // fn ut_calloc(size: size_t) -> *mut libc::c_void;
+    // fn ut_free(ptr: *mut libc::c_void);
+    // fn ut_close(fd: libc::c_int);
+    // fn ut_is_readable(fd: libc::c_int) -> bool;
+    // fn ut_accept(
+    //     sockfd: libc::c_int,
+    //     addr: *mut sockaddr,
+    //     addrlen: *mut socklen_t,
+    //     flags: libc::c_uint,
+    // ) -> libc::c_int;
     fn xcm_attr_get(
         socket_0: *mut xcm_socket,
         name: *const libc::c_char,
@@ -107,20 +113,20 @@ unsafe extern "C" {
     );
     fn stat(__file: *const libc::c_char, __buf: *mut stat) -> libc::c_int;
 }
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_socket {
-    pub proto: *const xcm_tp_proto,
-    pub type_0: xcm_socket_type,
-    pub sock_id: int64_t,
-    pub auto_enable_ctl: bool,
-    pub auto_update: bool,
-    pub is_blocking: bool,
-    pub xpoll: *mut xpoll,
-    pub condition: libc::c_int,
-    pub ctl: *mut ctl,
-    pub skipped_ctl_calls: uint64_t,
-}
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct xcm_socket {
+//     pub proto: *const xcm_tp_proto,
+//     pub type_0: xcm_socket_type,
+//     pub sock_id: int64_t,
+//     pub auto_enable_ctl: bool,
+//     pub auto_update: bool,
+//     pub is_blocking: bool,
+//     pub xpoll: *mut xpoll,
+//     pub condition: libc::c_int,
+//     pub ctl: *mut ctl,
+//     pub skipped_ctl_calls: uint64_t,
+// }
 pub type uint64_t = __uint64_t;
 pub type __uint64_t = libc::c_ulong;
 #[derive(Copy, Clone)]
@@ -208,69 +214,69 @@ pub const ctl_proto_type_get_all_attr_req: ctl_proto_type = 3;
 pub const ctl_proto_type_get_attr_rej: ctl_proto_type = 2;
 pub const ctl_proto_type_get_attr_cfm: ctl_proto_type = 1;
 pub const ctl_proto_type_get_attr_req: ctl_proto_type = 0;
-pub type xcm_socket_type = libc::c_uint;
-pub const xcm_socket_type_server: xcm_socket_type = 1;
-pub const xcm_socket_type_conn: xcm_socket_type = 0;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_tp_proto {
-    pub name: [libc::c_char; 33],
-    pub ops: *const xcm_tp_ops,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_tp_ops {
-    pub init: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
-    >,
-    pub connect: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub server: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub accept: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
-    >,
-    pub send: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, size_t) -> libc::c_int,
-    >,
-    pub receive: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, size_t) -> libc::c_int,
-    >,
-    pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
-    pub get_transport: Option::<
-        unsafe extern "C" fn(*mut xcm_socket) -> *const libc::c_char,
-    >,
-    pub get_remote_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
-    >,
-    pub get_local_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
-    >,
-    pub set_local_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> size_t>,
-    pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> int64_t>,
-    pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub attr_populate: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
-    >,
-    pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> size_t>,
-}
-pub type xcm_tp_cnt = libc::c_uint;
-pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
-pub const xcm_tp_cnt_to_lower_msgs: xcm_tp_cnt = 6;
-pub const xcm_tp_cnt_from_app_msgs: xcm_tp_cnt = 5;
-pub const xcm_tp_cnt_to_app_msgs: xcm_tp_cnt = 4;
-pub const xcm_tp_cnt_from_lower_bytes: xcm_tp_cnt = 3;
-pub const xcm_tp_cnt_to_lower_bytes: xcm_tp_cnt = 2;
-pub const xcm_tp_cnt_from_app_bytes: xcm_tp_cnt = 1;
-pub const xcm_tp_cnt_to_app_bytes: xcm_tp_cnt = 0;
+// pub type xcm_socket_type = libc::c_uint;
+// pub const xcm_socket_type_server: xcm_socket_type = 1;
+// pub const xcm_socket_type_conn: xcm_socket_type = 0;
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct xcm_tp_proto {
+//     pub name: [libc::c_char; 33],
+//     pub ops: *const xcm_tp_ops,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct xcm_tp_ops {
+//     pub init: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
+//     >,
+//     pub connect: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
+//     >,
+//     pub server: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
+//     >,
+//     pub close: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
+//     pub cleanup: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
+//     pub accept: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
+//     >,
+//     pub send: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, size_t) -> libc::c_int,
+//     >,
+//     pub receive: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, size_t) -> libc::c_int,
+//     >,
+//     pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
+//     pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
+//     pub get_transport: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket) -> *const libc::c_char,
+//     >,
+//     pub get_remote_addr: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
+//     >,
+//     pub get_local_addr: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
+//     >,
+//     pub set_local_addr: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
+//     >,
+//     pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> size_t>,
+//     pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> int64_t>,
+//     pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
+//     pub attr_populate: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
+//     >,
+//     pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> size_t>,
+// }
+// pub type xcm_tp_cnt = libc::c_uint;
+// pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
+// pub const xcm_tp_cnt_to_lower_msgs: xcm_tp_cnt = 6;
+// pub const xcm_tp_cnt_from_app_msgs: xcm_tp_cnt = 5;
+// pub const xcm_tp_cnt_to_app_msgs: xcm_tp_cnt = 4;
+// pub const xcm_tp_cnt_from_lower_bytes: xcm_tp_cnt = 3;
+// pub const xcm_tp_cnt_to_lower_bytes: xcm_tp_cnt = 2;
+// pub const xcm_tp_cnt_from_app_bytes: xcm_tp_cnt = 1;
+// pub const xcm_tp_cnt_to_app_bytes: xcm_tp_cnt = 0;
 pub const EPOLLIN: EPOLL_EVENTS = 1;
 #[derive(Copy, Clone)]
 #[repr(C)]

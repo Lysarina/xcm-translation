@@ -8,26 +8,26 @@ pub type int64_t = __int64_t;
 pub type uint64_t = __uint64_t;
 
 
-pub mod log {
-    // use super::xcm_tp::xcm_socket;
-    // unsafe extern "C" {
+// pub mod log {
+//     // use super::xcm_tp::xcm_socket;
+//     // unsafe extern "C" {
 
-    //     pub fn log_console_conf(enabled: bool);
-    //     pub fn log_is_enabled(type_0: log_type) -> bool;
-    //     pub fn __log_event(
-    //         type_0: log_type,
-    //         file: *const libc::c_char,
-    //         line: libc::c_int,
-    //         function: *const libc::c_char,
-    //         s: *mut xcm_socket,
-    //         format: *const libc::c_char,
-    //         _: ...
-    //     );
-    // }
-    pub type log_type = libc::c_uint;
-    pub const log_type_error: log_type = 1;
-    pub const log_type_debug: log_type = 0;
-}
+//     //     pub fn log_console_conf(enabled: bool);
+//     //     pub fn log_is_enabled(type_0: log_type) -> bool;
+//     //     pub fn __log_event(
+//     //         type_0: log_type,
+//     //         file: *const libc::c_char,
+//     //         line: libc::c_int,
+//     //         function: *const libc::c_char,
+//     //         s: *mut xcm_socket,
+//     //         format: *const libc::c_char,
+//     //         _: ...
+//     //     );
+//     // }
+//     pub type log_type = libc::c_uint;
+//     pub const log_type_error: log_type = 1;
+//     pub const log_type_debug: log_type = 0;
+// }
 
 
 pub mod c_functions {

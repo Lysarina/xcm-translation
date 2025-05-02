@@ -17,7 +17,7 @@ use rs_log::*;
 
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::xcm_attr::*;
-use xcm_rust_common::log::*;
+// use xcm_rust_common::log::*;
 use xcm_rust_common::c_functions::*;
 use xcm_rust_common::*;
 
