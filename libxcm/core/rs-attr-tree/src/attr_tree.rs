@@ -1,191 +1,105 @@
 #![allow(
-    dead_code,
-    mutable_transmutes,
     non_camel_case_types,
     non_snake_case,
     non_upper_case_globals,
     unused_assignments,
-    unused_mut
+    dead_code,
+    unused_mut,
+    unsafe_code,
 )]
 #![feature(extern_types)]
 
+use rs_attr_node::*;
+use rs_attr_path::*;
 use rs_log_attr_tree::log_attr_type_name;
+use rs_util::*;
+
+use xcm_rust_common::xcm_tp::*;
+use xcm_rust_common::xcm_attr::*;
+use xcm_rust_common::log::*;
+use xcm_rust_common::ut::*;
+use xcm_rust_common::c_functions::*;
+use xcm_rust_common::*;
 
 unsafe extern "C" {
-    pub type attr_pcomp;
-    pub type attr_path;
+
     pub type ctl;
     pub type xpoll;
-    pub type attr_node;
-    fn attr_pcomp_get_type(pcomp: *const attr_pcomp) -> attr_pcomp_type;
-    fn attr_pcomp_is_key(pcomp: *const attr_pcomp) -> bool;
-    fn attr_pcomp_is_index(pcomp: *const attr_pcomp) -> bool;
-    fn attr_pcomp_get_key(pcomp: *const attr_pcomp) -> *const libc::c_char;
-    fn attr_pcomp_get_index(pcomp: *const attr_pcomp) -> size_t;
-    fn attr_path_parse(path_str: *const libc::c_char, root: bool) -> *mut attr_path;
-    fn attr_path_destroy(path: *mut attr_path);
-    fn attr_path_num_comps(path: *const attr_path) -> size_t;
-    fn attr_path_get_comp(path: *const attr_path, comp_num: size_t) -> *const attr_pcomp;
-    fn __errno_location() -> *mut libc::c_int;
-    fn attr_node_value(
-        s: *mut xcm_socket,
-        context: *mut libc::c_void,
-        type_0: xcm_attr_type,
-        set: attr_set,
-        get: attr_get,
-    ) -> *mut attr_node;
-    fn attr_node_value_get_value_type(value_node: *const attr_node) -> xcm_attr_type;
-    fn attr_node_value_is_readable(value_node: *const attr_node) -> bool;
-    fn attr_node_value_is_writable(value_node: *const attr_node) -> bool;
-    fn attr_node_value_set(
-        value_node: *const attr_node,
-        value: *const libc::c_void,
-        len: size_t,
-    ) -> libc::c_int;
-    fn attr_node_value_get(
-        value_node: *const attr_node,
-        value: *mut libc::c_void,
-        len: size_t,
-    ) -> libc::c_int;
-    fn attr_node_dict() -> *mut attr_node;
-    fn attr_node_dict_add_key(
-        dict: *mut attr_node,
-        key: *const libc::c_char,
-        attr_node: *mut attr_node,
-    );
-    fn attr_node_dict_get_key(
-        dict: *mut attr_node,
-        key: *const libc::c_char,
-    ) -> *mut attr_node;
-    fn attr_node_dict_foreach(
-        list: *mut attr_node,
-        cb: attr_dict_foreach_cb,
-        cb_data: *mut libc::c_void,
-    );
-    fn attr_node_list() -> *mut attr_node;
-    fn attr_node_list_append(list: *mut attr_node, attr: *mut attr_node);
-    fn attr_node_list_len(list: *mut attr_node) -> size_t;
-    fn attr_node_list_get_index(list: *mut attr_node, index: size_t) -> *mut attr_node;
-    fn attr_node_list_foreach(
-        list: *mut attr_node,
-        cb: attr_list_foreach_cb,
-        cb_data: *mut libc::c_void,
-    );
-    fn attr_node_get_type(node: *const attr_node) -> attr_node_type;
-    fn attr_node_is_value(node: *const attr_node) -> bool;
-    fn attr_node_is_dict(node: *const attr_node) -> bool;
-    fn attr_node_is_list(node: *const attr_node) -> bool;
-    fn attr_node_destroy(attr_node: *mut attr_node);
-    fn abort() -> !;
-    fn strlen(_: *const libc::c_char) -> libc::c_ulong;
-    fn strerror(_: libc::c_int) -> *mut libc::c_char;
-    fn ut_malloc(size: size_t) -> *mut libc::c_void;
-    fn ut_realloc(ptr: *mut libc::c_void, size: size_t) -> *mut libc::c_void;
-    fn ut_strdup(str: *const libc::c_char) -> *mut libc::c_char;
-    fn ut_free(ptr: *mut libc::c_void);
-    fn ut_asprintf(fmt: *const libc::c_char, _: ...) -> *mut libc::c_char;
-    fn log_console_conf(enabled: bool);
-    fn log_is_enabled(type_0: log_type) -> bool;
-    fn __log_event(
-        type_0: log_type,
-        file: *const libc::c_char,
-        line: libc::c_int,
-        function: *const libc::c_char,
-        s: *mut xcm_socket,
-        format: *const libc::c_char,
-        _: ...
-    );
+
+    // fn attr_pcomp_get_type(pcomp: *const attr_pcomp) -> attr_pcomp_type;
+    // fn attr_pcomp_is_key(pcomp: *const attr_pcomp) -> bool;
+    // fn attr_pcomp_is_index(pcomp: *const attr_pcomp) -> bool;
+    // fn attr_pcomp_get_key(pcomp: *const attr_pcomp) -> *const libc::c_char;
+    // fn attr_pcomp_get_index(pcomp: *const attr_pcomp) -> libc::c_ulong;
+    // fn attr_path_parse(path_str: *const libc::c_char, root: bool) -> *mut attr_path;
+    // fn attr_path_destroy(path: *mut attr_path);
+    // fn attr_path_num_comps(path: *const attr_path) -> libc::c_ulong;
+    // fn attr_path_get_comp(path: *const attr_path, comp_num: libc::c_ulong) -> *const attr_pcomp;
+    // fn attr_node_value(
+    //     s: *mut xcm_socket,
+    //     context: *mut libc::c_void,
+    //     type_0: xcm_attr_type,
+    //     set: attr_set,
+    //     get: attr_get,
+    // ) -> *mut attr_node;
+    // fn attr_node_value_get_value_type(value_node: *const attr_node) -> xcm_attr_type;
+    // fn attr_node_value_is_readable(value_node: *const attr_node) -> bool;
+    // fn attr_node_value_is_writable(value_node: *const attr_node) -> bool;
+    // fn attr_node_value_set(
+    //     value_node: *const attr_node,
+    //     value: *const libc::c_void,
+    //     len: libc::c_ulong,
+    // ) -> libc::c_int;
+    // fn attr_node_value_get(
+    //     value_node: *const attr_node,
+    //     value: *mut libc::c_void,
+    //     len: libc::c_ulong,
+    // ) -> libc::c_int;
+    // fn attr_node_dict() -> *mut attr_node;
+    // fn attr_node_dict_add_key(
+    //     dict: *mut attr_node,
+    //     key: *const libc::c_char,
+    //     attr_node: *mut attr_node,
+    // );
+    // fn attr_node_dict_get_key(
+    //     dict: *mut attr_node,
+    //     key: *const libc::c_char,
+    // ) -> *mut attr_node;
+    // fn attr_node_dict_foreach(
+    //     list: *mut attr_node,
+    //     cb: attr_dict_foreach_cb,
+    //     cb_data: *mut libc::c_void,
+    // );
+    // fn attr_node_list() -> *mut attr_node;
+    // fn attr_node_list_append(list: *mut attr_node, attr: *mut attr_node);
+    // fn attr_node_list_len(list: *mut attr_node) -> libc::c_ulong;
+    // fn attr_node_list_get_index(list: *mut attr_node, index: libc::c_ulong) -> *mut attr_node;
+    // fn attr_node_list_foreach(
+    //     list: *mut attr_node,
+    //     cb: attr_list_foreach_cb,
+    //     cb_data: *mut libc::c_void,
+    // );
+    // fn attr_node_get_type(node: *const attr_node) -> attr_node_type;
+    // fn attr_node_is_value(node: *const attr_node) -> bool;
+    // fn attr_node_is_dict(node: *const attr_node) -> bool;
+    // fn attr_node_is_list(node: *const attr_node) -> bool;
+    // fn attr_node_destroy(attr_node: *mut attr_node);
+    
+
     fn log_attr_str_value(
         type_0: xcm_attr_type,
         value: *const libc::c_void,
-        len: size_t,
+        len: libc::c_ulong,
         buf: *mut libc::c_char,
-        capacity: size_t,
+        capacity: libc::c_ulong,
     );
     // fn log_attr_type_name(type_0: xcm_attr_type) -> *const libc::c_char;
 }
-pub type size_t = libc::c_ulong;
 pub type attr_pcomp_type = libc::c_uint;
 pub const attr_pcomp_type_index: attr_pcomp_type = 1;
 pub const attr_pcomp_type_key: attr_pcomp_type = 0;
-pub type __int64_t = libc::c_long;
-pub type __uint64_t = libc::c_ulong;
-pub type int64_t = __int64_t;
-pub type xcm_attr_type = libc::c_uint;
-pub const xcm_attr_type_double: xcm_attr_type = 5;
-pub const xcm_attr_type_bin: xcm_attr_type = 4;
-pub const xcm_attr_type_str: xcm_attr_type = 3;
-pub const xcm_attr_type_int64: xcm_attr_type = 2;
-pub const xcm_attr_type_bool: xcm_attr_type = 1;
-pub type uint64_t = __uint64_t;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_socket {
-    pub proto: *const xcm_tp_proto,
-    pub type_0: xcm_socket_type,
-    pub sock_id: int64_t,
-    pub auto_enable_ctl: bool,
-    pub auto_update: bool,
-    pub is_blocking: bool,
-    pub xpoll: *mut xpoll,
-    pub condition: libc::c_int,
-    pub ctl: *mut ctl,
-    pub skipped_ctl_calls: uint64_t,
-}
-pub type xcm_socket_type = libc::c_uint;
-pub const xcm_socket_type_server: xcm_socket_type = 1;
-pub const xcm_socket_type_conn: xcm_socket_type = 0;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_tp_proto {
-    pub name: [libc::c_char; 33],
-    pub ops: *const xcm_tp_ops,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_tp_ops {
-    pub init: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
-    >,
-    pub connect: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub server: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub accept: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
-    >,
-    pub send: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, size_t) -> libc::c_int,
-    >,
-    pub receive: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, size_t) -> libc::c_int,
-    >,
-    pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
-    pub get_transport: Option::<
-        unsafe extern "C" fn(*mut xcm_socket) -> *const libc::c_char,
-    >,
-    pub get_remote_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
-    >,
-    pub get_local_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
-    >,
-    pub set_local_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> size_t>,
-    pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> int64_t>,
-    pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub attr_populate: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
-    >,
-    pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> size_t>,
-}
+
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct attr_tree {
@@ -205,7 +119,7 @@ pub type xcm_attr_cb = Option::<
         *const libc::c_char,
         xcm_attr_type,
         *mut libc::c_void,
-        size_t,
+        libc::c_ulong,
         *mut libc::c_void,
     ) -> (),
 >;
@@ -218,7 +132,7 @@ pub type attr_set = Option::<
         *mut xcm_socket,
         *mut libc::c_void,
         *const libc::c_void,
-        size_t,
+        libc::c_ulong,
     ) -> libc::c_int,
 >;
 pub type attr_get = Option::<
@@ -226,14 +140,14 @@ pub type attr_get = Option::<
         *mut xcm_socket,
         *mut libc::c_void,
         *mut libc::c_void,
-        size_t,
+        libc::c_ulong,
     ) -> libc::c_int,
 >;
 pub type attr_dict_foreach_cb = Option::<
     unsafe extern "C" fn(*const libc::c_char, *mut attr_node, *mut libc::c_void) -> (),
 >;
 pub type attr_list_foreach_cb = Option::<
-    unsafe extern "C" fn(size_t, *mut attr_node, *mut libc::c_void) -> (),
+    unsafe extern "C" fn(libc::c_ulong, *mut attr_node, *mut libc::c_void) -> (),
 >;
 pub type log_type = libc::c_uint;
 pub const log_type_error: log_type = 1;
@@ -273,9 +187,9 @@ unsafe extern "C" fn ensure_containers(
     mut tree: *mut attr_tree,
     mut path: *const attr_path,
 ) -> *mut attr_node {
-    let mut i: size_t = 0;
+    let mut i: libc::c_ulong = 0;
     let mut container: *mut attr_node = (*tree).root;
-    i = 0 as libc::c_int as size_t;
+    i = 0 as libc::c_int as libc::c_ulong;
     while i < (attr_path_num_comps(path)).wrapping_sub(1 as libc::c_int as libc::c_ulong)
     {
         let mut comp: *const attr_pcomp = attr_path_get_comp(path, i);
@@ -321,8 +235,8 @@ unsafe extern "C" fn ensure_containers(
                 }
                 abort();
             }
-            let mut index: size_t = attr_pcomp_get_index(comp);
-            let mut list_len: size_t = attr_node_list_len(container);
+            let mut index: libc::c_ulong = attr_pcomp_get_index(comp);
+            let mut list_len: libc::c_ulong = attr_node_list_len(container);
             if index < list_len {
                 next_container = attr_node_list_get_index(container, index);
             } else {
@@ -369,7 +283,7 @@ unsafe extern "C" fn add_node(
     mut node: *mut attr_node,
 ) {
     let mut path: *mut attr_path = attr_path_parse(path_str, 1 as libc::c_int != 0);
-    if !attr_pcomp_is_key(attr_path_get_comp(path, 0 as libc::c_int as size_t)) {
+    if !attr_pcomp_is_key(attr_path_get_comp(path, 0 as libc::c_int as libc::c_ulong)) {
         log_console_conf(1 as libc::c_int != 0);
         if log_is_enabled(log_type_error) {
             __log_event(
@@ -388,7 +302,7 @@ unsafe extern "C" fn add_node(
         abort();
     }
     let mut container: *mut attr_node = ensure_containers(tree, path);
-    let mut last: size_t = (attr_path_num_comps(path))
+    let mut last: libc::c_ulong = (attr_path_num_comps(path))
         .wrapping_sub(1 as libc::c_int as libc::c_ulong);
     let mut comp: *const attr_pcomp = attr_path_get_comp(path, last);
     if attr_pcomp_is_index(comp) {
@@ -423,11 +337,11 @@ pub unsafe extern "C" fn attr_tree_add_list_node(
 }
 unsafe extern "C" fn valid_set_attr_len(
     mut type_0: xcm_attr_type,
-    mut len: size_t,
+    mut len: libc::c_ulong,
 ) -> bool {
     match type_0 as libc::c_uint {
         1 => return len == ::core::mem::size_of::<bool>() as libc::c_ulong,
-        2 => return len == ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        2 => return len == ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
         5 => return len == ::core::mem::size_of::<libc::c_double>() as libc::c_ulong,
         3 => return len > 0 as libc::c_int as libc::c_ulong,
         4 => return 1 as libc::c_int != 0,
@@ -461,9 +375,9 @@ unsafe extern "C" fn node_lookup(
     mut root: *mut attr_node,
     mut path: *const attr_path,
 ) -> *mut attr_node {
-    let mut i: size_t = 0;
+    let mut i: libc::c_ulong = 0;
     let mut node: *mut attr_node = root;
-    i = 0 as libc::c_int as size_t;
+    i = 0 as libc::c_int as libc::c_ulong;
     while i < attr_path_num_comps(path) {
         let mut next: *mut attr_node = 0 as *mut attr_node;
         let mut comp: *const attr_pcomp = attr_path_get_comp(path, i);
@@ -475,7 +389,7 @@ unsafe extern "C" fn node_lookup(
         } else if attr_pcomp_is_index(comp) as libc::c_int != 0
             && attr_node_is_list(node) as libc::c_int != 0
         {
-            let mut index: size_t = attr_pcomp_get_index(comp);
+            let mut index: libc::c_ulong = attr_pcomp_get_index(comp);
             if index < attr_node_list_len(node) {
                 next = attr_node_list_get_index(node, index);
             }
@@ -495,7 +409,7 @@ pub unsafe extern "C" fn attr_tree_set_value(
     mut path_str: *const libc::c_char,
     mut type_0: xcm_attr_type,
     mut value: *const libc::c_void,
-    mut len: size_t,
+    mut len: libc::c_ulong,
     mut log_ref: *mut libc::c_void,
 ) -> libc::c_int {
     if !valid_set_attr_len(type_0, len) {
@@ -659,7 +573,7 @@ pub unsafe extern "C" fn attr_tree_get_value(
     mut path_str: *const libc::c_char,
     mut type_0: *mut xcm_attr_type,
     mut value: *mut libc::c_void,
-    mut capacity: size_t,
+    mut capacity: libc::c_ulong,
     mut log_ref: *mut libc::c_void,
 ) -> libc::c_int {
     if log_is_enabled(log_type_debug) {
@@ -794,7 +708,7 @@ pub unsafe extern "C" fn attr_tree_get_value(
     log_attr_str_value(
         value_type,
         value,
-        rc as size_t,
+        rc as libc::c_ulong,
         value_s.as_mut_ptr(),
         ::core::mem::size_of::<[libc::c_char; 4096]>() as libc::c_ulong,
     );
@@ -935,7 +849,7 @@ unsafe extern "C" fn visit_value(
     if !attr_node_value_is_readable(value_node) {
         return;
     }
-    let mut value_capacity: size_t = 256 as libc::c_int as size_t;
+    let mut value_capacity: libc::c_ulong = 256 as libc::c_int as libc::c_ulong;
     let mut value: *mut libc::c_char = ut_malloc(value_capacity) as *mut libc::c_char;
     let mut rc: libc::c_int = 0;
     loop {
@@ -944,7 +858,7 @@ unsafe extern "C" fn visit_value(
             break;
         }
         value_capacity = (value_capacity as libc::c_ulong)
-            .wrapping_mul(2 as libc::c_int as libc::c_ulong) as size_t as size_t;
+            .wrapping_mul(2 as libc::c_int as libc::c_ulong) as libc::c_ulong as libc::c_ulong;
         value = ut_realloc(value as *mut libc::c_void, value_capacity)
             as *mut libc::c_char;
     }
@@ -956,7 +870,7 @@ unsafe extern "C" fn visit_value(
             path,
             attr_node_value_get_value_type(value_node),
             value as *mut libc::c_void,
-            rc as size_t,
+            rc as libc::c_ulong,
             cb_data,
         );
     }
@@ -1010,7 +924,7 @@ unsafe extern "C" fn visit_dict(
     );
 }
 unsafe extern "C" fn foreach_list_index(
-    mut index: size_t,
+    mut index: libc::c_ulong,
     mut node: *mut attr_node,
     mut cb_data: *mut libc::c_void,
 ) {
@@ -1043,7 +957,7 @@ unsafe extern "C" fn visit_list(
         list,
         Some(
             foreach_list_index
-                as unsafe extern "C" fn(size_t, *mut attr_node, *mut libc::c_void) -> (),
+                as unsafe extern "C" fn(libc::c_ulong, *mut attr_node, *mut libc::c_void) -> (),
         ),
         &mut param as *mut foreach_param as *mut libc::c_void,
     );

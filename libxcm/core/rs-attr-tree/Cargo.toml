@@ -7,6 +7,9 @@ edition = "2024"
 libc = "0.2.171"
 rs-attr-path = {path="../rs-attr-path"}
 rs-log-attr-tree = {path="../rs-log-attr-tree"}
+xcm-rust-common = { path = "../../../xcm-rust-common/" }
+rs-attr-node = {path = "../rs-attr-node"}
+rs-util = {path = "../../../common/rs-util/"}
 
 [lib]
 path="src/attr_tree.rs"

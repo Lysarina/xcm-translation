@@ -48,6 +48,8 @@ pub mod c_functions {
             _: *const libc::c_char,
             _: ...
         ) -> libc::c_int;
+        pub unsafe fn strerror(_: libc::c_int) -> *mut libc::c_char;
+
         pub unsafe fn strtol(
             _: *const libc::c_char,
             _: *mut *mut libc::c_char,
@@ -64,6 +66,8 @@ pub mod ut {
         pub fn ut_calloc(size: size_t) -> *mut libc::c_void;
         pub fn ut_free(ptr: *mut libc::c_void);
         pub fn ut_strdup(str: *const libc::c_char) -> *mut libc::c_char;
+        pub fn ut_asprintf(fmt: *const libc::c_char, _: ...) -> *mut libc::c_char;
+
     }
 }
 
@@ -123,6 +127,8 @@ pub mod attr_node {
             libc::c_ulong,
         ) -> libc::c_int,
     >;
+
+    
 }
 
 pub mod xcm_tp {
