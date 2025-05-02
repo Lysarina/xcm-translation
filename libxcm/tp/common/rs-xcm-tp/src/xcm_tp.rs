@@ -14,6 +14,7 @@ use rs_attr_tree::attr_set;
 
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::xcm_attr::*;
+use xcm_rust_common::xpoll_mod::*;
 
 
 unsafe extern "C" { fn attr_tree_add_value_node(
