@@ -11,8 +11,6 @@ use rs_attr_path::attr_path_is_valid_key;
 use xcm_rust_common::ut::*;
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::log::*;
-// use xcm_rust_common::attr_node::*;
-// use xcm_rust_common::*;
 use xcm_rust_common::{size_t};
 use xcm_rust_common::c_functions::*;
 use xcm_rust_common::xcm_attr::*;
@@ -21,23 +19,6 @@ pub type attr_node_type = libc::c_uint;
 pub const attr_node_type_list: attr_node_type = 2;
 pub const attr_node_type_dict: attr_node_type = 1;
 pub const attr_node_type_value: attr_node_type = 0;
-
-//     pub type attr_set = Option::<
-//     unsafe extern "C" fn(
-//         *mut xcm_socket,
-//         *mut libc::c_void,
-//         *const libc::c_void,
-//         libc::c_ulong,
-//     ) -> libc::c_int,
-//     >;
-//     pub type attr_get = Option::<
-//         unsafe extern "C" fn(
-//             *mut xcm_socket,
-//             *mut libc::c_void,
-//             *mut libc::c_void,
-//             libc::c_ulong,
-//         ) -> libc::c_int,
-//     >;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
