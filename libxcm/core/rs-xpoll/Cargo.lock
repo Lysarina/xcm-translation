@@ -24,12 +24,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "rs-util"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "xcm-rust-common",
+]
+
+[[package]]
 name = "rs-xpoll"
 version = "0.1.0"
 dependencies = [
  "libc",
  "rs-active-fd",
  "rs-log",
+ "rs-util",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "xcm-rust-common"
+version = "0.1.0"
+dependencies = [
+ "libc",
 ]
 
 [[package]]
