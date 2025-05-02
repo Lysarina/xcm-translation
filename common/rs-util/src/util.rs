@@ -6,11 +6,12 @@
 )]
 #![feature(c_variadic, extern_types)]
 
+use std::process::abort;
 use std::ffi::CStr;
 use std::fs::File;
 use std::io::{self, Read};
 use libc::{__errno_location, clock_gettime, pthread_mutex_init, pthread_mutex_lock,
-    pthread_mutex_unlock, fprintf, snprintf, malloc, realloc, free, abort, exit,
+    pthread_mutex_unlock, fprintf, snprintf, malloc, realloc, free, exit,
     memcpy, memset, strcpy, strdup, strndup, strlen, strerror, send, getsockopt,
     close, syscall, closedir, opendir, readdir, fcntl, poll, accept4, timespec,
     pollfd, timeval, sockaddr, pthread_mutex_t, FILE, stat, PATH_MAX};
@@ -118,13 +119,13 @@ pub unsafe extern "C" fn ut_free(ptr: *mut libc::c_void) { unsafe {
     free(ptr);
 }}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn ut_mem_exhausted() -> ! { unsafe {
+pub extern "C" fn ut_mem_exhausted() -> ! {
     ut_fatal();
-}}
+}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn ut_fatal() -> ! { unsafe {
+pub extern "C" fn ut_fatal() -> ! {
     abort();
-}}
+}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_close(fd: libc::c_int) { unsafe {
     let mut _errno: libc::c_int = *__errno_location();
