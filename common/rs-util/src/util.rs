@@ -117,7 +117,7 @@ pub unsafe extern "C" fn ut_mutex_unlock(m: *mut pthread_mutex_t) { unsafe {
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_gettid() -> libc::c_int { unsafe {
-    syscall(186 as libc::c_int as libc::c_long) as libc::c_int
+    syscall(186) as libc::c_int
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_malloc(size: libc::c_ulong) -> *mut libc::c_void { unsafe {
@@ -192,7 +192,7 @@ pub unsafe extern "C" fn ut_close(fd: libc::c_int) { unsafe {
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_close_if_valid(fd: libc::c_int) { unsafe {
-    if fd >= 0 as libc::c_int {
+    if fd >= 0 {
         ut_close(fd);
     }
 }}
@@ -212,7 +212,7 @@ pub unsafe extern "C" fn ut_f_to_timespec(t: libc::c_double, ts: *mut timespec) 
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_ftime() -> libc::c_double { unsafe {
     let mut now: timespec = timespec { tv_sec: 0, tv_nsec: 0 };
-    clock_gettime(1 as libc::c_int, &mut now);
+    clock_gettime(1, &mut now);
     ut_timespec_to_f(&now)
 }}
 #[unsafe(no_mangle)]
@@ -231,7 +231,7 @@ pub unsafe extern "C" fn ut_send_all(
             flags,
         );
         if bytes_written < 0 as libc::c_int as libc::c_long {
-            return -(1 as libc::c_int);
+            return -1;
         }
         offset += bytes_written;
         if (offset as libc::c_ulong) >= count {
@@ -253,7 +253,7 @@ pub unsafe extern "C" fn ut_vaprintf(
         abort();
     }
     let left: libc::c_ulong = capacity.wrapping_sub(used);
-    if left == 0 as libc::c_int as libc::c_ulong {
+    if left == 0 {
         return;
     }
     let rc: libc::c_int = vsnprintf(
@@ -262,7 +262,7 @@ pub unsafe extern "C" fn ut_vaprintf(
         format,
         ap.as_va_list(),
     );
-    if rc < 0 as libc::c_int {
+    if rc < 0 {
         abort();
     }
 }}
@@ -284,7 +284,7 @@ pub unsafe extern "C" fn ut_vasprintf(
 ) -> *mut libc::c_char { unsafe {
     let mut str: *mut libc::c_char = std::ptr::null_mut::<libc::c_char>();
     let rc: libc::c_int = vasprintf(&mut str, fmt, ap.as_va_list());
-    if rc < 0 as libc::c_int {
+    if rc < 0 {
         ut_fatal();
     }
     str
@@ -316,9 +316,9 @@ pub unsafe extern "C" fn ut_set_blocking(
 pub unsafe extern "C" fn ut_is_blocking(fd: libc::c_int) -> bool { unsafe {
     let flags: libc::c_int = fcntl(fd, 3 as libc::c_int, 0 as libc::c_int);
     (if flags & 0o4000 as libc::c_int != 0 {
-        0 as libc::c_int
+        0
     } else {
-        1 as libc::c_int
+        1
     } != 0)
 }}
 unsafe extern "C" fn socket_error(fd: libc::c_int) -> libc::c_int { unsafe {
@@ -333,13 +333,13 @@ unsafe extern "C" fn socket_error(fd: libc::c_int) -> libc::c_int { unsafe {
         &mut len,
     ) < 0 as libc::c_int
     {
-        return -(1 as libc::c_int);
+        return -1;
     }
     if socket_errno != 0 as libc::c_int {
         *__errno_location() = socket_errno;
-        return -(1 as libc::c_int);
+        return -1;
     }
-    0 as libc::c_int
+    0
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_established(fd: libc::c_int) -> libc::c_int { unsafe {
@@ -359,8 +359,8 @@ pub unsafe extern "C" fn ut_established(fd: libc::c_int) -> libc::c_int { unsafe
     {
         socket_error(fd)
     } else {
-        *__errno_location() = 115 as libc::c_int; 
-        -(1 as libc::c_int)
+        *__errno_location() = 115; 
+        -1
     }
 }}
 #[unsafe(no_mangle)]
@@ -376,12 +376,11 @@ pub unsafe extern "C" fn ut_is_readable(fd: libc::c_int) -> bool { unsafe {
     let mut _oerrno: libc::c_int = *__errno_location();
     let rc: libc::c_int = poll(
         &mut pfd,
-        1 as libc::c_int as libc::c_ulong,
-        0 as libc::c_int,
+        1,
+        0,
     );
     *__errno_location() = _oerrno;
-    rc == 1 as libc::c_int
-        && pfd.revents as libc::c_int & 0x1 as libc::c_int != 0
+    rc == 1 && pfd.revents & 1 != 0
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int { unsafe {
@@ -394,33 +393,18 @@ pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int 
         ut_gettid(),
     );
     let mut self_ns_st: stat = mem::zeroed();
-    //  = stat {
-    //     st_dev: 0,
-    //     st_ino: 0,
-    //     st_nlink: 0,
-    //     st_mode: 0,
-    //     st_uid: 0,
-    //     st_gid: 0,
-    //     st_rdev: 0,
-    //     st_size: 0,
-    //     st_blksize: 0,
-    //     st_blocks: 0,
-    //     st_atime: 0,
-    //     st_mtime: 0,
-    //     st_ctime: 0
-    // };
     if stat(self_net_ns.as_mut_ptr(), &mut self_ns_st) < 0 as libc::c_int {
-        return -(1 as libc::c_int);
+        return -1;
     }
     let ns_dir: *mut DIR = opendir(
         b"/run/netns\0" as *const u8 as *const libc::c_char,
     );
     if ns_dir.is_null() {
-        if *__errno_location() == 2 as libc::c_int {
+        if *__errno_location() == 2 {
             *name.offset(0 as libc::c_int as isize) = '\0' as i32 as libc::c_char;
-            return 0 as libc::c_int;
+            return 0;
         } else {
-            return -(1 as libc::c_int)
+            return -1;
         }
     }
     let mut rc: libc::c_int = -(1 as libc::c_int);
@@ -444,21 +428,7 @@ pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int 
             ((*e).d_name).as_mut_ptr(),
         );
         let mut ns_st: stat = mem::zeroed(); 
-        // = stat {
-        //     st_dev: 0,
-        //     st_ino: 0,
-        //     st_nlink: 0,
-        //     st_mode: 0,
-        //     st_uid: 0,
-        //     st_gid: 0,
-        //     st_rdev: 0,
-        //     st_size: 0,
-        //     st_blksize: 0,
-        //     st_blocks: 0,
-        //     st_atime: 0,
-        //     st_mtime: 0,
-        //     st_ctime: 0
-        // };
+
         if stat(ns_file.as_mut_ptr(), &mut ns_st) < 0 as libc::c_int {
             current_block = 1624237813134515024;
             break;
@@ -487,14 +457,11 @@ pub unsafe extern "C" fn ut_accept(
 ) -> libc::c_int { unsafe {
     let rc: libc::c_int = accept4(
         sockfd,
-        addr, //as *mut libc::sockaddr,
+        addr,
         addrlen,
         flags as libc::c_int,
     );
-    
-    // if rc < 0 as libc::c_int && *__errno_location() == 11 as libc::c_int {
-    //     *__errno_location() = 11 as libc::c_int;
-    // }
+
     rc
 }}
 unsafe extern "C" fn load_file(
@@ -516,12 +483,12 @@ unsafe extern "C" fn load_file(
             ) as *mut libc::c_char;
             let b: libc::c_ulong = fread(
                 (*data).offset(len as isize) as *mut libc::c_void,
-                1 as libc::c_int as libc::c_ulong,
-                256 as libc::c_int as libc::c_ulong,
+                1 as libc::c_ulong,
+                256 as libc::c_ulong,
                 f,
             );
             len = (len as libc::c_ulong).wrapping_add(b) as libc::c_long as libc::c_long;
-            if b >= 256 as libc::c_int as libc::c_ulong {
+            if b >= 256 as libc::c_ulong {
                 continue;
             }
             if ferror(f) != 0 {
@@ -551,15 +518,15 @@ pub unsafe extern "C" fn ut_load_file(
     filename: *const libc::c_char,
     data: *mut *mut libc::c_char,
 ) -> libc::c_long { unsafe {
-    load_file(filename, data, 0 as libc::c_int as libc::c_ulong)
+    load_file(filename, data, 0)
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn ut_load_text_file(
     filename: *const libc::c_char,
     data: *mut *mut libc::c_char,
 ) -> libc::c_long { unsafe {
-    let mut rc: libc::c_long = load_file(filename, data, 1 as libc::c_int as libc::c_ulong);
-    if rc >= 0 as libc::c_int as libc::c_long {
+    let mut rc: libc::c_long = load_file(filename, data, 1);
+    if rc >= 0 {
         *(*data).offset(rc as isize) = '\0' as i32 as libc::c_char;
         rc += 1;
     }
