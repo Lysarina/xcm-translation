@@ -33,15 +33,26 @@ pub mod log {
 pub mod c_functions {
     unsafe extern "C" {
 
-        pub fn abort() -> !;
-        pub fn memcpy(
+        pub unsafe fn abort() -> !;
+        pub unsafe fn memcpy(
             _: *mut libc::c_void,
             _: *const libc::c_void,
             _: libc::c_ulong,
         ) -> *mut libc::c_void;
-        pub fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-        pub fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-        pub fn strlen(_: *const libc::c_char) -> libc::c_ulong;
+        pub unsafe fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
+        pub unsafe fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
+        pub unsafe fn strlen(_: *const libc::c_char) -> libc::c_ulong;
+        pub unsafe fn snprintf(
+            _: *mut libc::c_char,
+            _: libc::c_ulong,
+            _: *const libc::c_char,
+            _: ...
+        ) -> libc::c_int;
+        pub unsafe fn strtol(
+            _: *const libc::c_char,
+            _: *mut *mut libc::c_char,
+            _: libc::c_int,
+        ) -> libc::c_long;
     }
 }
 

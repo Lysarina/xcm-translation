@@ -13,6 +13,7 @@ name = "rs-attr-path"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "xcm-rust-common",
 ]
 
 [[package]]
@@ -26,6 +27,13 @@ dependencies = [
 
 [[package]]
 name = "rs-log-attr-tree"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "xcm-rust-common"
 version = "0.1.0"
 dependencies = [
  "libc",

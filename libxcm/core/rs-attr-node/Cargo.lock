@@ -22,6 +22,7 @@ name = "rs-attr-path"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "xcm-rust-common",
 ]
 
 [[package]]
