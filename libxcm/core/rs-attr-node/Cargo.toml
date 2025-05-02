@@ -11,4 +11,4 @@ xcm-rust-common = { path = "../../../xcm-rust-common/" }
 
 [lib]
 path = "src/attr_node.rs"
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib"]
