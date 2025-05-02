@@ -1086,6 +1086,7 @@
     dead_code,
     unused_mut,
     unsafe_code,
+    clippy::missing_safety_doc,
 )]
 #![feature(extern_types)]
 
@@ -1168,33 +1169,33 @@ pub struct foreach_param {
     pub cb_data: *mut libc::c_void,
 }
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn attr_tree_create() -> *mut attr_tree {
+pub unsafe extern "C" fn attr_tree_create() -> *mut attr_tree { unsafe {
     let mut tree: *mut attr_tree = ut_malloc(
         ::core::mem::size_of::<attr_tree>() as libc::c_ulong,
     ) as *mut attr_tree;
     *tree = {
-        let mut init = attr_tree {
+        
+        attr_tree {
             root: attr_node_dict(),
-        };
-        init
+        }
     };
-    return tree;
-}
+    tree
+}}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn attr_tree_destroy(mut tree: *mut attr_tree) {
+pub unsafe extern "C" fn attr_tree_destroy(mut tree: *mut attr_tree) { unsafe {
     if !tree.is_null() {
         attr_node_destroy((*tree).root);
         ut_free(tree as *mut libc::c_void);
     }
-}
+}}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn attr_tree_get_root(mut tree: *mut attr_tree) -> *mut attr_node {
-    return (*tree).root;
-}
+pub unsafe extern "C" fn attr_tree_get_root(mut tree: *mut attr_tree) -> *mut attr_node { unsafe {
+    (*tree).root
+}}
 unsafe extern "C" fn ensure_containers(
     mut tree: *mut attr_tree,
     mut path: *const attr_path,
-) -> *mut attr_node {
+) -> *mut attr_node { unsafe {
     let mut i: libc::c_ulong = 0;
     let mut container: *mut attr_node = (*tree).root;
     i = 0 as libc::c_int as libc::c_ulong;
@@ -1206,7 +1207,7 @@ unsafe extern "C" fn ensure_containers(
             i.wrapping_add(1 as libc::c_int as libc::c_ulong),
         );
         let mut contained_type: attr_pcomp_type = attr_pcomp_get_type(next_comp);
-        let mut next_container: *mut attr_node = 0 as *mut attr_node;
+        let mut next_container: *mut attr_node = std::ptr::null_mut::<attr_node>();
         if attr_node_is_dict(container) {
             let mut key: *const libc::c_char = attr_pcomp_get_key(comp);
             next_container = attr_node_dict_get_key(container, key);
@@ -1234,7 +1235,7 @@ unsafe extern "C" fn ensure_containers(
                             &[libc::c_char; 18],
                         >(b"ensure_containers\0"))
                             .as_ptr(),
-                        0 as *mut xcm_socket,
+                        std::ptr::null_mut::<xcm_socket>(),
                         b"Assertion \"%s\" failed.\n\0" as *const u8
                             as *const libc::c_char,
                         b"attr_node_is_list(container)\0" as *const u8
@@ -1248,7 +1249,7 @@ unsafe extern "C" fn ensure_containers(
             if index < list_len {
                 next_container = attr_node_list_get_index(container, index);
             } else {
-                if !(index == list_len) {
+                if index != list_len {
                     log_console_conf(1 as libc::c_int != 0);
                     if log_is_enabled(log_type_error) {
                         __log_event(
@@ -1261,7 +1262,7 @@ unsafe extern "C" fn ensure_containers(
                                 &[libc::c_char; 18],
                             >(b"ensure_containers\0"))
                                 .as_ptr(),
-                            0 as *mut xcm_socket,
+                            std::ptr::null_mut::<xcm_socket>(),
                             b"Assertion \"%s\" failed.\n\0" as *const u8
                                 as *const libc::c_char,
                             b"index == list_len\0" as *const u8 as *const libc::c_char,
@@ -1281,15 +1282,14 @@ unsafe extern "C" fn ensure_containers(
         }
         container = next_container;
         i = i.wrapping_add(1);
-        i;
     }
-    return container;
-}
+    container
+}}
 unsafe extern "C" fn add_node(
     mut tree: *mut attr_tree,
     mut path_str: *const libc::c_char,
     mut node: *mut attr_node,
-) {
+) { unsafe {
     let mut path: *mut attr_path = attr_path_parse(path_str, 1 as libc::c_int != 0);
     if !attr_pcomp_is_key(attr_path_get_comp(path, 0 as libc::c_int as libc::c_ulong)) {
         log_console_conf(1 as libc::c_int != 0);
@@ -1301,7 +1301,7 @@ unsafe extern "C" fn add_node(
                 94 as libc::c_int,
                 (*::core::mem::transmute::<&[u8; 9], &[libc::c_char; 9]>(b"add_node\0"))
                     .as_ptr(),
-                0 as *mut xcm_socket,
+                std::ptr::null_mut::<xcm_socket>(),
                 b"Assertion \"%s\" failed.\n\0" as *const u8 as *const libc::c_char,
                 b"attr_pcomp_is_key(attr_path_get_comp(path, 0))\0" as *const u8
                     as *const libc::c_char,
@@ -1320,7 +1320,7 @@ unsafe extern "C" fn add_node(
         attr_node_dict_add_key(container, key, node);
     }
     attr_path_destroy(path);
-}
+}}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_tree_add_value_node(
     mut tree: *mut attr_tree,
@@ -1330,23 +1330,23 @@ pub unsafe extern "C" fn attr_tree_add_value_node(
     mut type_0: xcm_attr_type,
     mut set: attr_set,
     mut get: attr_get,
-) {
+) { unsafe {
     let mut value_node: *mut attr_node = attr_node_value(s, context, type_0, set, get);
     add_node(tree, path_str, value_node);
-}
+}}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_tree_add_list_node(
     mut tree: *mut attr_tree,
     mut path_str: *const libc::c_char,
-) -> *mut attr_node {
+) -> *mut attr_node { unsafe {
     let mut list_node: *mut attr_node = attr_node_list();
     add_node(tree, path_str, list_node);
-    return list_node;
-}
+    list_node
+}}
 unsafe extern "C" fn valid_set_attr_len(
     mut type_0: xcm_attr_type,
     mut len: libc::c_ulong,
-) -> bool {
+) -> bool { unsafe {
     match type_0 as libc::c_uint {
         1 => return len == ::core::mem::size_of::<bool>() as libc::c_ulong,
         2 => return len == ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
@@ -1367,7 +1367,7 @@ unsafe extern "C" fn valid_set_attr_len(
                             &[libc::c_char; 19],
                         >(b"valid_set_attr_len\0"))
                             .as_ptr(),
-                        0 as *mut xcm_socket,
+                        std::ptr::null_mut::<xcm_socket>(),
                         b"Assertion \"%s\" failed.\n\0" as *const u8
                             as *const libc::c_char,
                         b"0\0" as *const u8 as *const libc::c_char,
@@ -1378,16 +1378,16 @@ unsafe extern "C" fn valid_set_attr_len(
         }
     }
     panic!("Reached end of non-void function without returning");
-}
+}}
 unsafe extern "C" fn node_lookup(
     mut root: *mut attr_node,
     mut path: *const attr_path,
-) -> *mut attr_node {
+) -> *mut attr_node { unsafe {
     let mut i: libc::c_ulong = 0;
     let mut node: *mut attr_node = root;
     i = 0 as libc::c_int as libc::c_ulong;
     while i < attr_path_num_comps(path) {
-        let mut next: *mut attr_node = 0 as *mut attr_node;
+        let mut next: *mut attr_node = std::ptr::null_mut::<attr_node>();
         let mut comp: *const attr_pcomp = attr_path_get_comp(path, i);
         if attr_pcomp_is_key(comp) as libc::c_int != 0
             && attr_node_is_dict(node) as libc::c_int != 0
@@ -1403,14 +1403,13 @@ unsafe extern "C" fn node_lookup(
             }
         }
         if next.is_null() {
-            return 0 as *mut attr_node;
+            return std::ptr::null_mut::<attr_node>();
         }
         node = next;
         i = i.wrapping_add(1);
-        i;
     }
-    return node;
-}
+    node
+}}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_tree_set_value(
     mut tree: *mut attr_tree,
@@ -1419,7 +1418,7 @@ pub unsafe extern "C" fn attr_tree_set_value(
     mut value: *const libc::c_void,
     mut len: libc::c_ulong,
     mut log_ref: *mut libc::c_void,
-) -> libc::c_int {
+) -> libc::c_int { unsafe {
     if !valid_set_attr_len(type_0, len) {
         if log_is_enabled(log_type_debug) {
             __log_event(
@@ -1573,8 +1572,8 @@ pub unsafe extern "C" fn attr_tree_set_value(
         }
         return -(1 as libc::c_int);
     }
-    return rc;
-}
+    rc
+}}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_tree_get_value(
     mut tree: *mut attr_tree,
@@ -1583,7 +1582,7 @@ pub unsafe extern "C" fn attr_tree_get_value(
     mut value: *mut libc::c_void,
     mut capacity: libc::c_ulong,
     mut log_ref: *mut libc::c_void,
-) -> libc::c_int {
+) -> libc::c_int { unsafe {
     if log_is_enabled(log_type_debug) {
         __log_event(
             log_type_debug,
@@ -1737,14 +1736,14 @@ pub unsafe extern "C" fn attr_tree_get_value(
             value_s.as_mut_ptr(),
         );
     }
-    return rc;
-}
+    rc
+}}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_tree_get_list_len(
     mut tree: *mut attr_tree,
     mut path_str: *const libc::c_char,
     mut log_ref: *mut libc::c_void,
-) -> libc::c_int {
+) -> libc::c_int { unsafe {
     if log_is_enabled(log_type_debug) {
         __log_event(
             log_type_debug,
@@ -1846,14 +1845,14 @@ pub unsafe extern "C" fn attr_tree_get_list_len(
             len,
         );
     }
-    return len;
-}
+    len
+}}
 unsafe extern "C" fn visit_value(
     mut path: *const libc::c_char,
     mut value_node: *const attr_node,
     mut cb: xcm_attr_cb,
     mut cb_data: *mut libc::c_void,
-) {
+) { unsafe {
     if !attr_node_value_is_readable(value_node) {
         return;
     }
@@ -1883,12 +1882,12 @@ unsafe extern "C" fn visit_value(
         );
     }
     ut_free(value as *mut libc::c_void);
-}
+}}
 unsafe extern "C" fn foreach_dict_key(
     mut key: *const libc::c_char,
     mut node: *mut attr_node,
     mut cb_data: *mut libc::c_void,
-) {
+) { unsafe {
     let mut data: *mut foreach_param = cb_data as *mut foreach_param;
     let mut root: bool = strlen((*data).path) == 0 as libc::c_int as libc::c_ulong;
     let mut key_path: *mut libc::c_char = if root as libc::c_int != 0 {
@@ -1903,20 +1902,20 @@ unsafe extern "C" fn foreach_dict_key(
     };
     visit_node(key_path, node, (*data).cb, (*data).cb_data);
     ut_free(key_path as *mut libc::c_void);
-}
+}}
 unsafe extern "C" fn visit_dict(
     mut path: *const libc::c_char,
     mut dict: *mut attr_node,
     mut cb: xcm_attr_cb,
     mut cb_data: *mut libc::c_void,
-) {
+) { unsafe {
     let mut param: foreach_param = {
-        let mut init = foreach_param {
-            path: path,
-            cb: cb,
-            cb_data: cb_data,
-        };
-        init
+        
+        foreach_param {
+            path,
+            cb,
+            cb_data,
+        }
     };
     attr_node_dict_foreach(
         dict,
@@ -1930,12 +1929,12 @@ unsafe extern "C" fn visit_dict(
         ),
         &mut param as *mut foreach_param as *mut libc::c_void,
     );
-}
+}}
 unsafe extern "C" fn foreach_list_index(
     mut index: libc::c_ulong,
     mut node: *mut attr_node,
     mut cb_data: *mut libc::c_void,
-) {
+) { unsafe {
     let mut data: *mut foreach_param = cb_data as *mut foreach_param;
     let mut index_path: *mut libc::c_char = ut_asprintf(
         b"%s%c%zd%c\0" as *const u8 as *const libc::c_char,
@@ -1946,20 +1945,20 @@ unsafe extern "C" fn foreach_list_index(
     );
     visit_node(index_path, node, (*data).cb, (*data).cb_data);
     ut_free(index_path as *mut libc::c_void);
-}
+}}
 unsafe extern "C" fn visit_list(
     mut path: *const libc::c_char,
     mut list: *mut attr_node,
     mut cb: xcm_attr_cb,
     mut cb_data: *mut libc::c_void,
-) {
+) { unsafe {
     let mut param: foreach_param = {
-        let mut init = foreach_param {
-            path: path,
-            cb: cb,
-            cb_data: cb_data,
-        };
-        init
+        
+        foreach_param {
+            path,
+            cb,
+            cb_data,
+        }
     };
     attr_node_list_foreach(
         list,
@@ -1969,13 +1968,13 @@ unsafe extern "C" fn visit_list(
         ),
         &mut param as *mut foreach_param as *mut libc::c_void,
     );
-}
+}}
 unsafe extern "C" fn visit_node(
     mut path: *const libc::c_char,
     mut node: *mut attr_node,
     mut cb: xcm_attr_cb,
     mut cb_data: *mut libc::c_void,
-) {
+) { unsafe {
     match attr_node_get_type(node) as libc::c_uint {
         0 => {
             visit_value(path, node, cb, cb_data);
@@ -1988,12 +1987,12 @@ unsafe extern "C" fn visit_node(
         }
         _ => {}
     };
-}
+}}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_tree_get_all(
     mut tree: *mut attr_tree,
     mut cb: xcm_attr_cb,
     mut cb_data: *mut libc::c_void,
-) {
+) { unsafe {
     visit_node(b"\0" as *const u8 as *const libc::c_char, (*tree).root, cb, cb_data);
-}
+}}
