@@ -9,21 +9,21 @@ pub type uint64_t = __uint64_t;
 
 
 pub mod log {
-    use super::xcm_tp::xcm_socket;
-    unsafe extern "C" {
+    // use super::xcm_tp::xcm_socket;
+    // unsafe extern "C" {
 
-        pub fn log_console_conf(enabled: bool);
-        pub fn log_is_enabled(type_0: log_type) -> bool;
-        pub fn __log_event(
-            type_0: log_type,
-            file: *const libc::c_char,
-            line: libc::c_int,
-            function: *const libc::c_char,
-            s: *mut xcm_socket,
-            format: *const libc::c_char,
-            _: ...
-        );
-    }
+    //     pub fn log_console_conf(enabled: bool);
+    //     pub fn log_is_enabled(type_0: log_type) -> bool;
+    //     pub fn __log_event(
+    //         type_0: log_type,
+    //         file: *const libc::c_char,
+    //         line: libc::c_int,
+    //         function: *const libc::c_char,
+    //         s: *mut xcm_socket,
+    //         format: *const libc::c_char,
+    //         _: ...
+    //     );
+    // }
     pub type log_type = libc::c_uint;
     pub const log_type_error: log_type = 1;
     pub const log_type_debug: log_type = 0;
@@ -58,18 +58,18 @@ pub mod c_functions {
     }
 }
 
-pub mod ut {
-    use super::*;
-    unsafe extern "C" {
+// pub mod ut {
+//     use super::*;
+//     unsafe extern "C" {
 
-        pub fn ut_malloc(size: size_t) -> *mut libc::c_void;
-        pub fn ut_calloc(size: size_t) -> *mut libc::c_void;
-        pub fn ut_free(ptr: *mut libc::c_void);
-        pub fn ut_strdup(str: *const libc::c_char) -> *mut libc::c_char;
-        pub fn ut_asprintf(fmt: *const libc::c_char, _: ...) -> *mut libc::c_char;
+//         pub fn ut_malloc(size: size_t) -> *mut libc::c_void;
+//         pub fn ut_calloc(size: size_t) -> *mut libc::c_void;
+//         pub fn ut_free(ptr: *mut libc::c_void);
+//         pub fn ut_strdup(str: *const libc::c_char) -> *mut libc::c_char;
+//         pub fn ut_asprintf(fmt: *const libc::c_char, _: ...) -> *mut libc::c_char;
 
-    }
-}
+//     }
+// }
 
 use crate::xcm_tp::xcm_socket;
 unsafe extern "C" {
@@ -104,29 +104,28 @@ pub mod xcm_attr {
 
 pub mod attr_node {
 
-    use super::xcm_tp::*;
 
     pub type attr_node_type = libc::c_uint;
     pub const attr_node_type_list: attr_node_type = 2;
     pub const attr_node_type_dict: attr_node_type = 1;
     pub const attr_node_type_value: attr_node_type = 0;
 
-    pub type attr_set = Option::<
-    unsafe extern "C" fn(
-        *mut xcm_socket,
-        *mut libc::c_void,
-        *const libc::c_void,
-        libc::c_ulong,
-    ) -> libc::c_int,
-    >;
-    pub type attr_get = Option::<
-        unsafe extern "C" fn(
-            *mut xcm_socket,
-            *mut libc::c_void,
-            *mut libc::c_void,
-            libc::c_ulong,
-        ) -> libc::c_int,
-    >;
+    // pub type attr_set = Option::<
+    // // unsafe extern "C" fn(
+    // //     *mut xcm_socket,
+    // //     *mut libc::c_void,
+    // //     *const libc::c_void,
+    // //     libc::c_ulong,
+    // // ) -> libc::c_int,
+    // // >;
+    // // pub type attr_get = Option::<
+    // //     unsafe extern "C" fn(
+    // //         *mut xcm_socket,
+    // //         *mut libc::c_void,
+    // //         *mut libc::c_void,
+    // //         libc::c_ulong,
+    // //     ) -> libc::c_int,
+    // // >;
 
     
 }

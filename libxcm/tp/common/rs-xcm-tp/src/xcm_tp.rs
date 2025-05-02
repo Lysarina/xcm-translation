@@ -7,8 +7,10 @@
 
 use xcm_rust_common::*;
 use xcm_rust_common::c_functions::*;
-use xcm_rust_common::ut::*;
-use xcm_rust_common::log::*;
+// use xcm_rust_common::ut::*;
+use rs_util::*;
+// use xcm_rust_common::log::*;
+use rs_log::*;
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::xcm_attr::*;
 use xcm_rust_common::attr_node::*;

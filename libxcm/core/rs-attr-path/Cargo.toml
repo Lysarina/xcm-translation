@@ -6,6 +6,9 @@ edition = "2024"
 [dependencies]
 libc = "0.2.171"
 xcm-rust-common = { path = "../../../xcm-rust-common/" }
+rs-util = { path = "../../../common/rs-util/"}
+rs-log = { path = "../rs-log/"}
+
 
 
 [lib]

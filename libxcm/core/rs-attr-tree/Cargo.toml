@@ -10,7 +10,9 @@ rs-log-attr-tree = {path="../rs-log-attr-tree"}
 xcm-rust-common = { path = "../../../xcm-rust-common/" }
 rs-attr-node = {path = "../rs-attr-node"}
 rs-util = {path = "../../../common/rs-util/"}
+rs-log = { path = "../rs-log/"}
+
 
 [lib]
 path="src/attr_tree.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]

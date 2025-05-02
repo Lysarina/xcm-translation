@@ -8,8 +8,9 @@
 
 use xcm_rust_common::c_functions::*;
 use xcm_rust_common::log::*;
-use xcm_rust_common::ut::*;
 use xcm_rust_common::xcm_tp::*;
+use rs_util::*;
+use rs_log::*;
 
 pub type attr_pcomp_type = libc::c_uint;
 pub const attr_pcomp_type_index: attr_pcomp_type = 1;

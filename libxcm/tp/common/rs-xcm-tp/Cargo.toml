@@ -11,3 +11,5 @@ crate-type = ["cdylib"]
 [dependencies]
 libc = "0.2.172"
 xcm-rust-common = { path = "../../../../xcm-rust-common/" }
+rs-util = { path = "../../../../common/rs-util" }
+rs-log = { path = "../../../core/rs-log"}
