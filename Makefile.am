@@ -44,12 +44,10 @@ XCMCTL_VERSION_AGE=$(XCMCTL_VERSION_CURRENT)
 libxcm_la_SOURCES = \
 	common/slist.c \
 	libxcm/core/timer_mgr.c \
-	libxcm/core/xcm.c \
 	libxcm/core/xcm_addr_compat.c \
 	libxcm/core/xcm_attr_map.c \
 	libxcm/core/xcm_compat.c \
 	libxcm/core/xcm_version.c \
-	libxcm/tp/common/common_tp.c \
 	libxcm/tp/common/dns_attr.c \
 	libxcm/tp/common/log_tp.c \
 	libxcm/tp/tcp/tconnect.c \
@@ -77,12 +75,16 @@ libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-node/target/release \
 	-L$(srcdir)/libxcm/core/rs-attr-tree/target/release -lrs_attr_tree \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-attr-tree/target/release \
+	-L$(srcdir)/libxcm/tp/common/rs-xcm-tp/target/release -lrs_xcm_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm-tp/target/release \
 	-L$(srcdir)/libxcm/core/rs-xpoll/target/release -lrs_xpoll \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xpoll/target/release \
 	-L$(srcdir)/libxcm/tp/common/rs-active-fd/target/release -lrs_active_fd \
 	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-active-fd/target/release \
-	-L$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release -lrs_xcm_tp \
-	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-xcm_tp/target/release
+	-L$(srcdir)/libxcm/tp/common/rs-common-tp/target/release -lrs_common_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-common-tp/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm/target/release -lrs_xcm \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm/target/release
 libxcm_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/libxcm/core \
 	-I$(srcdir)/libxcm/tp/common -I$(srcdir)/libxcm/tp/ux \
 	-I$(srcdir)/libxcm/tp/tcp -I$(srcdir)/libxcm/tp/dns
@@ -145,6 +147,10 @@ xcmpong_SOURCES = tools/xcmpong/main.c
 xcmpong_CFLAGS = $(AM_CFLAGS)
 xcmpong_CPPFLAGS = $(AM_CPPFLAGS) -DUT_STD_ASSERT
 xcmpong_LDFLAGS = @RT_LIBS@ \
+	-L$(srcdir)/libxcm/tp/common/rs-common-tp/target/release -lrs_common_tp \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/common/rs-common-tp/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm/target/release -lrs_xcm \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm/target/release \
 	-L$(srcdir)/common/rs-common-ctl/target/release -lrs_common_ctl \
 	-Wl,-rpath,$(srcdir)/common/rs-common-ctl/target/release \
 	-L$(srcdir)/common/rs-util/target/release -lrs_util \
@@ -168,7 +174,9 @@ xcm_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/tools/common -DUT_STD_ASSERT
 xcm_LDADD = libxcm.la
 xcm_LDFLAGS = @EVENT_LIBS@ \
 	-L$(srcdir)/common/rs-util/target/release -lrs_util \
-	-Wl,-rpath,$(srcdir)/common/rs-util/target/release
+	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm/target/release -lrs_xcm \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm/target/release
 
 xcmrelay_SOURCES = tools/xcmrelay/main.c tools/xcmrelay/rserver.c \
 	tools/xcmrelay/xrelay.c tools/common/attr.c
@@ -182,6 +190,8 @@ xcmrelay_LDADD = libxcm.la \
 	-L$(srcdir)/libxcm/core/rs-xcm-addr/target/release -lrs_xcm_addr
 xcmrelay_LDFLAGS = @EVENT_LIBS@ \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-addr/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm/target/release -lrs_xcm \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm/target/release \
 	-L$(srcdir)/common/rs-util/target/release -lrs_util \
 	-Wl,-rpath,$(srcdir)/common/rs-util/target/release
 endif
@@ -236,6 +246,10 @@ xcmtest_CPPFLAGS=$(AM_CPPFLAGS) $(TEST_CPPFLAGS) -DUT_STD_ASSERT
 xcmtest_LDFLAGS = @RT_LIBS@ @PTHREAD_LIBS@ -ldl -no-install  \
 	-L$(srcdir)/common/rs-util/target/release -lrs_util \
 	-Wl,-rpath,$(srcdir)/common/rs-util/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm/target/release -lrs_xcm \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm/target/release \
+	-L$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release -lrs_xcm_dns \
+	-Wl,-rpath,$(srcdir)/libxcm/tp/dns/rs-xcm-dns/target/release \
 	-L$(srcdir)/libxcm/core/rs-log/target/release -lrs_log \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-log/target/release \
 	-L$(srcdir)/libxcm/core/rs-log-attr-tree/target/release -lrs_log_attr_tree \

@@ -1,11 +1,8 @@
 #![allow(
-    dead_code,
-    mutable_transmutes,
     non_camel_case_types,
     non_snake_case,
     non_upper_case_globals,
-    unused_assignments,
-    unused_mut
+    clippy::missing_safety_doc
 )]
 #![feature(c_variadic, extern_types)]
 
@@ -178,15 +175,15 @@ pub type __off_t = libc::c_long;
 pub type pid_t = __pid_t;
 pub type __pid_t = libc::c_int;
 unsafe extern "C" fn format_msg(
-    mut buf: *mut libc::c_char,
-    mut capacity: size_t,
-    mut file: *const libc::c_char,
-    mut line: libc::c_int,
-    mut function: *const libc::c_char,
-    mut s: *mut xcm_socket,
-    mut format: *const libc::c_char,
+    buf: *mut libc::c_char,
+    capacity: size_t,
+    file: *const libc::c_char,
+    line: libc::c_int,
+    function: *const libc::c_char,
+    s: *mut xcm_socket,
+    format: *const libc::c_char,
     mut ap: ::core::ffi::VaList,
-) {
+) { unsafe {
     let mut sref: [libc::c_char; 64] = [0; 64];
     if !s.is_null() {
         snprintf(
@@ -212,16 +209,16 @@ unsafe extern "C" fn format_msg(
     );
     ut_vaprintf(buf, capacity, format, ap.as_va_list());
     ut_aprintf(buf, capacity, b"\n\0" as *const u8 as *const libc::c_char);
-}
+}}
 static console_enabled: AtomicBool = AtomicBool::new(false);
 unsafe extern "C" fn log_console(
-    mut file: *const libc::c_char,
-    mut line: libc::c_int,
-    mut function: *const libc::c_char,
-    mut s: *mut xcm_socket,
-    mut format: *const libc::c_char,
+    file: *const libc::c_char,
+    line: libc::c_int,
+    function: *const libc::c_char,
+    s: *mut xcm_socket,
+    format: *const libc::c_char,
     mut ap: ::core::ffi::VaList,
-) {
+) { unsafe {
     if console_enabled.load(Ordering::Relaxed) {
     // if ::core::intrinsics::atomic_load_relaxed(&raw mut console_enabled) {
         let mut _oerrno: libc::c_int = *__errno_location();
@@ -240,31 +237,31 @@ unsafe extern "C" fn log_console(
         fflush(stderr);
         *__errno_location() = _oerrno;
     }
-}
+}}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn log_is_enabled(mut type_0: log_type) -> bool {
+pub unsafe extern "C" fn log_is_enabled(mut _type_0: log_type) -> bool {
     if console_enabled.load(Ordering::Relaxed) {
     // if ::core::intrinsics::atomic_load_relaxed(&raw mut console_enabled) {
         return 1 as libc::c_int != 0;
     }
-    return 0 as libc::c_int != 0;
+    0 as libc::c_int != 0
 }
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn __log_event(
-    mut type_0: log_type,
-    mut file: *const libc::c_char,
-    mut line: libc::c_int,
-    mut function: *const libc::c_char,
-    mut s: *mut xcm_socket,
-    mut format: *const libc::c_char,
-    mut args: ...
-) {
+    mut _type_0: log_type,
+    file: *const libc::c_char,
+    line: libc::c_int,
+    function: *const libc::c_char,
+    s: *mut xcm_socket,
+    format: *const libc::c_char,
+    args: ...
+) { unsafe {
     let mut ap: ::core::ffi::VaListImpl;
     ap = args.clone();
     log_console(file, line, function, s, format, ap.as_va_list());
-}
+}}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn log_console_conf(mut enabled: bool) {
+pub unsafe extern "C" fn log_console_conf(enabled: bool) {
     console_enabled.store(enabled, Ordering::Relaxed);
     // ::core::intrinsics::atomic_store_relaxed(&console_enabled as *mut bool, enabled);
 }
