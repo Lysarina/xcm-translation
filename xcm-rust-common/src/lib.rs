@@ -89,7 +89,7 @@ pub mod xcm_attr {
 
 pub mod attr_node {
 
-    use super::*;
+    use super::xcm_tp::*;
 
     pub type attr_node_type = libc::c_uint;
     pub const attr_node_type_list: attr_node_type = 2;
@@ -101,7 +101,7 @@ pub mod attr_node {
         *mut xcm_socket,
         *mut libc::c_void,
         *const libc::c_void,
-        size_t,
+        libc::c_ulong,
     ) -> libc::c_int,
     >;
     pub type attr_get = Option::<
@@ -109,7 +109,7 @@ pub mod attr_node {
             *mut xcm_socket,
             *mut libc::c_void,
             *mut libc::c_void,
-            size_t,
+            libc::c_ulong,
         ) -> libc::c_int,
     >;
 }
