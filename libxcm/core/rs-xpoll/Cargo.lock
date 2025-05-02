@@ -48,10 +48,3 @@ version = "0.1.0"
 dependencies = [
  "libc",
 ]
-
-[[package]]
-name = "xcm-rust-common"
-version = "0.1.0"
-dependencies = [
- "libc",
-]

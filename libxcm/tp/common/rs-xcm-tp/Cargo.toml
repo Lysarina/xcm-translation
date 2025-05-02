@@ -6,7 +6,7 @@ edition = "2024"
 [lib]
 name = "rs_xcm_tp"
 path = "src/xcm_tp.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 libc = "0.2.172"

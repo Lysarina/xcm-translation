@@ -351,7 +351,7 @@ pub mod ut {
 use crate::xcm_tp::xcm_socket;
 unsafe extern "C" {
     pub type ctl;
-    pub type xpoll;
+    // pub type xpoll;
     pub type attr_tree;
     pub fn __errno_location() -> *mut libc::c_int;
     pub fn xcm_set_blocking(socket: *mut xcm_socket, should_block: bool) -> libc::c_int;
@@ -369,6 +369,36 @@ unsafe extern "C" {
     pub fn ctl_process(ctl: *mut ctl);
 }
 
+
+pub mod xpoll_mod {
+    #[derive(Copy, Clone)]
+    #[repr(C)]
+    pub struct xpoll {
+        pub epoll_fd: libc::c_int,
+        pub fd_regs: *mut xpoll_fd_reg,
+        pub fd_regs_capacity: libc::c_int,
+        pub num_fd_regs: libc::c_int,
+        pub active_fd: libc::c_int,
+        pub active_fd_reg_id: libc::c_int,
+        pub bell_regs: *mut xpoll_bell_reg,
+        pub bell_regs_capacity: libc::c_int,
+        pub num_bell_regs: libc::c_int,
+        pub log_ref: *mut libc::c_void,
+    }
+    #[derive(Copy, Clone)]
+    #[repr(C)]
+    pub struct xpoll_bell_reg {
+        pub free: bool,
+        pub ringing: bool,
+    }
+    #[derive(Copy, Clone)]
+    #[repr(C)]
+    pub struct xpoll_fd_reg {
+        pub fd: libc::c_int,
+        pub event: libc::c_int,
+    }
+}
+
 pub mod xcm_attr {
 
     pub type xcm_attr_type = libc::c_uint;
@@ -382,6 +412,7 @@ pub mod xcm_attr {
 pub mod xcm_tp {
 
     use super::*;
+    use super::xpoll_mod::xpoll;
     
     #[derive(Copy, Clone)]
     #[repr(C)]
