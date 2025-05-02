@@ -47,7 +47,7 @@ pub unsafe extern "C" fn log_attr_str_value(
     mut len: size_t,
     mut buf: *mut libc::c_char,
     mut capacity: size_t,
-) {
+) { unsafe {
     match type_0 as libc::c_uint {
         1 => {
             if *(value as *mut bool) {
@@ -109,7 +109,6 @@ pub unsafe extern "C" fn log_attr_str_value(
                         if i != 0 as libc::c_int {
                             *buf.offset(offset as isize) = ':' as i32 as libc::c_char;
                             offset = offset.wrapping_add(1);
-                            offset;
                         }
                         snprintf(
                             buf.offset(offset as isize),
@@ -121,7 +120,6 @@ pub unsafe extern "C" fn log_attr_str_value(
                             .wrapping_add(2 as libc::c_int as libc::c_ulong) as size_t
                             as size_t;
                         i += 1;
-                        i;
                     }
                 }
                 *buf.offset(offset as isize) = '\0' as i32 as libc::c_char;
@@ -129,4 +127,4 @@ pub unsafe extern "C" fn log_attr_str_value(
         }
         _ => {}
     };
-}
+}}
