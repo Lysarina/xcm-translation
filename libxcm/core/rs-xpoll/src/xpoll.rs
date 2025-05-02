@@ -8,36 +8,11 @@
 use libc::{abort, strerror, epoll_event, EPOLLIN, epoll_create1, epoll_ctl, __errno_location};
 
 use xcm_rust_common::xcm_tp::xcm_socket;
+use xcm_rust_common::xpoll_mod::*;
 use rs_active_fd::{active_fd_get, active_fd_put};
 use rs_util::{ut_malloc, ut_realloc, ut_free, ut_fatal, ut_close};
 use rs_log::{__log_event, log_is_enabled, log_console_conf, log_type_debug, log_type_error};
 
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xpoll {
-    pub epoll_fd: libc::c_int,
-    pub fd_regs: *mut xpoll_fd_reg,
-    pub fd_regs_capacity: libc::c_int,
-    pub num_fd_regs: libc::c_int,
-    pub active_fd: libc::c_int,
-    pub active_fd_reg_id: libc::c_int,
-    pub bell_regs: *mut xpoll_bell_reg,
-    pub bell_regs_capacity: libc::c_int,
-    pub num_bell_regs: libc::c_int,
-    pub log_ref: *mut libc::c_void,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xpoll_bell_reg {
-    pub free: bool,
-    pub ringing: bool,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xpoll_fd_reg {
-    pub fd: libc::c_int,
-    pub event: libc::c_int,
-}
 #[inline]
 unsafe extern "C" fn log_xpoll_fd_event_str(
     event: libc::c_int,

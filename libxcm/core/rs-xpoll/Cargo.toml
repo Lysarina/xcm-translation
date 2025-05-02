@@ -12,4 +12,4 @@ xcm-rust-common = {path="../../../xcm-rust-common"}
 
 [lib]
 path="src/xpoll.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
