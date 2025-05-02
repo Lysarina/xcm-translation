@@ -71,15 +71,14 @@ pub mod c_functions {
 //     }
 // }
 
-use crate::xcm_tp::xcm_socket;
 unsafe extern "C" {
     pub type ctl;
     pub type xpoll;
-    pub type attr_tree;
+   //pub type attr_tree;
     pub fn __errno_location() -> *mut libc::c_int;
-    pub fn xcm_set_blocking(socket: *mut xcm_socket, should_block: bool) -> libc::c_int;
-    pub fn xcm_remote_addr(conn_socket: *mut xcm_socket) -> *const libc::c_char;
-    pub fn xcm_local_addr(socket: *mut xcm_socket) -> *const libc::c_char;
+    pub fn xcm_set_blocking(socket: *mut xcm_tp::xcm_socket, should_block: bool) -> libc::c_int;
+    pub fn xcm_remote_addr(conn_socket: *mut xcm_tp::xcm_socket) -> *const libc::c_char;
+    pub fn xcm_local_addr(socket: *mut xcm_tp::xcm_socket) -> *const libc::c_char;
 
     
     pub fn xcm_addr_parse_proto(
@@ -87,7 +86,7 @@ unsafe extern "C" {
         proto: *mut libc::c_char,
         capacity: size_t,
     ) -> libc::c_int;
-    pub fn ctl_create(socket: *mut xcm_socket) -> *mut ctl;
+    pub fn ctl_create(socket: *mut xcm_tp::xcm_socket) -> *mut ctl;
     pub fn ctl_destroy(ctl: *mut ctl, owner: bool);
     pub fn ctl_process(ctl: *mut ctl);
 }
@@ -102,38 +101,123 @@ pub mod xcm_attr {
     pub const xcm_attr_type_bool: xcm_attr_type = 1;
 }
 
-pub mod attr_node {
+// pub mod attr_tree_types {
+//     unsafe extern "C" {
+//         pub type attr_node;
+//     }
+//     #[derive(Copy, Clone)]
+// #[repr(C)]
+//     pub struct attr_tree {
+//         pub root: *mut attr_node,
+//     }
+// }
+
+// pub mod attr_node_types {
+
+//     // use super::xcm_tp::*;
+//     use super::xcm_tp::*;
+//     use super::xcm_attr::*;
 
 
-    pub type attr_node_type = libc::c_uint;
-    pub const attr_node_type_list: attr_node_type = 2;
-    pub const attr_node_type_dict: attr_node_type = 1;
-    pub const attr_node_type_value: attr_node_type = 0;
+//     pub type attr_node_type = libc::c_uint;
+//     pub const attr_node_type_list: attr_node_type = 2;
+//     pub const attr_node_type_dict: attr_node_type = 1;
+//     pub const attr_node_type_value: attr_node_type = 0;
 
-    // pub type attr_set = Option::<
-    // // unsafe extern "C" fn(
-    // //     *mut xcm_socket,
-    // //     *mut libc::c_void,
-    // //     *const libc::c_void,
-    // //     libc::c_ulong,
-    // // ) -> libc::c_int,
-    // // >;
-    // // pub type attr_get = Option::<
-    // //     unsafe extern "C" fn(
-    // //         *mut xcm_socket,
-    // //         *mut libc::c_void,
-    // //         *mut libc::c_void,
-    // //         libc::c_ulong,
-    // //     ) -> libc::c_int,
-    // // >;
+//     #[derive(Copy, Clone)]
+//     #[repr(C)]
+//     pub struct attr_node {
+//         pub type_0: attr_node_type,
+//         pub c2rust_unnamed: C2RustUnnamed,
+//     }
+
+//     #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub union C2RustUnnamed {
+//     pub value: attr_node_value,
+//     pub dict: attr_node_dict,
+//     pub list: attr_node_list,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct attr_node_list {
+//     pub tqh_first: *mut attr_node_list_elem,
+//     pub tqh_last: *mut *mut attr_node_list_elem,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct attr_node_list_elem {
+//     pub node: *mut attr_node,
+//     pub entry: C2RustUnnamed_0,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct C2RustUnnamed_0 {
+//     pub tqe_next: *mut attr_node_list_elem,
+//     pub tqe_prev: *mut *mut attr_node_list_elem,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct attr_node_dict {
+//     pub tqh_first: *mut attr_node_dict_elem,
+//     pub tqh_last: *mut *mut attr_node_dict_elem,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct attr_node_dict_elem {
+//     pub key: *mut libc::c_char,
+//     pub node: *mut attr_node,
+//     pub entry: C2RustUnnamed_1,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct C2RustUnnamed_1 {
+//     pub tqe_next: *mut attr_node_dict_elem,
+//     pub tqe_prev: *mut *mut attr_node_dict_elem,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct attr_node_value {
+//     pub type_0: xcm_attr_type,
+//     pub s: *mut xcm_socket,
+//     pub context: *mut libc::c_void,
+//     pub set: attr_set,
+//     pub get: attr_get,
+// }
+
+//     pub type attr_set = Option::<
+//     unsafe extern "C" fn(
+//         *mut xcm_socket,
+//         *mut libc::c_void,
+//         *const libc::c_void,
+//         libc::c_ulong,
+//     ) -> libc::c_int,
+//     >;
+//     pub type attr_get = Option::<
+//         unsafe extern "C" fn(
+//             *mut xcm_socket,
+//             *mut libc::c_void,
+//             *mut libc::c_void,
+//             libc::c_ulong,
+//         ) -> libc::c_int,
+//     >;
 
     
-}
+// }
 
 pub mod xcm_tp {
 
-    use super::*;
-    
+
+    // use super::attr_tree_types::*;
+    extern "C" {
+        type attr_tree;
+    }
+
+    use super::int64_t;
+    use super::xpoll;
+    use super::uint64_t;
+    use super::ctl;
+    use super::size_t;
     #[derive(Copy, Clone)]
     #[repr(C)]
     pub struct xcm_socket {
@@ -157,6 +241,8 @@ pub mod xcm_tp {
         pub name: [libc::c_char; 33],
         pub ops: *const xcm_tp_ops,
     }
+
+
     #[derive(Copy, Clone)]
     #[repr(C)]
     pub struct xcm_tp_ops {

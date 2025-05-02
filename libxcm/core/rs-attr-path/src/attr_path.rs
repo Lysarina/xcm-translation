@@ -19,11 +19,11 @@ pub const attr_pcomp_type_key: attr_pcomp_type = 0;
 #[repr(C)]
 pub struct attr_pcomp {
     pub type_0: attr_pcomp_type,
-    pub c2rust_unnamed: C2RustUnnamed,
+    pub c2rust_unnamed: C2RustUnnamed_attr_path,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub union C2RustUnnamed {
+pub union C2RustUnnamed_attr_path {
     pub key: *mut libc::c_char,
     pub index: libc::c_ulong,
 }
@@ -52,7 +52,7 @@ unsafe extern "C" fn attr_path_key_create(
         
         attr_pcomp {
             type_0: attr_pcomp_type_key,
-            c2rust_unnamed: C2RustUnnamed {
+            c2rust_unnamed: C2RustUnnamed_attr_path {
                 key: ut_strdup(key),
             },
         }
@@ -67,7 +67,7 @@ unsafe extern "C" fn attr_path_index_create(index: libc::c_ulong) -> *mut attr_p
         
         attr_pcomp {
             type_0: attr_pcomp_type_index,
-            c2rust_unnamed: C2RustUnnamed { index },
+            c2rust_unnamed: C2RustUnnamed_attr_path { index },
         }
     };
     comp

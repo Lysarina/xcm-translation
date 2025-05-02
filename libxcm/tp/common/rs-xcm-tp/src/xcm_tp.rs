@@ -11,9 +11,10 @@ use xcm_rust_common::c_functions::*;
 use rs_util::*;
 // use xcm_rust_common::log::*;
 use rs_log::*;
+use rs_attr_tree::*;
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::xcm_attr::*;
-use xcm_rust_common::attr_node::*;
+
 
 unsafe extern "C" { fn attr_tree_add_value_node(
             tree: *mut attr_tree,

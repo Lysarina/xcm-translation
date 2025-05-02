@@ -31,6 +31,7 @@ name = "rs-util"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "xcm-rust-common",
 ]
 
 [[package]]

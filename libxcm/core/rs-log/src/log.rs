@@ -7,12 +7,12 @@
 #![feature(c_variadic, extern_types)]
 
 use xcm_rust_common::xcm_tp::xcm_socket;
+use xcm_rust_common::*;
 
 use std::sync::atomic::{AtomicBool, Ordering};
 unsafe extern "C" {
     pub type ctl;
-    pub type xpoll;
-    pub type attr_tree;
+    // pub type xpoll;
     pub type _IO_wide_data;
     pub type _IO_codecvt;
     pub type _IO_marker;
@@ -52,12 +52,8 @@ pub struct __va_list_tag {
     pub reg_save_area: *mut libc::c_void,
 }
 
-pub type uint64_t = __uint64_t;
-pub type __uint64_t = libc::c_ulong;
-pub type int64_t = __int64_t;
-pub type __int64_t = libc::c_long;
 
-pub type size_t = libc::c_ulong;
+
 pub type log_type = libc::c_uint;
 pub const log_type_error: log_type = 1;
 pub const log_type_debug: log_type = 0;
