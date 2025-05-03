@@ -183,6 +183,7 @@ dependencies = [
  "rs-log",
  "rs-util",
  "rs-xcm-tp",
+ "rs-xcm-version",
  "rs-xpoll",
  "xcm-rust-common",
 ]
@@ -217,6 +218,13 @@ dependencies = [
  "rs-util",
  "rs-xcm-addr",
  "xcm-rust-common",
+]
+
+[[package]]
+name = "rs-xcm-version"
+version = "0.1.0"
+dependencies = [
+ "libc",
 ]
 
 [[package]]

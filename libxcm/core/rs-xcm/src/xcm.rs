@@ -19,6 +19,7 @@ use rs_log::*;
 use rs_util::*;
 use rs_attr_tree::{attr_tree_destroy, attr_tree_get_all, attr_tree_get_list_len,
     attr_tree_get_value, attr_tree_set_value, attr_tree_create};
+use rs_xcm_version::*;
 
 unsafe extern "C" {
     pub type xcm_attr_map;
@@ -38,8 +39,6 @@ unsafe extern "C" {
         user: *mut libc::c_void,
     );
     fn xcm_attr_map_destroy(attr_map: *mut xcm_attr_map);
-    fn xcm_version() -> *const libc::c_char;
-    fn xcm_version_api() -> *const libc::c_char;
 }
 pub type xcm_attr_map_foreach_cb = Option::<
     unsafe extern "C" fn(
