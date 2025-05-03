@@ -21,6 +21,7 @@ use xcm_rust_common::xcm_attr::*;
 use rs_xpoll::*;
 
 unsafe extern "C" {
+    // These are from xcm.rs, cannot import w/ Rust because cyclic
     fn xcm_attr_get(
         socket_0: *mut xcm_socket,
         name: *const libc::c_char,

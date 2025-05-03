@@ -4,7 +4,6 @@
     non_upper_case_globals,
     clippy::missing_safety_doc
 )]
-#![feature(extern_types)]
 
 use std::process::abort;
 use libc::{memcpy, memset, sockaddr, sockaddr_storage, sockaddr_in, sockaddr_in6};

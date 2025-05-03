@@ -22,6 +22,7 @@ use rs_attr_tree::{attr_tree_destroy, attr_tree_get_all, attr_tree_get_list_len,
 use rs_xcm_version::*;
 
 unsafe extern "C" {
+    // Translate attr map??
     pub type xcm_attr_map;
     fn xcm_attr_map_create() -> *mut xcm_attr_map;
     fn xcm_attr_map_add_bool(
