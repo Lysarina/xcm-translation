@@ -41,6 +41,7 @@ name = "rs-log"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "rs-util",
  "xcm-rust-common",
 ]
 
