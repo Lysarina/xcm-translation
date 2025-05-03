@@ -9,11 +9,13 @@ use xcm_rust_common::*;
 use xcm_rust_common::c_functions::*;
 use rs_util::*;
 use rs_log::*;
-use rs_attr_tree::attr_get;
-use rs_attr_tree::attr_set;
+// use rs_attr_tree::attr_get;
+// use rs_attr_tree::attr_set;
 
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::xcm_attr::*;
+use xcm_rust_common::attr_node_mod::*;
+use xcm_rust_common::attr_tree_mod::*;
 use xcm_rust_common::xpoll_mod::*;
 
 
@@ -47,7 +49,7 @@ use std::sync::{OnceLock, Mutex};
 static NEXT_ID: OnceLock<Mutex<i64>> = OnceLock::new();
 
 #[unsafe(no_mangle)]
-unsafe extern "C" fn get_next_sock_id() -> int64_t {
+unsafe extern "C" fn get_next_sock_id() -> libc::c_long {
     let counter = NEXT_ID.get_or_init(|| Mutex::new(0));
     let mut guard = counter.lock().unwrap();
     let id = *guard;
@@ -125,13 +127,13 @@ unsafe extern "C" fn consider_ctl(
     if temporarly_failed_op {
         (*s)
             .skipped_ctl_calls = ((*s).skipped_ctl_calls)
-            .wrapping_add((256 as libc::c_int / 4 as libc::c_int) as uint64_t);
+            .wrapping_add((256 as libc::c_int / 4 as libc::c_int) as libc::c_ulong);
     } else {
         (*s).skipped_ctl_calls = ((*s).skipped_ctl_calls).wrapping_add(1);
     }
-    if (*s).skipped_ctl_calls > 256 as libc::c_int as uint64_t {
+    if (*s).skipped_ctl_calls > 256 as libc::c_int as libc::c_ulong {
         do_ctl(s);
-        (*s).skipped_ctl_calls = 0 as libc::c_int as uint64_t;
+        (*s).skipped_ctl_calls = 0 as libc::c_int as libc::c_ulong;
     }
 }}
 unsafe extern "C" fn consider_auto_update(s: *mut xcm_socket) { unsafe {
@@ -209,7 +211,7 @@ pub unsafe extern "C" fn xcm_tp_socket_accept(
 pub unsafe extern "C" fn xcm_tp_socket_send(
     s: *mut xcm_socket,
     buf: *const libc::c_void,
-    len: size_t,
+    len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let rc: libc::c_int = ((*(*(*s).proto).ops).send)
         .expect("non-null function pointer")(s, buf, len);
@@ -225,7 +227,7 @@ pub unsafe extern "C" fn xcm_tp_socket_send(
 pub unsafe extern "C" fn xcm_tp_socket_receive(
     s: *mut xcm_socket,
     buf: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let rc: libc::c_int = ((*(*(*s).proto).ops).receive)
         .expect("non-null function pointer")(s, buf, capacity);
@@ -303,7 +305,7 @@ pub unsafe extern "C" fn xcm_tp_socket_get_local_addr(
         .expect("non-null function pointer")(s, suppress_tracing)
 }}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn xcm_tp_socket_max_msg(conn_s: *mut xcm_socket) -> size_t { unsafe {
+pub unsafe extern "C" fn xcm_tp_socket_max_msg(conn_s: *mut xcm_socket) -> libc::c_ulong { unsafe {
     ((*(*(*conn_s).proto).ops).max_msg)
         .expect("non-null function pointer")(conn_s)
 }}
@@ -311,7 +313,7 @@ pub unsafe extern "C" fn xcm_tp_socket_max_msg(conn_s: *mut xcm_socket) -> size_
 pub unsafe extern "C" fn xcm_tp_socket_get_cnt(
     conn_s: *mut xcm_socket,
     cnt: xcm_tp_cnt,
-) -> int64_t { unsafe {
+) -> libc::c_long { unsafe {
     ((*(*(*conn_s).proto).ops).get_cnt)
         .expect("non-null function pointer")(conn_s, cnt)
 }}
@@ -339,20 +341,20 @@ pub unsafe extern "C" fn xcm_tp_socket_attr_populate(
 pub unsafe extern "C" fn xcm_tp_get_str_attr(
     value: *const libc::c_char,
     buf: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    let len: size_t = strlen(value);
+    let len: libc::c_ulong = strlen(value);
     if len >= capacity {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
     strcpy(buf as *mut libc::c_char, value);
-    len.wrapping_add(1 as libc::c_int as size_t) as libc::c_int
+    len.wrapping_add(1 as libc::c_int as libc::c_ulong) as libc::c_int
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_tp_set_bool_attr(
     buf: *const libc::c_void,
-    mut _len: size_t,
+    mut _len: libc::c_ulong,
     value: *mut bool,
 ) { unsafe {
     memcpy(
@@ -365,7 +367,7 @@ pub unsafe extern "C" fn xcm_tp_set_bool_attr(
 pub unsafe extern "C" fn xcm_tp_get_bool_attr(
     mut value: bool,
     buf: *mut libc::c_void,
-    mut _capacity: size_t,
+    mut _capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     memcpy(
         buf,
@@ -377,7 +379,7 @@ pub unsafe extern "C" fn xcm_tp_get_bool_attr(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_tp_set_double_attr(
     buf: *const libc::c_void,
-    _len: size_t,
+    _len: libc::c_ulong,
     value: *mut libc::c_double,
 ) { unsafe {
     memcpy(
@@ -390,7 +392,7 @@ pub unsafe extern "C" fn xcm_tp_set_double_attr(
 pub unsafe extern "C" fn xcm_tp_get_double_attr(
     mut value: libc::c_double,
     buf: *mut libc::c_void,
-    _capacity: size_t,
+    _capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     memcpy(
         buf,
@@ -402,9 +404,9 @@ pub unsafe extern "C" fn xcm_tp_get_double_attr(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_tp_get_bin_attr(
     value: *const libc::c_char,
-    len: size_t,
+    len: libc::c_ulong,
     buf: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if len > capacity {
         *__errno_location() = 75 as libc::c_int;
@@ -417,7 +419,7 @@ unsafe extern "C" fn get_type_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     xcm_tp_get_str_attr(xcm_tp_socket_type_name((*s).type_0), value, capacity)
 }}
@@ -425,7 +427,7 @@ unsafe extern "C" fn get_transport_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     xcm_tp_get_str_attr(xcm_tp_socket_get_transport(s), value, capacity)
 }}
@@ -433,7 +435,7 @@ unsafe extern "C" fn set_service_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *const libc::c_void,
-    _len: size_t,
+    _len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if strcmp(value as *const libc::c_char, b"any\0" as *const u8 as *const libc::c_char)
         == 0 as libc::c_int
@@ -457,7 +459,7 @@ unsafe extern "C" fn get_service_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let service: *const libc::c_char = if xcm_tp_socket_is_bytestream(s)
         as libc::c_int != 0
@@ -471,7 +473,7 @@ unsafe extern "C" fn get_service_attr(
 unsafe extern "C" fn addr_to_attr(
     addr: *const libc::c_char,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if addr.is_null() {
         *__errno_location() = 2 as libc::c_int;
@@ -483,7 +485,7 @@ unsafe extern "C" fn set_local_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *const libc::c_void,
-    _len: size_t,
+    _len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     xcm_tp_socket_set_local_addr(s, value as *const libc::c_char)
 }}
@@ -491,7 +493,7 @@ unsafe extern "C" fn get_local_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     addr_to_attr(xcm_local_addr(s), value, capacity)
 }}
@@ -499,7 +501,7 @@ unsafe extern "C" fn get_remote_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     addr_to_attr(xcm_remote_addr(s), value, capacity)
 }}
@@ -507,7 +509,7 @@ unsafe extern "C" fn set_blocking_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *const libc::c_void,
-    len: size_t,
+    len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let mut is_blocking: bool = false;
     xcm_tp_set_bool_attr(value, len, &mut is_blocking);
@@ -520,7 +522,7 @@ unsafe extern "C" fn get_blocking_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     xcm_tp_get_bool_attr((*s).is_blocking, value, capacity)
 }}
@@ -528,169 +530,169 @@ unsafe extern "C" fn get_max_msg_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if (*s).type_0 as libc::c_uint != xcm_socket_type_conn as libc::c_int as libc::c_uint
     {
         *__errno_location() = 2 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut max_msg: int64_t = ((*(*(*s).proto).ops).max_msg)
-        .expect("non-null function pointer")(s) as int64_t;
+    let mut max_msg: libc::c_long = ((*(*(*s).proto).ops).max_msg)
+        .expect("non-null function pointer")(s) as libc::c_long;
     memcpy(
         value,
-        &mut max_msg as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut max_msg as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn get_to_app_bytes_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_app_bytes);
+    let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_app_bytes);
     memcpy(
         value,
-        &mut cnt_value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn get_from_app_bytes_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_app_bytes);
+    let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_app_bytes);
     memcpy(
         value,
-        &mut cnt_value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn get_to_lower_bytes_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_lower_bytes);
+    let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_lower_bytes);
     memcpy(
         value,
-        &mut cnt_value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn get_from_lower_bytes_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_lower_bytes);
+    let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_lower_bytes);
     memcpy(
         value,
-        &mut cnt_value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn get_to_app_msgs_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_app_msgs);
+    let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_app_msgs);
     memcpy(
         value,
-        &mut cnt_value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn get_from_app_msgs_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_app_msgs);
+    let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_app_msgs);
     memcpy(
         value,
-        &mut cnt_value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn get_to_lower_msgs_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_lower_msgs);
+    let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_lower_msgs);
     memcpy(
         value,
-        &mut cnt_value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn get_from_lower_msgs_attr(
     s: *mut xcm_socket,
     _context: *mut libc::c_void,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+    if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_lower_msgs);
+    let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_lower_msgs);
     memcpy(
         value,
-        &mut cnt_value as *mut int64_t as *const libc::c_void,
-        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+        &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
     );
-    ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int
+    ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
 unsafe extern "C" fn populate_common(s: *mut xcm_socket, tree: *mut attr_tree) { unsafe {
     attr_tree_add_value_node(
@@ -705,7 +707,7 @@ unsafe extern "C" fn populate_common(s: *mut xcm_socket, tree: *mut attr_tree) {
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *const libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
         Some(
@@ -714,7 +716,7 @@ unsafe extern "C" fn populate_common(s: *mut xcm_socket, tree: *mut attr_tree) {
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -731,7 +733,7 @@ unsafe extern "C" fn populate_common(s: *mut xcm_socket, tree: *mut attr_tree) {
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -748,7 +750,7 @@ unsafe extern "C" fn populate_common(s: *mut xcm_socket, tree: *mut attr_tree) {
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -764,7 +766,7 @@ unsafe extern "C" fn populate_common(s: *mut xcm_socket, tree: *mut attr_tree) {
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *const libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
         Some(
@@ -773,7 +775,7 @@ unsafe extern "C" fn populate_common(s: *mut xcm_socket, tree: *mut attr_tree) {
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -792,7 +794,7 @@ unsafe extern "C" fn populate_msg_cnt(s: *mut xcm_socket, tree: *mut attr_tree) 
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -809,7 +811,7 @@ unsafe extern "C" fn populate_msg_cnt(s: *mut xcm_socket, tree: *mut attr_tree) 
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -826,7 +828,7 @@ unsafe extern "C" fn populate_msg_cnt(s: *mut xcm_socket, tree: *mut attr_tree) 
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -843,7 +845,7 @@ unsafe extern "C" fn populate_msg_cnt(s: *mut xcm_socket, tree: *mut attr_tree) 
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -860,7 +862,7 @@ unsafe extern "C" fn populate_msg_cnt(s: *mut xcm_socket, tree: *mut attr_tree) 
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -877,7 +879,7 @@ unsafe extern "C" fn populate_msg_cnt(s: *mut xcm_socket, tree: *mut attr_tree) 
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -894,7 +896,7 @@ unsafe extern "C" fn populate_msg_cnt(s: *mut xcm_socket, tree: *mut attr_tree) 
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -911,7 +913,7 @@ unsafe extern "C" fn populate_msg_cnt(s: *mut xcm_socket, tree: *mut attr_tree) 
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -933,7 +935,7 @@ unsafe extern "C" fn populate_bytestream_cnt(
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -950,7 +952,7 @@ unsafe extern "C" fn populate_bytestream_cnt(
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -967,7 +969,7 @@ unsafe extern "C" fn populate_bytestream_cnt(
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -984,7 +986,7 @@ unsafe extern "C" fn populate_bytestream_cnt(
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -1006,7 +1008,7 @@ unsafe extern "C" fn populate_common_conn(
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *const libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
         Some(
@@ -1015,7 +1017,7 @@ unsafe extern "C" fn populate_common_conn(
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -1032,7 +1034,7 @@ unsafe extern "C" fn populate_common_conn(
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -1055,7 +1057,7 @@ unsafe extern "C" fn populate_msg_conn(
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -1083,7 +1085,7 @@ unsafe extern "C" fn populate_server(s: *mut xcm_socket, tree: *mut attr_tree) {
                     *mut xcm_socket,
                     *mut libc::c_void,
                     *mut libc::c_void,
-                    size_t,
+                    libc::c_ulong,
                 ) -> libc::c_int,
         ),
     );
@@ -1133,14 +1135,14 @@ static mut protos: [xcm_tp_proto; 8] = [xcm_tp_proto {
     name: [0; 33],
     ops: 0 as *const xcm_tp_ops,
 }; 8];
-static mut num_protos: size_t = 0 as libc::c_int as size_t;
+static mut num_protos: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
 #[unsafe(no_mangle)]
 #[allow(static_mut_refs)] //Had to add this, the return statement gave error otherwise
 pub unsafe extern "C" fn xcm_tp_proto_by_name(
     proto_name: *const libc::c_char,
 ) -> *mut xcm_tp_proto { unsafe {
     let mut i: libc::c_int = 0;
-    while (i as size_t) < num_protos {
+    while (i as libc::c_ulong) < num_protos {
         if strcmp((protos[i as usize].name).as_mut_ptr(), proto_name) == 0 as libc::c_int
         {
             return &mut *protos.as_mut_ptr().offset(i as isize) as *mut xcm_tp_proto;
@@ -1174,7 +1176,7 @@ pub unsafe extern "C" fn xcm_tp_register(
     proto_name: *const libc::c_char,
     ops: *const xcm_tp_ops,
 ) { unsafe {
-    if num_protos >= 8 as libc::c_int as size_t {
+    if num_protos >= 8 as libc::c_int as libc::c_ulong {
         log_console_conf(1 as libc::c_int != 0);
         if log_is_enabled(log_type_error) {
             __log_event(
@@ -1298,7 +1300,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
 //     fn ut_mutex_lock(m: *mut pthread_mutex_t);
 //     fn ut_mutex_unlock(m: *mut pthread_mutex_t);
-//     fn ut_calloc(size: size_t) -> *mut libc::c_void;
+//     fn ut_calloc(size: libc::c_ulong) -> *mut libc::c_void;
 //     fn ut_free(ptr: *mut libc::c_void);
 //     fn log_console_conf(enabled: bool);
 //     fn log_is_enabled(type_0: log_type) -> bool;
@@ -1314,16 +1316,16 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     fn xcm_addr_parse_proto(
 //         addr_s: *const libc::c_char,
 //         proto: *mut libc::c_char,
-//         capacity: size_t,
+//         capacity: libc::c_ulong,
 //     ) -> libc::c_int;
 //     fn ctl_create(socket: *mut xcm_socket) -> *mut ctl;
 //     fn ctl_destroy(ctl: *mut ctl, owner: bool);
 //     fn ctl_process(ctl: *mut ctl);
 // }
-// pub type size_t = libc::c_ulong;
-// pub type __int64_t = libc::c_long;
-// pub type __uint64_t = libc::c_ulong;
-// pub type int64_t = __int64_t;
+// pub type libc::c_ulong = libc::c_ulong;
+// pub type __libc::c_long = libc::c_long;
+// pub type __libc::c_ulong = libc::c_ulong;
+// pub type libc::c_long = __libc::c_long;
 // #[derive(Copy, Clone)]
 // #[repr(C)]
 // pub struct __pthread_internal_list {
@@ -1356,20 +1358,20 @@ pub unsafe extern "C" fn xcm_tp_register(
 // pub const xcm_attr_type_str: xcm_attr_type = 3;
 // pub const xcm_attr_type_int64: xcm_attr_type = 2;
 // pub const xcm_attr_type_bool: xcm_attr_type = 1;
-// pub type uint64_t = __uint64_t;
+// pub type libc::c_ulong = __libc::c_ulong;
 // #[derive(Copy, Clone)]
 // #[repr(C)]
 // pub struct xcm_socket {
 //     pub proto: *const xcm_tp_proto,
 //     pub type_0: xcm_socket_type,
-//     pub sock_id: int64_t,
+//     pub sock_id: libc::c_long,
 //     pub auto_enable_ctl: bool,
 //     pub auto_update: bool,
 //     pub is_blocking: bool,
 //     pub xpoll: *mut xpoll,
 //     pub condition: libc::c_int,
 //     pub ctl: *mut ctl,
-//     pub skipped_ctl_calls: uint64_t,
+//     pub skipped_ctl_calls: libc::c_ulong,
 // }
 // pub type xcm_socket_type = libc::c_uint;
 // pub const xcm_socket_type_server: xcm_socket_type = 1;
@@ -1398,10 +1400,10 @@ pub unsafe extern "C" fn xcm_tp_register(
 //         unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
 //     >,
 //     pub send: Option::<
-//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, size_t) -> libc::c_int,
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, libc::c_ulong) -> libc::c_int,
 //     >,
 //     pub receive: Option::<
-//         unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, size_t) -> libc::c_int,
+//         unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, libc::c_ulong) -> libc::c_int,
 //     >,
 //     pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
 //     pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
@@ -1417,13 +1419,13 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     pub set_local_addr: Option::<
 //         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
 //     >,
-//     pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> size_t>,
-//     pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> int64_t>,
+//     pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_ulong>,
+//     pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> libc::c_long>,
 //     pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
 //     pub attr_populate: Option::<
 //         unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
 //     >,
-//     pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> size_t>,
+//     pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> libc::c_ulong>,
 // }
 // pub type xcm_tp_cnt = libc::c_uint;
 // pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
@@ -1439,7 +1441,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //         *mut xcm_socket,
 //         *mut libc::c_void,
 //         *const libc::c_void,
-//         size_t,
+//         libc::c_ulong,
 //     ) -> libc::c_int,
 // >;
 // pub type attr_get = Option::<
@@ -1447,7 +1449,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //         *mut xcm_socket,
 //         *mut libc::c_void,
 //         *mut libc::c_void,
-//         size_t,
+//         libc::c_ulong,
 //     ) -> libc::c_int,
 // >;
 // pub type log_type = libc::c_uint;
@@ -1518,9 +1520,9 @@ pub unsafe extern "C" fn xcm_tp_register(
 //         init
 //     },
 // };
-// static mut next_id: int64_t = 0 as libc::c_int as int64_t;
-// unsafe extern "C" fn get_next_sock_id() -> int64_t {
-//     let mut nid: int64_t = 0;
+// static mut next_id: libc::c_long = 0 as libc::c_int as libc::c_long;
+// unsafe extern "C" fn get_next_sock_id() -> libc::c_long {
+//     let mut nid: libc::c_long = 0;
 //     ut_mutex_lock(&mut next_id_lock);
 //     let fresh0 = next_id;
 //     next_id = next_id + 1;
@@ -1537,7 +1539,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut auto_update: bool,
 //     mut is_blocking: bool,
 // ) -> *mut xcm_socket {
-//     let mut priv_size: size_t = ((*(*proto).ops).priv_size)
+//     let mut priv_size: libc::c_ulong = ((*(*proto).ops).priv_size)
 //         .expect("non-null function pointer")(type_0);
 //     let mut s: *mut xcm_socket = ut_calloc(
 //         (::core::mem::size_of::<xcm_socket>() as libc::c_ulong).wrapping_add(priv_size),
@@ -1583,14 +1585,14 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     if temporarly_failed_op {
 //         (*s)
 //             .skipped_ctl_calls = ((*s).skipped_ctl_calls)
-//             .wrapping_add((256 as libc::c_int / 4 as libc::c_int) as uint64_t);
+//             .wrapping_add((256 as libc::c_int / 4 as libc::c_int) as libc::c_ulong);
 //     } else {
 //         (*s).skipped_ctl_calls = ((*s).skipped_ctl_calls).wrapping_add(1);
 //         (*s).skipped_ctl_calls;
 //     }
-//     if (*s).skipped_ctl_calls > 256 as libc::c_int as uint64_t {
+//     if (*s).skipped_ctl_calls > 256 as libc::c_int as libc::c_ulong {
 //         do_ctl(s);
-//         (*s).skipped_ctl_calls = 0 as libc::c_int as uint64_t;
+//         (*s).skipped_ctl_calls = 0 as libc::c_int as libc::c_ulong;
 //     }
 // }
 // unsafe extern "C" fn consider_auto_update(mut s: *mut xcm_socket) {
@@ -1668,7 +1670,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 // pub unsafe extern "C" fn xcm_tp_socket_send(
 //     mut s: *mut xcm_socket,
 //     mut buf: *const libc::c_void,
-//     mut len: size_t,
+//     mut len: libc::c_ulong,
 // ) -> libc::c_int {
 //     let mut rc: libc::c_int = ((*(*(*s).proto).ops).send)
 //         .expect("non-null function pointer")(s, buf, len);
@@ -1684,7 +1686,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 // pub unsafe extern "C" fn xcm_tp_socket_receive(
 //     mut s: *mut xcm_socket,
 //     mut buf: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     let mut rc: libc::c_int = ((*(*(*s).proto).ops).receive)
 //         .expect("non-null function pointer")(s, buf, capacity);
@@ -1758,7 +1760,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //         .expect("non-null function pointer")(s, suppress_tracing);
 // }
 // #[unsafe(no_mangle)]
-// pub unsafe extern "C" fn xcm_tp_socket_max_msg(mut conn_s: *mut xcm_socket) -> size_t {
+// pub unsafe extern "C" fn xcm_tp_socket_max_msg(mut conn_s: *mut xcm_socket) -> libc::c_ulong {
 //     return ((*(*(*conn_s).proto).ops).max_msg)
 //         .expect("non-null function pointer")(conn_s);
 // }
@@ -1766,7 +1768,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 // pub unsafe extern "C" fn xcm_tp_socket_get_cnt(
 //     mut conn_s: *mut xcm_socket,
 //     mut cnt: xcm_tp_cnt,
-// ) -> int64_t {
+// ) -> libc::c_long {
 //     return ((*(*(*conn_s).proto).ops).get_cnt)
 //         .expect("non-null function pointer")(conn_s, cnt);
 // }
@@ -1792,20 +1794,20 @@ pub unsafe extern "C" fn xcm_tp_register(
 // pub unsafe extern "C" fn xcm_tp_get_str_attr(
 //     mut value: *const libc::c_char,
 //     mut buf: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     let mut len: size_t = strlen(value);
+//     let mut len: libc::c_ulong = strlen(value);
 //     if len >= capacity {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
 //     strcpy(buf as *mut libc::c_char, value);
-//     return len.wrapping_add(1 as libc::c_int as size_t) as libc::c_int;
+//     return len.wrapping_add(1 as libc::c_int as libc::c_ulong) as libc::c_int;
 // }
 // #[unsafe(no_mangle)]
 // pub unsafe extern "C" fn xcm_tp_set_bool_attr(
 //     mut buf: *const libc::c_void,
-//     mut len: size_t,
+//     mut len: libc::c_ulong,
 //     mut value: *mut bool,
 // ) {
 //     memcpy(
@@ -1818,7 +1820,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 // pub unsafe extern "C" fn xcm_tp_get_bool_attr(
 //     mut value: bool,
 //     mut buf: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     memcpy(
 //         buf,
@@ -1830,7 +1832,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 // #[unsafe(no_mangle)]
 // pub unsafe extern "C" fn xcm_tp_set_double_attr(
 //     mut buf: *const libc::c_void,
-//     mut len: size_t,
+//     mut len: libc::c_ulong,
 //     mut value: *mut libc::c_double,
 // ) {
 //     memcpy(
@@ -1843,7 +1845,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 // pub unsafe extern "C" fn xcm_tp_get_double_attr(
 //     mut value: libc::c_double,
 //     mut buf: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     memcpy(
 //         buf,
@@ -1855,9 +1857,9 @@ pub unsafe extern "C" fn xcm_tp_register(
 // #[unsafe(no_mangle)]
 // pub unsafe extern "C" fn xcm_tp_get_bin_attr(
 //     mut value: *const libc::c_char,
-//     mut len: size_t,
+//     mut len: libc::c_ulong,
 //     mut buf: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     if len > capacity {
 //         *__errno_location() = 75 as libc::c_int;
@@ -1870,7 +1872,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     return xcm_tp_get_str_attr(xcm_tp_socket_type_name((*s).type_0), value, capacity);
 // }
@@ -1878,7 +1880,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     return xcm_tp_get_str_attr(xcm_tp_socket_get_transport(s), value, capacity);
 // }
@@ -1886,7 +1888,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *const libc::c_void,
-//     mut len: size_t,
+//     mut len: libc::c_ulong,
 // ) -> libc::c_int {
 //     if strcmp(value as *const libc::c_char, b"any\0" as *const u8 as *const libc::c_char)
 //         == 0 as libc::c_int
@@ -1910,7 +1912,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     let mut service: *const libc::c_char = if xcm_tp_socket_is_bytestream(s)
 //         as libc::c_int != 0
@@ -1924,7 +1926,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 // unsafe extern "C" fn addr_to_attr(
 //     mut addr: *const libc::c_char,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     if addr.is_null() {
 //         *__errno_location() = 2 as libc::c_int;
@@ -1936,7 +1938,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *const libc::c_void,
-//     mut len: size_t,
+//     mut len: libc::c_ulong,
 // ) -> libc::c_int {
 //     return xcm_tp_socket_set_local_addr(s, value as *const libc::c_char);
 // }
@@ -1944,7 +1946,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     return addr_to_attr(xcm_local_addr(s), value, capacity);
 // }
@@ -1952,7 +1954,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     return addr_to_attr(xcm_remote_addr(s), value, capacity);
 // }
@@ -1960,7 +1962,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *const libc::c_void,
-//     mut len: size_t,
+//     mut len: libc::c_ulong,
 // ) -> libc::c_int {
 //     let mut is_blocking: bool = false;
 //     xcm_tp_set_bool_attr(value, len, &mut is_blocking);
@@ -1973,7 +1975,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     return xcm_tp_get_bool_attr((*s).is_blocking, value, capacity);
 // }
@@ -1981,169 +1983,169 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     if (*s).type_0 as libc::c_uint != xcm_socket_type_conn as libc::c_int as libc::c_uint
 //     {
 //         *__errno_location() = 2 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut max_msg: int64_t = ((*(*(*s).proto).ops).max_msg)
-//         .expect("non-null function pointer")(s) as int64_t;
+//     let mut max_msg: libc::c_long = ((*(*(*s).proto).ops).max_msg)
+//         .expect("non-null function pointer")(s) as libc::c_long;
 //     memcpy(
 //         value,
-//         &mut max_msg as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut max_msg as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn get_to_app_bytes_attr(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_app_bytes);
+//     let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_app_bytes);
 //     memcpy(
 //         value,
-//         &mut cnt_value as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn get_from_app_bytes_attr(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_app_bytes);
+//     let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_app_bytes);
 //     memcpy(
 //         value,
-//         &mut cnt_value as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn get_to_lower_bytes_attr(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_lower_bytes);
+//     let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_lower_bytes);
 //     memcpy(
 //         value,
-//         &mut cnt_value as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn get_from_lower_bytes_attr(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_lower_bytes);
+//     let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_lower_bytes);
 //     memcpy(
 //         value,
-//         &mut cnt_value as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn get_to_app_msgs_attr(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_app_msgs);
+//     let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_app_msgs);
 //     memcpy(
 //         value,
-//         &mut cnt_value as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn get_from_app_msgs_attr(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_app_msgs);
+//     let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_app_msgs);
 //     memcpy(
 //         value,
-//         &mut cnt_value as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn get_to_lower_msgs_attr(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_lower_msgs);
+//     let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_to_lower_msgs);
 //     memcpy(
 //         value,
-//         &mut cnt_value as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn get_from_lower_msgs_attr(
 //     mut s: *mut xcm_socket,
 //     mut context: *mut libc::c_void,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
-//     if capacity < ::core::mem::size_of::<int64_t>() as libc::c_ulong {
+//     if capacity < ::core::mem::size_of::<libc::c_long>() as libc::c_ulong {
 //         *__errno_location() = 75 as libc::c_int;
 //         return -(1 as libc::c_int);
 //     }
-//     let mut cnt_value: int64_t = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_lower_msgs);
+//     let mut cnt_value: libc::c_long = xcm_tp_socket_get_cnt(s, xcm_tp_cnt_from_lower_msgs);
 //     memcpy(
 //         value,
-//         &mut cnt_value as *mut int64_t as *const libc::c_void,
-//         ::core::mem::size_of::<int64_t>() as libc::c_ulong,
+//         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
+//         ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
 //     );
-//     return ::core::mem::size_of::<int64_t>() as libc::c_ulong as libc::c_int;
+//     return ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int;
 // }
 // unsafe extern "C" fn populate_common(mut s: *mut xcm_socket, mut tree: *mut attr_tree) {
 //     attr_tree_add_value_node(
@@ -2158,7 +2160,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *const libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //         Some(
@@ -2167,7 +2169,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2184,7 +2186,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2201,7 +2203,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2217,7 +2219,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *const libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //         Some(
@@ -2226,7 +2228,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2245,7 +2247,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2262,7 +2264,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2279,7 +2281,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2296,7 +2298,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2313,7 +2315,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2330,7 +2332,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2347,7 +2349,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2364,7 +2366,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2386,7 +2388,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2403,7 +2405,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2420,7 +2422,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2437,7 +2439,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2459,7 +2461,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *const libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //         Some(
@@ -2468,7 +2470,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2485,7 +2487,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2508,7 +2510,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2536,7 +2538,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //                     *mut xcm_socket,
 //                     *mut libc::c_void,
 //                     *mut libc::c_void,
-//                     size_t,
+//                     libc::c_ulong,
 //                 ) -> libc::c_int,
 //         ),
 //     );
@@ -2586,14 +2588,14 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     name: [0; 33],
 //     ops: 0 as *const xcm_tp_ops,
 // }; 8];
-// static mut num_protos: size_t = 0 as libc::c_int as size_t;
+// static mut num_protos: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
 // #[unsafe(no_mangle)]
 // pub unsafe extern "C" fn xcm_tp_proto_by_name(
 //     mut proto_name: *const libc::c_char,
 // ) -> *mut xcm_tp_proto {
 //     let mut i: libc::c_int = 0;
 //     i = 0 as libc::c_int;
-//     while (i as size_t) < num_protos {
+//     while (i as libc::c_ulong) < num_protos {
 //         if strcmp((protos[i as usize].name).as_mut_ptr(), proto_name) == 0 as libc::c_int
 //         {
 //             return &mut *protos.as_mut_ptr().offset(i as isize) as *mut xcm_tp_proto;
@@ -2628,7 +2630,7 @@ pub unsafe extern "C" fn xcm_tp_register(
 //     mut proto_name: *const libc::c_char,
 //     mut ops: *const xcm_tp_ops,
 // ) {
-//     if !(num_protos < 8 as libc::c_int as size_t) {
+//     if !(num_protos < 8 as libc::c_int as libc::c_ulong) {
 //         log_console_conf(1 as libc::c_int != 0);
 //         if log_is_enabled(log_type_error) {
 //             __log_event(

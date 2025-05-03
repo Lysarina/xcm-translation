@@ -9,7 +9,105 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d750af042f7ef4f724306de029d18836c26c1765a54a6a3f094cbd23a7267ffa"
 
 [[package]]
+name = "rs-active-fd"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "rs-attr-node"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "rs-attr-path",
+ "rs-log",
+ "rs-util",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "rs-attr-path"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "rs-log",
+ "rs-util",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "rs-attr-tree"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "rs-attr-node",
+ "rs-attr-path",
+ "rs-log",
+ "rs-log-attr-tree",
+ "rs-util",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "rs-log"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "rs-log-attr-tree"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "rs-util"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "xcm-rust-common",
+]
+
+[[package]]
 name = "rs-xcm"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "rs-attr-node",
+ "rs-attr-tree",
+ "rs-xcm-tp",
+ "rs-xpoll",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "rs-xcm-tp"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "rs-attr-tree",
+ "rs-log",
+ "rs-util",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "rs-xpoll"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "rs-active-fd",
+ "rs-log",
+ "rs-util",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "xcm-rust-common"
 version = "0.1.0"
 dependencies = [
  "libc",

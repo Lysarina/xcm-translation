@@ -30,13 +30,13 @@ unsafe extern "C" {
     fn ut_gettid() -> pid_t;
     fn ut_vaprintf(
         buf: *mut libc::c_char,
-        capacity: size_t,
+        capacity: libc::c_ulong,
         format: *const libc::c_char,
         ap: ::core::ffi::VaList,
     );
     fn ut_aprintf(
         buf: *mut libc::c_char,
-        capacity: size_t,
+        capacity: libc::c_ulong,
         format: *const libc::c_char,
         _: ...
     );
@@ -88,7 +88,7 @@ pub struct _IO_FILE {
     pub _wide_data: *mut _IO_wide_data,
     pub _freeres_list: *mut _IO_FILE,
     pub _freeres_buf: *mut libc::c_void,
-    pub __pad5: size_t,
+    pub __pad5: libc::c_ulong,
     pub _mode: libc::c_int,
     pub _unused2: [libc::c_char; 20],
 }
@@ -99,7 +99,7 @@ pub type pid_t = __pid_t;
 pub type __pid_t = libc::c_int;
 unsafe extern "C" fn format_msg(
     buf: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
     file: *const libc::c_char,
     line: libc::c_int,
     function: *const libc::c_char,

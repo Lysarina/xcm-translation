@@ -1099,6 +1099,12 @@ use rs_log::*;
 use xcm_rust_common::xcm_tp::xcm_socket;
 use xcm_rust_common::xcm_attr::*;
 use xcm_rust_common::c_functions::*;
+use xcm_rust_common::attr_node_mod::{attr_node, C2RustUnnamed, attr_node_list,
+    attr_node_list_elem, C2RustUnnamed_0, C2RustUnnamed_1, attr_node_dict,
+    attr_node_dict_elem, attr_node_value, attr_get, attr_set, attr_node_type_value,
+    attr_node_type_dict, attr_node_type_list, attr_list_foreach_cb, attr_dict_foreach_cb,
+    attr_node_type};
+use xcm_rust_common::attr_tree_mod::*;
 
 use xcm_rust_common::*;
 
@@ -1116,50 +1122,6 @@ unsafe extern "C" {
     );
     // fn log_attr_type_name(type_0: xcm_attr_type) -> *const libc::c_char;
 }
-pub type attr_pcomp_type = libc::c_uint;
-pub const attr_pcomp_type_index: attr_pcomp_type = 1;
-pub const attr_pcomp_type_key: attr_pcomp_type = 0;
-
-
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct attr_tree {
-    pub root: *mut attr_node,
-}
-
-pub type xcm_attr_cb = Option::<
-    unsafe extern "C" fn(
-        *const libc::c_char,
-        xcm_attr_type,
-        *mut libc::c_void,
-        libc::c_ulong,
-        *mut libc::c_void,
-    ) -> (),
->;
-
-pub type attr_set = Option::<
-    unsafe extern "C" fn(
-        *mut xcm_socket,
-        *mut libc::c_void,
-        *const libc::c_void,
-        libc::c_ulong,
-    ) -> libc::c_int,
->;
-pub type attr_get = Option::<
-    unsafe extern "C" fn(
-        *mut xcm_socket,
-        *mut libc::c_void,
-        *mut libc::c_void,
-        libc::c_ulong,
-    ) -> libc::c_int,
->;
-pub type attr_dict_foreach_cb = Option::<
-    unsafe extern "C" fn(*const libc::c_char, *mut attr_node, *mut libc::c_void) -> (),
->;
-pub type attr_list_foreach_cb = Option::<
-    unsafe extern "C" fn(libc::c_ulong, *mut attr_node, *mut libc::c_void) -> (),
->;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -1168,6 +1130,7 @@ pub struct foreach_param {
     pub cb: xcm_attr_cb,
     pub cb_data: *mut libc::c_void,
 }
+
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_tree_create() -> *mut attr_tree { unsafe {
     let mut tree: *mut attr_tree = ut_malloc(

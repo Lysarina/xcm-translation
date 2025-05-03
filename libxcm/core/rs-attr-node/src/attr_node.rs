@@ -7,103 +7,24 @@
 )]
 #![feature(extern_types)]
 
-use rs_attr_path::*;
+use rs_attr_path::attr_path_is_valid_key;
 use rs_util::*;
 
 use xcm_rust_common::xcm_tp::*;
 use rs_log::*;
+use xcm_rust_common::attr_node_mod::*;
+// use xcm_rust_common::attr_node_mod::{attr_node, C2RustUnnamed, attr_node_list,
+//     attr_node_list_elem, C2RustUnnamed_0, C2RustUnnamed_1, attr_node_dict,
+//     attr_node_dict_elem, attr_node_value, attr_get, attr_set, attr_node_type_value,
+//     attr_node_type_dict, attr_node_type_list, attr_list_foreach_cb, attr_dict_foreach_cb,
+//     attr_node_type};
 use xcm_rust_common::*;
 use xcm_rust_common::c_functions::*;
 use xcm_rust_common::xcm_attr::*;
 
 
-    pub type attr_node_type = libc::c_uint;
-    pub const attr_node_type_list: attr_node_type = 2;
-    pub const attr_node_type_dict: attr_node_type = 1;
-    pub const attr_node_type_value: attr_node_type = 0;
+    
 
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct attr_node {
-    pub type_0: attr_node_type,
-    pub c2rust_unnamed: C2RustUnnamed,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub union C2RustUnnamed {
-    pub value: attr_node_value,
-    pub dict: attr_node_dict,
-    pub list: attr_node_list,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct attr_node_list {
-    pub tqh_first: *mut attr_node_list_elem,
-    pub tqh_last: *mut *mut attr_node_list_elem,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct attr_node_list_elem {
-    pub node: *mut attr_node,
-    pub entry: C2RustUnnamed_0,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct C2RustUnnamed_0 {
-    pub tqe_next: *mut attr_node_list_elem,
-    pub tqe_prev: *mut *mut attr_node_list_elem,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct attr_node_dict {
-    pub tqh_first: *mut attr_node_dict_elem,
-    pub tqh_last: *mut *mut attr_node_dict_elem,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct attr_node_dict_elem {
-    pub key: *mut libc::c_char,
-    pub node: *mut attr_node,
-    pub entry: C2RustUnnamed_1,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct C2RustUnnamed_1 {
-    pub tqe_next: *mut attr_node_dict_elem,
-    pub tqe_prev: *mut *mut attr_node_dict_elem,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct attr_node_value {
-    pub type_0: xcm_attr_type,
-    pub s: *mut xcm_socket,
-    pub context: *mut libc::c_void,
-    pub set: attr_set,
-    pub get: attr_get,
-}
-pub type attr_get = Option::<
-    unsafe extern "C" fn(
-        *mut xcm_socket,
-        *mut libc::c_void,
-        *mut libc::c_void,
-        size_t,
-    ) -> libc::c_int,
->;
-pub type attr_set = Option::<
-    unsafe extern "C" fn(
-        *mut xcm_socket,
-        *mut libc::c_void,
-        *const libc::c_void,
-        size_t,
-    ) -> libc::c_int,
->;
-pub type attr_dict_foreach_cb = Option::<
-    unsafe extern "C" fn(*const libc::c_char, *mut attr_node, *mut libc::c_void) -> (),
->;
-pub type attr_list_foreach_cb = Option::<
-    unsafe extern "C" fn(size_t, *mut attr_node, *mut libc::c_void) -> (),
->;
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_node_value(
     s: *mut xcm_socket,
@@ -223,7 +144,7 @@ pub unsafe extern "C" fn attr_node_value_is_writable(
 pub unsafe extern "C" fn attr_node_value_set(
     value_node: *const attr_node,
     value: *const libc::c_void,
-    len: size_t,
+    len: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if (*value_node).type_0 as libc::c_uint != attr_node_type_value as libc::c_int as libc::c_uint
     {
@@ -261,7 +182,7 @@ pub unsafe extern "C" fn attr_node_value_set(
 pub unsafe extern "C" fn attr_node_value_get(
     value_node: *const attr_node,
     value: *mut libc::c_void,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if (*value_node).type_0 as libc::c_uint != attr_node_type_value as libc::c_int as libc::c_uint
     {
@@ -370,7 +291,7 @@ pub unsafe extern "C" fn attr_node_dict_has_key(
     !(attr_node_dict_get_key(dict, key)).is_null()
 }}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn attr_node_dict_size(dict: *mut attr_node) -> size_t { unsafe {
+pub unsafe extern "C" fn attr_node_dict_size(dict: *mut attr_node) -> libc::c_ulong { unsafe {
     if (*dict).type_0 as libc::c_uint != attr_node_type_dict as libc::c_int as libc::c_uint
     {
         log_console_conf(1 as libc::c_int != 0);
@@ -393,7 +314,7 @@ pub unsafe extern "C" fn attr_node_dict_size(dict: *mut attr_node) -> size_t { u
         }
         abort();
     }
-    let mut count: size_t = 0 as libc::c_int as size_t;
+    let mut count: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
     // let mut elem: *mut attr_node_dict_elem = std::ptr::null_mut::<attr_node_dict_elem>();
     let mut elem: *mut attr_node_dict_elem = (*dict).c2rust_unnamed.dict.tqh_first;
     // elem = (*dict).c2rust_unnamed.dict.tqh_first;
@@ -520,7 +441,7 @@ pub unsafe extern "C" fn attr_node_list_append(
     (*list).c2rust_unnamed.list.tqh_last = &mut (*elem).entry.tqe_next;
 }}
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn attr_node_list_len(list: *mut attr_node) -> size_t { unsafe {
+pub unsafe extern "C" fn attr_node_list_len(list: *mut attr_node) -> libc::c_ulong { unsafe {
     if (*list).type_0 as libc::c_uint != attr_node_type_list as libc::c_int as libc::c_uint
     {
         log_console_conf(1 as libc::c_int != 0);
@@ -543,7 +464,7 @@ pub unsafe extern "C" fn attr_node_list_len(list: *mut attr_node) -> size_t { un
         }
         abort();
     }
-    let mut count: size_t = 0 as libc::c_int as size_t;
+    let mut count: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
     let mut elem = (*list).c2rust_unnamed.list.tqh_first;
     while !elem.is_null() {
         count = count.wrapping_add(1);
@@ -554,9 +475,9 @@ pub unsafe extern "C" fn attr_node_list_len(list: *mut attr_node) -> size_t { un
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_node_list_get_index(
     list: *mut attr_node,
-    index: size_t,
+    index: libc::c_ulong,
 ) -> *mut attr_node { unsafe {
-    let mut count: size_t = 0 as libc::c_int as size_t;
+    let mut count: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
     let mut elem = (*list).c2rust_unnamed.list.tqh_first;
     while !elem.is_null() {
         let fresh0 = count;
@@ -596,7 +517,7 @@ pub unsafe extern "C" fn attr_node_list_foreach(
         }
         abort();
     }
-    let mut index: size_t = 0 as libc::c_int as size_t;
+    let mut index: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
     let mut elem = (*list).c2rust_unnamed.list.tqh_first;
     while !elem.is_null() {
         let fresh1 = index;
@@ -693,7 +614,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //     pub type attr_tree;
 //     fn abort() -> !;
 //     fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-//     fn ut_malloc(size: size_t) -> *mut libc::c_void;
+//     fn ut_malloc(size: libc::c_ulong) -> *mut libc::c_void;
 //     fn ut_strdup(str: *const libc::c_char) -> *mut libc::c_char;
 //     fn ut_free(ptr: *mut libc::c_void);
 //     fn log_console_conf(enabled: bool);
@@ -711,7 +632,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 // }
 // pub type __int64_t = libc::c_long;
 // pub type __uint64_t = libc::c_ulong;
-// pub type size_t = libc::c_ulong;
+// pub type libc::c_ulong = libc::c_ulong;
 // pub type int64_t = __int64_t;
 // #[derive(Copy, Clone)]
 // #[repr(C)]
@@ -755,10 +676,10 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //         unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
 //     >,
 //     pub send: Option::<
-//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, size_t) -> libc::c_int,
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, libc::c_ulong) -> libc::c_int,
 //     >,
 //     pub receive: Option::<
-//         unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, size_t) -> libc::c_int,
+//         unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, libc::c_ulong) -> libc::c_int,
 //     >,
 //     pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
 //     pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
@@ -774,13 +695,13 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //     pub set_local_addr: Option::<
 //         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
 //     >,
-//     pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> size_t>,
+//     pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_ulong>,
 //     pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> int64_t>,
 //     pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
 //     pub attr_populate: Option::<
 //         unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
 //     >,
-//     pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> size_t>,
+//     pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> libc::c_ulong>,
 // }
 // pub type xcm_tp_cnt = libc::c_uint;
 // pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
@@ -868,7 +789,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //         *mut xcm_socket,
 //         *mut libc::c_void,
 //         *mut libc::c_void,
-//         size_t,
+//         libc::c_ulong,
 //     ) -> libc::c_int,
 // >;
 // pub type attr_set = Option::<
@@ -876,14 +797,14 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //         *mut xcm_socket,
 //         *mut libc::c_void,
 //         *const libc::c_void,
-//         size_t,
+//         libc::c_ulong,
 //     ) -> libc::c_int,
 // >;
 // pub type attr_dict_foreach_cb = Option::<
 //     unsafe extern "C" fn(*const libc::c_char, *mut attr_node, *mut libc::c_void) -> (),
 // >;
 // pub type attr_list_foreach_cb = Option::<
-//     unsafe extern "C" fn(size_t, *mut attr_node, *mut libc::c_void) -> (),
+//     unsafe extern "C" fn(libc::c_ulong, *mut attr_node, *mut libc::c_void) -> (),
 // >;
 // #[unsafe(no_mangle)]
 // pub unsafe extern "C" fn attr_node_value(
@@ -1007,7 +928,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 // pub unsafe extern "C" fn attr_node_value_set(
 //     mut value_node: *const attr_node,
 //     mut value: *const libc::c_void,
-//     mut len: size_t,
+//     mut len: libc::c_ulong,
 // ) -> libc::c_int {
 //     if !((*value_node).type_0 as libc::c_uint
 //         == attr_node_type_value as libc::c_int as libc::c_uint)
@@ -1046,7 +967,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 // pub unsafe extern "C" fn attr_node_value_get(
 //     mut value_node: *const attr_node,
 //     mut value: *mut libc::c_void,
-//     mut capacity: size_t,
+//     mut capacity: libc::c_ulong,
 // ) -> libc::c_int {
 //     if !((*value_node).type_0 as libc::c_uint
 //         == attr_node_type_value as libc::c_int as libc::c_uint)
@@ -1156,7 +1077,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //     return !(attr_node_dict_get_key(dict, key)).is_null();
 // }
 // #[unsafe(no_mangle)]
-// pub unsafe extern "C" fn attr_node_dict_size(mut dict: *mut attr_node) -> size_t {
+// pub unsafe extern "C" fn attr_node_dict_size(mut dict: *mut attr_node) -> libc::c_ulong {
 //     if !((*dict).type_0 as libc::c_uint
 //         == attr_node_type_dict as libc::c_int as libc::c_uint)
 //     {
@@ -1180,7 +1101,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //         }
 //         abort();
 //     }
-//     let mut count: size_t = 0 as libc::c_int as size_t;
+//     let mut count: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
 //     let mut elem: *mut attr_node_dict_elem = 0 as *mut attr_node_dict_elem;
 //     elem = (*dict).c2rust_unnamed.dict.tqh_first;
 //     while !elem.is_null() {
@@ -1312,7 +1233,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //     (*list).c2rust_unnamed.list.tqh_last = &mut (*elem).entry.tqe_next;
 // }
 // #[unsafe(no_mangle)]
-// pub unsafe extern "C" fn attr_node_list_len(mut list: *mut attr_node) -> size_t {
+// pub unsafe extern "C" fn attr_node_list_len(mut list: *mut attr_node) -> libc::c_ulong {
 //     if !((*list).type_0 as libc::c_uint
 //         == attr_node_type_list as libc::c_int as libc::c_uint)
 //     {
@@ -1336,7 +1257,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //         }
 //         abort();
 //     }
-//     let mut count: size_t = 0 as libc::c_int as size_t;
+//     let mut count: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
 //     let mut elem: *mut attr_node_list_elem = 0 as *mut attr_node_list_elem;
 //     elem = (*list).c2rust_unnamed.list.tqh_first;
 //     while !elem.is_null() {
@@ -1349,9 +1270,9 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 // #[unsafe(no_mangle)]
 // pub unsafe extern "C" fn attr_node_list_get_index(
 //     mut list: *mut attr_node,
-//     mut index: size_t,
+//     mut index: libc::c_ulong,
 // ) -> *mut attr_node {
-//     let mut count: size_t = 0 as libc::c_int as size_t;
+//     let mut count: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
 //     let mut elem: *mut attr_node_list_elem = 0 as *mut attr_node_list_elem;
 //     elem = (*list).c2rust_unnamed.list.tqh_first;
 //     while !elem.is_null() {
@@ -1393,7 +1314,7 @@ pub unsafe extern "C" fn attr_node_destroy(node: *mut attr_node) { unsafe {
 //         }
 //         abort();
 //     }
-//     let mut index: size_t = 0 as libc::c_int as size_t;
+//     let mut index: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
 //     let mut elem: *mut attr_node_list_elem = 0 as *mut attr_node_list_elem;
 //     elem = (*list).c2rust_unnamed.list.tqh_first;
 //     while !elem.is_null() {

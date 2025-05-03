@@ -5,6 +5,11 @@ edition = "2024"
 
 [dependencies]
 libc = "0.2.171"
+xcm-rust-common={path="../../../xcm-rust-common"}
+rs-xcm-tp={path="../../tp/common/rs-xcm-tp"}
+rs-attr-tree={path="../rs-attr-tree"}
+rs-attr-node={path="../rs-attr-node"}
+rs-xpoll = {path="../rs-xpoll"}
 
 [lib]
 path="src/xcm.rs"

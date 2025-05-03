@@ -8,11 +8,22 @@
 
 use std::sync::atomic::{AtomicBool, Ordering};
 
+use xcm_rust_common::xcm_tp::{xcm_socket, xcm_socket_type, xcm_socket_type_conn,
+    xcm_socket_type_server, xcm_tp_proto};
+use xcm_rust_common::xcm_attr::*;
+use xcm_rust_common::xpoll_mod::*;
+use rs_xpoll::*;
+use rs_xcm_tp::*;
+use rs_attr_node::*;
+use xcm_rust_common::attr_tree_mod::*;
+use rs_attr_tree::{attr_tree_destroy, attr_tree_get_all, attr_tree_get_list_len,
+    attr_tree_get_value, attr_tree_set_value, attr_tree_create};
+
 unsafe extern "C" {
     pub type xcm_attr_map;
     pub type ctl;
-    pub type xpoll;
-    pub type attr_tree;
+    // pub type xpoll;
+    // pub type attr_tree;
     fn __errno_location() -> *mut libc::c_int;
     fn xcm_attr_map_create() -> *mut xcm_attr_map;
     fn xcm_attr_map_add_bool(
@@ -30,85 +41,85 @@ unsafe extern "C" {
         user: *mut libc::c_void,
     );
     fn xcm_attr_map_destroy(attr_map: *mut xcm_attr_map);
-    fn xcm_tp_socket_create(
-        proto: *const xcm_tp_proto,
-        type_0: xcm_socket_type,
-        xpoll: *mut xpoll,
-        enable_ctl: bool,
-        auto_update: bool,
-        is_blocking: bool,
-    ) -> *mut xcm_socket;
-    fn xcm_tp_socket_destroy(s: *mut xcm_socket);
-    fn xcm_tp_socket_init(s: *mut xcm_socket, parent: *mut xcm_socket) -> libc::c_int;
-    fn xcm_tp_socket_connect(
-        s: *mut xcm_socket,
-        remote_addr: *const libc::c_char,
-    ) -> libc::c_int;
-    fn xcm_tp_socket_server(
-        s: *mut xcm_socket,
-        local_addr: *const libc::c_char,
-    ) -> libc::c_int;
-    fn xcm_tp_socket_close(s: *mut xcm_socket);
-    fn xcm_tp_socket_cleanup(s: *mut xcm_socket);
-    fn xcm_tp_socket_accept(
-        conn_s: *mut xcm_socket,
-        server_s: *mut xcm_socket,
-    ) -> libc::c_int;
-    fn xcm_tp_socket_send(
-        s: *mut xcm_socket,
-        buf: *const libc::c_void,
-        len: libc::c_ulong,
-    ) -> libc::c_int;
-    fn xcm_tp_socket_receive(
-        s: *mut xcm_socket,
-        buf: *mut libc::c_void,
-        capacity: libc::c_ulong,
-    ) -> libc::c_int;
-    fn xcm_tp_socket_update(s: *mut xcm_socket);
-    fn xcm_tp_socket_finish(s: *mut xcm_socket) -> libc::c_int;
-    fn xcm_tp_socket_is_bytestream(conn_s: *mut xcm_socket) -> bool;
-    fn xcm_tp_socket_get_remote_addr(
-        conn_s: *mut xcm_socket,
-        suppress_tracing: bool,
-    ) -> *const libc::c_char;
-    fn xcm_tp_socket_get_local_addr(
-        s: *mut xcm_socket,
-        suppress_tracing: bool,
-    ) -> *const libc::c_char;
-    fn xcm_tp_socket_attr_populate(s: *mut xcm_socket, attr_tree: *mut attr_tree);
-    fn xcm_tp_common_attr_populate(s: *mut xcm_socket, attr_tree: *mut attr_tree);
-    fn xcm_tp_proto_by_addr(addr: *const libc::c_char) -> *mut xcm_tp_proto;
-    fn attr_tree_create() -> *mut attr_tree;
-    fn attr_tree_destroy(tree: *mut attr_tree);
-    fn attr_tree_set_value(
-        tree: *mut attr_tree,
-        path: *const libc::c_char,
-        type_0: xcm_attr_type,
-        value: *const libc::c_void,
-        len: libc::c_ulong,
-        log_ref: *mut libc::c_void,
-    ) -> libc::c_int;
-    fn attr_tree_get_value(
-        tree: *mut attr_tree,
-        path: *const libc::c_char,
-        type_0: *mut xcm_attr_type,
-        value: *mut libc::c_void,
-        capacity: libc::c_ulong,
-        log_ref: *mut libc::c_void,
-    ) -> libc::c_int;
-    fn attr_tree_get_list_len(
-        tree: *mut attr_tree,
-        path: *const libc::c_char,
-        log_ref: *mut libc::c_void,
-    ) -> libc::c_int;
-    fn attr_tree_get_all(
-        tree: *mut attr_tree,
-        cb: xcm_attr_cb,
-        cb_data: *mut libc::c_void,
-    );
-    fn xpoll_create(log_ref: *mut libc::c_void) -> *mut xpoll;
-    fn xpoll_destroy(xpoll: *mut xpoll);
-    fn xpoll_get_fd(xpoll: *mut xpoll) -> libc::c_int;
+    // fn xcm_tp_socket_create(
+    //     proto: *const xcm_tp_proto,
+    //     type_0: xcm_socket_type,
+    //     xpoll: *mut xpoll,
+    //     enable_ctl: bool,
+    //     auto_update: bool,
+    //     is_blocking: bool,
+    // ) -> *mut xcm_socket;
+    // fn xcm_tp_socket_destroy(s: *mut xcm_socket);
+    // fn xcm_tp_socket_init(s: *mut xcm_socket, parent: *mut xcm_socket) -> libc::c_int;
+    // fn xcm_tp_socket_connect(
+    //     s: *mut xcm_socket,
+    //     remote_addr: *const libc::c_char,
+    // ) -> libc::c_int;
+    // fn xcm_tp_socket_server(
+    //     s: *mut xcm_socket,
+    //     local_addr: *const libc::c_char,
+    // ) -> libc::c_int;
+    // fn xcm_tp_socket_close(s: *mut xcm_socket);
+    // fn xcm_tp_socket_cleanup(s: *mut xcm_socket);
+    // fn xcm_tp_socket_accept(
+    //     conn_s: *mut xcm_socket,
+    //     server_s: *mut xcm_socket,
+    // ) -> libc::c_int;
+    // fn xcm_tp_socket_send(
+    //     s: *mut xcm_socket,
+    //     buf: *const libc::c_void,
+    //     len: libc::c_ulong,
+    // ) -> libc::c_int;
+    // fn xcm_tp_socket_receive(
+    //     s: *mut xcm_socket,
+    //     buf: *mut libc::c_void,
+    //     capacity: libc::c_ulong,
+    // ) -> libc::c_int;
+    // fn xcm_tp_socket_update(s: *mut xcm_socket);
+    // fn xcm_tp_socket_finish(s: *mut xcm_socket) -> libc::c_int;
+    // fn xcm_tp_socket_is_bytestream(conn_s: *mut xcm_socket) -> bool;
+    // fn xcm_tp_socket_get_remote_addr(
+    //     conn_s: *mut xcm_socket,
+    //     suppress_tracing: bool,
+    // ) -> *const libc::c_char;
+    // fn xcm_tp_socket_get_local_addr(
+    //     s: *mut xcm_socket,
+    //     suppress_tracing: bool,
+    // ) -> *const libc::c_char;
+    // fn xcm_tp_socket_attr_populate(s: *mut xcm_socket, attr_tree: *mut attr_tree);
+    // fn xcm_tp_common_attr_populate(s: *mut xcm_socket, attr_tree: *mut attr_tree);
+    // fn xcm_tp_proto_by_addr(addr: *const libc::c_char) -> *mut xcm_tp_proto;
+    // fn attr_tree_create() -> *mut attr_tree;
+    // fn attr_tree_destroy(tree: *mut attr_tree);
+    // fn attr_tree_set_value(
+    //     tree: *mut attr_tree,
+    //     path: *const libc::c_char,
+    //     type_0: xcm_attr_type,
+    //     value: *const libc::c_void,
+    //     len: libc::c_ulong,
+    //     log_ref: *mut libc::c_void,
+    // ) -> libc::c_int;
+    // fn attr_tree_get_value(
+    //     tree: *mut attr_tree,
+    //     path: *const libc::c_char,
+    //     type_0: *mut xcm_attr_type,
+    //     value: *mut libc::c_void,
+    //     capacity: libc::c_ulong,
+    //     log_ref: *mut libc::c_void,
+    // ) -> libc::c_int;
+    // fn attr_tree_get_list_len(
+    //     tree: *mut attr_tree,
+    //     path: *const libc::c_char,
+    //     log_ref: *mut libc::c_void,
+    // ) -> libc::c_int;
+    // fn attr_tree_get_all(
+    //     tree: *mut attr_tree,
+    //     cb: xcm_attr_cb,
+    //     cb_data: *mut libc::c_void,
+    // );
+    // fn xpoll_create(log_ref: *mut libc::c_void) -> *mut xpoll;
+    // fn xpoll_destroy(xpoll: *mut xpoll);
+    // fn xpoll_get_fd(xpoll: *mut xpoll) -> libc::c_int;
     fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn strerror(_: libc::c_int) -> *mut libc::c_char;
     fn ut_free(ptr: *mut libc::c_void);
@@ -140,12 +151,12 @@ pub struct __va_list_tag {
     pub overflow_arg_area: *mut libc::c_void,
     pub reg_save_area: *mut libc::c_void,
 }
-pub type xcm_attr_type = libc::c_uint;
-pub const xcm_attr_type_double: xcm_attr_type = 5;
-pub const xcm_attr_type_bin: xcm_attr_type = 4;
-pub const xcm_attr_type_str: xcm_attr_type = 3;
-pub const xcm_attr_type_int64: xcm_attr_type = 2;
-pub const xcm_attr_type_bool: xcm_attr_type = 1;
+// pub type xcm_attr_type = libc::c_uint;
+// pub const xcm_attr_type_double: xcm_attr_type = 5;
+// pub const xcm_attr_type_bin: xcm_attr_type = 4;
+// pub const xcm_attr_type_str: xcm_attr_type = 3;
+// pub const xcm_attr_type_int64: xcm_attr_type = 2;
+// pub const xcm_attr_type_bool: xcm_attr_type = 1;
 pub type xcm_attr_map_foreach_cb = Option::<
     unsafe extern "C" fn(
         *const libc::c_char,
@@ -155,83 +166,83 @@ pub type xcm_attr_map_foreach_cb = Option::<
         *mut libc::c_void,
     ) -> (),
 >;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_socket {
-    pub proto: *const xcm_tp_proto,
-    pub type_0: xcm_socket_type,
-    pub sock_id: libc::c_long,
-    pub auto_enable_ctl: bool,
-    pub auto_update: bool,
-    pub is_blocking: bool,
-    pub xpoll: *mut xpoll,
-    pub condition: libc::c_int,
-    pub ctl: *mut ctl,
-    pub skipped_ctl_calls: libc::c_ulong,
-}
-pub type xcm_socket_type = libc::c_uint;
-pub const xcm_socket_type_server: xcm_socket_type = 1;
-pub const xcm_socket_type_conn: xcm_socket_type = 0;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_tp_proto {
-    pub name: [libc::c_char; 33],
-    pub ops: *const xcm_tp_ops,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct xcm_tp_ops {
-    pub init: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
-    >,
-    pub connect: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub server: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub close: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub cleanup: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub accept: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
-    >,
-    pub send: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, libc::c_ulong) -> libc::c_int,
-    >,
-    pub receive: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, libc::c_ulong) -> libc::c_int,
-    >,
-    pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
-    pub get_transport: Option::<
-        unsafe extern "C" fn(*mut xcm_socket) -> *const libc::c_char,
-    >,
-    pub get_remote_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
-    >,
-    pub get_local_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
-    >,
-    pub set_local_addr: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
-    >,
-    pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_ulong>,
-    pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> libc::c_long>,
-    pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
-    pub attr_populate: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
-    >,
-    pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> libc::c_ulong>,
-}
-pub type xcm_tp_cnt = libc::c_uint;
-pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
-pub const xcm_tp_cnt_to_lower_msgs: xcm_tp_cnt = 6;
-pub const xcm_tp_cnt_from_app_msgs: xcm_tp_cnt = 5;
-pub const xcm_tp_cnt_to_app_msgs: xcm_tp_cnt = 4;
-pub const xcm_tp_cnt_from_lower_bytes: xcm_tp_cnt = 3;
-pub const xcm_tp_cnt_to_lower_bytes: xcm_tp_cnt = 2;
-pub const xcm_tp_cnt_from_app_bytes: xcm_tp_cnt = 1;
-pub const xcm_tp_cnt_to_app_bytes: xcm_tp_cnt = 0;
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct xcm_socket {
+//     pub proto: *const xcm_tp_proto,
+//     pub type_0: xcm_socket_type,
+//     pub sock_id: libc::c_long,
+//     pub auto_enable_ctl: bool,
+//     pub auto_update: bool,
+//     pub is_blocking: bool,
+//     pub xpoll: *mut xpoll,
+//     pub condition: libc::c_int,
+//     pub ctl: *mut ctl,
+//     pub skipped_ctl_calls: libc::c_ulong,
+// }
+// pub type xcm_socket_type = libc::c_uint;
+// pub const xcm_socket_type_server: xcm_socket_type = 1;
+// pub const xcm_socket_type_conn: xcm_socket_type = 0;
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct xcm_tp_proto {
+//     pub name: [libc::c_char; 33],
+//     pub ops: *const xcm_tp_ops,
+// }
+// #[derive(Copy, Clone)]
+// #[repr(C)]
+// pub struct xcm_tp_ops {
+//     pub init: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
+//     >,
+//     pub connect: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
+//     >,
+//     pub server: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
+//     >,
+//     pub close: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
+//     pub cleanup: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
+//     pub accept: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
+//     >,
+//     pub send: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, libc::c_ulong) -> libc::c_int,
+//     >,
+//     pub receive: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, libc::c_ulong) -> libc::c_int,
+//     >,
+//     pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
+//     pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
+//     pub get_transport: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket) -> *const libc::c_char,
+//     >,
+//     pub get_remote_addr: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
+//     >,
+//     pub get_local_addr: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, bool) -> *const libc::c_char,
+//     >,
+//     pub set_local_addr: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
+//     >,
+//     pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_ulong>,
+//     pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> libc::c_long>,
+//     pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
+//     pub attr_populate: Option::<
+//         unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
+//     >,
+//     pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> libc::c_ulong>,
+// }
+// pub type xcm_tp_cnt = libc::c_uint;
+// pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
+// pub const xcm_tp_cnt_to_lower_msgs: xcm_tp_cnt = 6;
+// pub const xcm_tp_cnt_from_app_msgs: xcm_tp_cnt = 5;
+// pub const xcm_tp_cnt_to_app_msgs: xcm_tp_cnt = 4;
+// pub const xcm_tp_cnt_from_lower_bytes: xcm_tp_cnt = 3;
+// pub const xcm_tp_cnt_to_lower_bytes: xcm_tp_cnt = 2;
+// pub const xcm_tp_cnt_from_app_bytes: xcm_tp_cnt = 1;
+// pub const xcm_tp_cnt_to_app_bytes: xcm_tp_cnt = 0;
 pub type log_type = libc::c_uint;
 pub const log_type_error: log_type = 1;
 pub const log_type_debug: log_type = 0;
