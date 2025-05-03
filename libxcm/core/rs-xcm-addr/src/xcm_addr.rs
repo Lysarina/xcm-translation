@@ -247,7 +247,7 @@ pub unsafe extern "C" fn xcm_addr_is_supported(
 unsafe extern "C" fn has_space(s: *const libc::c_char) -> bool { unsafe {
     let mut i: usize = 0;
     while i < strlen(s) {
-        if *(*__ctype_b_loc()).offset(*s.offset(i as isize) as libc::c_int as isize)
+        if *(*__ctype_b_loc()).offset(*s.add(i) as libc::c_int as isize)
             as libc::c_int & _ISspace as libc::c_int as libc::c_ushort as libc::c_int
             != 0
         {
@@ -328,8 +328,7 @@ unsafe extern "C" fn addr_parse_ux_uxf(
         return -(1 as libc::c_int);
     }
     if strcmp(proto.as_mut_ptr(), ux_proto) != 0
-        || strlen(name.as_mut_ptr())
-            > 107 as usize
+        || strlen(name.as_mut_ptr()) > 107
         || strlen(name.as_mut_ptr()) == 0
     {
         *__errno_location() = 22;
@@ -372,104 +371,76 @@ unsafe extern "C" fn host_parse(
     host_s: *const libc::c_char,
     host: *mut xcm_addr_host,
 ) -> libc::c_int { unsafe {
-    let mut addr_0: in_addr; // = in_addr { s_addr: 0 };
-    let current_block: u64;
-    if strlen(host_s) != 0 {
-        if *host_s.offset(0 as libc::c_int as isize) as libc::c_int == '[' as i32 {
-            if !(strlen(host_s) < 2
-                || *host_s
-                    .offset(
-                        (strlen(host_s)).wrapping_sub(1)
-                            as isize,
-                    ) as libc::c_int != ']' as i32)
-            {
-                let ip6_s_len: size_t = (strlen(host_s) as libc::c_ulong)
-                    .wrapping_sub(1)
-                    .wrapping_sub(1);
-                let vla = ip6_s_len.wrapping_add(1)
-                    as usize;
-                let mut ip6_s: Vec::<libc::c_char> = ::std::vec::from_elem(0, vla);
-                strncpy(
-                    ip6_s.as_mut_ptr(),
-                    host_s.offset(1 as isize),
-                    ip6_s_len as usize,
-                );
-                *ip6_s
-                    .as_mut_ptr()
-                    .offset(ip6_s_len as isize) = '\0' as i32 as libc::c_char;
-                let mut addr: in6_addr = in6_addr {
-                    __in6_u: C2RustUnnamed {
-                        __u6_addr8: [0; 16],
-                    },
-                };
-                if strcmp(ip6_s.as_mut_ptr(), b"*\0" as *const u8 as *const libc::c_char)
-                    == 0
-                {
-                    memcpy(
-                        ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
-                            as *mut libc::c_void,
-                        (in6addr_any.__in6_u.__u6_addr8).as_ptr() as *const libc::c_void,
-                        16,
-                    );
-                    current_block = 14523784380283086299;
-                } else if inet_pton(
-                    10 as libc::c_int,
-                    ip6_s.as_mut_ptr(),
-                    &mut addr as *mut in6_addr as *mut libc::c_void,
-                ) == 1 as libc::c_int
-                {
-                    memcpy(
-                        ((*host).c2rust_unnamed.ip.addr.ip6).as_mut_ptr()
-                            as *mut libc::c_void,
-                        (addr.__in6_u.__u6_addr8).as_mut_ptr() as *const libc::c_void,
-                        16,
-                    );
-                    current_block = 14523784380283086299;
-                } else {
-                    current_block = 13846943762415835442;
-                }
-                match current_block {
-                    13846943762415835442 => {}
-                    _ => {
-                        (*host).type_0 = xcm_addr_type_ip;
-                        (*host)
-                            .c2rust_unnamed
-                            .ip
-                            .family = 10 as libc::c_int as sa_family_t;
-                        return 0 as libc::c_int;
-                    }
-                }
-            }
-        } else {
-            if strcmp(host_s, b"*\0" as *const u8 as *const libc::c_char)
-                == 0 as libc::c_int
-            {
-                (*host).type_0 = xcm_addr_type_ip;
-                (*host).c2rust_unnamed.ip.family = 2 as libc::c_int as sa_family_t;
-                (*host).c2rust_unnamed.ip.addr.ip4 = 0 as libc::c_int as in_addr_t;
-                return 0 as libc::c_int;
-            }
-            addr_0 = in_addr { s_addr: 0 };
-            if inet_pton(
-                2 as libc::c_int,
-                host_s,
-                &mut addr_0 as *mut in_addr as *mut libc::c_void,
-            ) == 1 as libc::c_int
-            {
-                (*host).type_0 = xcm_addr_type_ip;
-                (*host).c2rust_unnamed.ip.family = 2 as libc::c_int as sa_family_t;
-                (*host).c2rust_unnamed.ip.addr.ip4 = addr_0.s_addr;
-                return 0 as libc::c_int;
-            }
-            if xcm_dns_is_valid_name(host_s) {
-                (*host).type_0 = xcm_addr_type_name;
-                strcpy(((*host).c2rust_unnamed.name).as_mut_ptr(), host_s);
-                return 0 as libc::c_int;
-            }
-        }
+    if host_s.is_null() || strlen(host_s) == 0 {
+        *__errno_location() = libc::EINVAL;
+        return -1;
     }
-    *__errno_location() = 22 as libc::c_int;
-    -(1 as libc::c_int)
+
+    let len = strlen(host_s);
+    let first = *host_s;
+    let last = *host_s.add(len - 1);
+
+    // IPv6 in brackets: [::1]
+    if first == b'[' as i8 && last == b']' as i8 && len >= 2 {
+        let ip6_len = len - 2; // Remove brackets
+        let mut ip6_s = vec![0 as libc::c_char; ip6_len + 1];
+        strncpy(ip6_s.as_mut_ptr(), host_s.add(1), ip6_len);
+        *ip6_s.as_mut_ptr().add(ip6_len) = 0;
+
+        if strcmp(ip6_s.as_ptr(), c"*".as_ptr() as *const libc::c_char) == 0 {
+            memcpy(
+                (*host).c2rust_unnamed.ip.addr.ip6.as_mut_ptr() as *mut libc::c_void,
+                in6addr_any.__in6_u.__u6_addr8.as_ptr() as *const libc::c_void,
+                16,
+            );
+        } else {
+            let mut addr = in6_addr {
+                __in6_u: C2RustUnnamed { __u6_addr8: [0; 16] },
+            };
+            if inet_pton(libc::AF_INET6, ip6_s.as_ptr(), &mut addr as *mut _ as *mut libc::c_void)
+                != 1
+            {
+                *__errno_location() = libc::EINVAL;
+                return -1;
+            }
+            memcpy(
+                (*host).c2rust_unnamed.ip.addr.ip6.as_mut_ptr() as *mut libc::c_void,
+                addr.__in6_u.__u6_addr8.as_ptr() as *const libc::c_void,
+                16,
+            );
+        }
+
+        (*host).type_0 = xcm_addr_type_ip;
+        (*host).c2rust_unnamed.ip.family = libc::AF_INET6 as sa_family_t;
+        return 0;
+    }
+
+    // IPv4 wildcard: "*"
+    if strcmp(host_s, c"*".as_ptr() as *const libc::c_char) == 0 {
+        (*host).type_0 = xcm_addr_type_ip;
+        (*host).c2rust_unnamed.ip.family = libc::AF_INET as sa_family_t;
+        (*host).c2rust_unnamed.ip.addr.ip4 = 0;
+        return 0;
+    }
+
+    // IPv4 address
+    let mut addr = in_addr { s_addr: 0 };
+    if inet_pton(libc::AF_INET, host_s, &mut addr as *mut _ as *mut libc::c_void) == 1 {
+        (*host).type_0 = xcm_addr_type_ip;
+        (*host).c2rust_unnamed.ip.family = libc::AF_INET as sa_family_t;
+        (*host).c2rust_unnamed.ip.addr.ip4 = addr.s_addr;
+        return 0;
+    }
+
+    // DNS name
+    if xcm_dns_is_valid_name(host_s) {
+        (*host).type_0 = xcm_addr_type_name;
+        strcpy((*host).c2rust_unnamed.name.as_mut_ptr(), host_s);
+        return 0;
+    }
+
+    *__errno_location() = libc::EINVAL;
+    -1
 }}
 unsafe extern "C" fn host_port_parse(
     proto: *const libc::c_char,
@@ -477,66 +448,62 @@ unsafe extern "C" fn host_port_parse(
     host: *mut xcm_addr_host,
     port: *mut uint16_t,
 ) -> libc::c_int { unsafe {
-    let port_sep: *const libc::c_char; // = std::ptr::null::<libc::c_char>();
-    let port_start: *const libc::c_char; // = std::ptr::null::<libc::c_char>();
-    let mut end: *mut libc::c_char; // = std::ptr::null_mut::<libc::c_char>();
-    let lport: libc::c_int; //= 0;
-    let host_start: *mut libc::c_char; // = std::ptr::null_mut::<libc::c_char>();
-    let host_len: size_t; //= 0;
-    let current_block: u64;
     let mut actual_proto: [libc::c_char; 33] = [0; 33];
     let mut paddr: [libc::c_char; 579] = [0; 579];
+
+    // Parse protocol and address string
     if proto_addr_parse(
         addr_s,
         actual_proto.as_mut_ptr(),
-        ::core::mem::size_of::<[libc::c_char; 33]>() as libc::c_ulong,
+        actual_proto.len() as libc::c_ulong,
         paddr.as_mut_ptr(),
-        ::core::mem::size_of::<[libc::c_char; 579]>() as libc::c_ulong,
-    ) >= 0 as libc::c_int
+        paddr.len() as libc::c_ulong,
+    ) < 0
     {
-        if strcmp(proto, actual_proto.as_mut_ptr()) != 0 as libc::c_int {
-            current_block = 10107677687531613869;
-        } else {
-            port_sep = strrchr(paddr.as_mut_ptr(), ':' as i32);
-            if port_sep.is_null() {
-                current_block = 10107677687531613869;
-            } else {
-                port_start = port_sep.offset(1 as libc::c_int as isize);
-                end = std::ptr::null_mut::<libc::c_char>();
-                lport = strtol(port_start, &mut end, 10 as libc::c_int) as libc::c_int;
-                if *end.offset(0 as libc::c_int as isize) as libc::c_int != '\0' as i32 {
-                    current_block = 10107677687531613869;
-                } else if lport < 0 as libc::c_int || lport > 65535 as libc::c_int {
-                    current_block = 10107677687531613869;
-                } else {
-                    host_start = paddr.as_mut_ptr();
-                    host_len = port_sep.offset_from(paddr.as_mut_ptr()) as libc::c_long
-                        as size_t;
-                    if host_len > 512 as libc::c_int as libc::c_ulong
-                        || host_len == 0 as libc::c_int as libc::c_ulong
-                    {
-                        current_block = 10107677687531613869;
-                    } else {
-                        *host_start
-                            .offset(host_len as isize) = '\0' as i32 as libc::c_char;
-                        if host_parse(host_start, host) < 0 as libc::c_int {
-                            current_block = 376436631470351228;
-                        } else {
-                            *port = ntohs(lport as uint16_t);
-                            return 0 as libc::c_int;
-                        }
-                    }
-                }
-            }
-        }
-        match current_block {
-            376436631470351228 => {}
-            _ => {
-                *__errno_location() = 22 as libc::c_int;
-            }
-        }
+        return -1;
     }
-    -(1 as libc::c_int)
+
+    // Protocol mismatch
+    if strcmp(proto, actual_proto.as_ptr()) != 0 {
+        *__errno_location() = libc::EINVAL;
+        return -1;
+    }
+
+    // Find last colon (port separator)
+    let port_sep = strrchr(paddr.as_ptr(), ':' as i32);
+    if port_sep.is_null() {
+        *__errno_location() = libc::EINVAL;
+        return -1;
+    }
+
+    // Extract port string
+    let port_start = port_sep.add(1);
+    let mut end: *mut libc::c_char = std::ptr::null_mut();
+    let lport = strtol(port_start, &mut end, 10);
+
+    if *end != 0 || !(0..=65535).contains(&lport) {
+        *__errno_location() = libc::EINVAL;
+        return -1;
+    }
+
+    // Null-terminate host part
+    let host_start = paddr.as_mut_ptr();
+    let host_len = port_sep.offset_from(host_start) as usize;
+
+    if host_len == 0 || host_len > 512 {
+        *__errno_location() = libc::EINVAL;
+        return -1;
+    }
+
+    *host_start.add(host_len) = 0;
+
+    // Parse host
+    if host_parse(host_start, host) < 0 {
+        return -1;
+    }
+
+    *port = ntohs(lport as uint16_t);
+    0
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_addr_parse_utls(
