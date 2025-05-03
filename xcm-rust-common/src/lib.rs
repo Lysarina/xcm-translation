@@ -1,53 +1,50 @@
 #![allow(non_camel_case_types, non_upper_case_globals)]
 #![feature(extern_types)]
 
-pub mod c_functions {
-    unsafe extern "C" {
+// pub mod c_functions {
+//     unsafe extern "C" {
 
-        pub unsafe fn abort() -> !;
-        pub unsafe fn memcpy(
-            _: *mut libc::c_void,
-            _: *const libc::c_void,
-            _: libc::c_ulong,
-        ) -> *mut libc::c_void;
-        pub unsafe fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-        pub unsafe fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-        pub unsafe fn strlen(_: *const libc::c_char) -> libc::c_ulong;
-        pub unsafe fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-        pub unsafe fn snprintf(
-            _: *mut libc::c_char,
-            _: libc::c_ulong,
-            _: *const libc::c_char,
-            _: ...
-        ) -> libc::c_int;
-        pub unsafe fn strerror(_: libc::c_int) -> *mut libc::c_char;
+//         pub unsafe fn abort() -> !;
+//         pub unsafe fn memcpy(
+//             _: *mut libc::c_void,
+//             _: *const libc::c_void,
+//             _: libc::c_ulong,
+//         ) -> *mut libc::c_void;
+//         pub unsafe fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
+//         pub unsafe fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
+//         pub unsafe fn strlen(_: *const libc::c_char) -> libc::c_ulong;
+//         pub unsafe fn memset(
+//         _: *mut libc::c_void,
+//         _: libc::c_int,
+//         _: libc::c_ulong,
+//     ) -> *mut libc::c_void;
+//         pub unsafe fn snprintf(
+//             _: *mut libc::c_char,
+//             _: libc::c_ulong,
+//             _: *const libc::c_char,
+//             _: ...
+//         ) -> libc::c_int;
+//         pub unsafe fn strerror(_: libc::c_int) -> *mut libc::c_char;
 
-        pub unsafe fn strtol(
-            _: *const libc::c_char,
-            _: *mut *mut libc::c_char,
-            _: libc::c_int,
-        ) -> libc::c_long;
-    }
-}
+//         pub unsafe fn strtol(
+//             _: *const libc::c_char,
+//             _: *mut *mut libc::c_char,
+//             _: libc::c_int,
+//         ) -> libc::c_long;
+//     }
+// }
 
 use crate::xcm_tp::xcm_socket;
 unsafe extern "C" {
     pub type ctl;
-    pub fn __errno_location() -> *mut libc::c_int;
     pub fn xcm_set_blocking(socket: *mut xcm_socket, should_block: bool) -> libc::c_int;
     pub fn xcm_remote_addr(conn_socket: *mut xcm_socket) -> *const libc::c_char;
     pub fn xcm_local_addr(socket: *mut xcm_socket) -> *const libc::c_char;
-
-    
-    pub fn xcm_addr_parse_proto(
-        addr_s: *const libc::c_char,
-        proto: *mut libc::c_char,
-        capacity: libc::c_ulong,
-    ) -> libc::c_int;
+    // pub fn xcm_addr_parse_proto(
+    //     addr_s: *const libc::c_char,
+    //     proto: *mut libc::c_char,
+    //     capacity: libc::c_ulong,
+    // ) -> libc::c_int;
     pub fn ctl_create(socket: *mut xcm_socket) -> *mut ctl;
     pub fn ctl_destroy(ctl: *mut ctl, owner: bool);
     pub fn ctl_process(ctl: *mut ctl);

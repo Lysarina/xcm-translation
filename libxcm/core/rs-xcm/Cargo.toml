@@ -13,4 +13,4 @@ rs-xpoll = {path="../rs-xpoll"}
 
 [lib]
 path="src/xcm.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]

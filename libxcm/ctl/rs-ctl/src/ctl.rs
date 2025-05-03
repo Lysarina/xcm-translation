@@ -9,17 +9,21 @@
 )]
 #![feature(extern_types)]
 
+use std::process::abort;
+use libc::{__errno_location, sockaddr, strerror, memcpy, strcmp,
+    memset, strcpy};
+
 use rs_common_ctl::ctl_get_dir;
 use rs_common_ctl::ctl_derive_path;
 use rs_log::*;
 use rs_util::*;
 use xcm_rust_common::xcm_tp::*;
-use xcm_rust_common::c_functions::*;
+// use xcm_rust_common::c_functions::*;
 use xcm_rust_common::xpoll_mod::*;
 use rs_xpoll::*;
 
-use libc::__errno_location;
-use libc::sockaddr;
+// use libc::__errno_location;
+// use libc::sockaddr;
 
 unsafe extern "C" {
     // pub type xpoll;
@@ -567,7 +571,7 @@ unsafe extern "C" fn remove_client(mut ctl: *mut ctl, mut client_idx: libc::c_in
             rclient as *mut libc::c_void,
             &mut *((*ctl).clients).as_mut_ptr().offset(last_idx as isize) as *mut client
                 as *const libc::c_void,
-            ::core::mem::size_of::<client>() as libc::c_ulong,
+            ::core::mem::size_of::<client>() as usize,
         );
     }
     if (*ctl).num_clients == 2 as libc::c_int {
@@ -631,8 +635,8 @@ unsafe extern "C" fn is_sensitive(mut attr_name: *const libc::c_char) -> bool {
 unsafe extern "C" fn clear_attr(mut attr: *mut ctl_proto_attr) {
     memset(
         ((*attr).c2rust_unnamed.any_value).as_mut_ptr() as *mut libc::c_void,
-        0 as libc::c_int,
-        512 as libc::c_int as libc::c_ulong,
+        0,
+        512 as usize,
     );
 }
 unsafe extern "C" fn process_get_attr(
@@ -741,7 +745,7 @@ unsafe extern "C" fn add_attr(
     memcpy(
         ((*attr).c2rust_unnamed.any_value).as_mut_ptr() as *mut libc::c_void,
         value,
-        len,
+        len as usize,
     );
     (*attr).value_len = len;
 }

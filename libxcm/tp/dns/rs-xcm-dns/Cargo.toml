@@ -11,4 +11,4 @@ regex = "1.11.1"
 
 [lib]
 path="src/xcm_dns.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]

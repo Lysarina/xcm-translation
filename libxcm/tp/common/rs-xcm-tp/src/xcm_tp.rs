@@ -5,18 +5,21 @@
     clippy::missing_safety_doc
 )]
 
-use xcm_rust_common::*;
-use xcm_rust_common::c_functions::*;
+use std::process::abort;
+use libc::{strcpy, strlen, strcmp, __errno_location, memcpy};
+
+// use xcm_rust_common::c_functions::*;
 use rs_util::*;
 use rs_log::*;
+use rs_xcm_addr::*;
 // use rs_attr_tree::attr_get;
 // use rs_attr_tree::attr_set;
-
+use xcm_rust_common::*;
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::xcm_attr::*;
 use xcm_rust_common::attr_node_mod::*;
-use xcm_rust_common::attr_tree_mod::*;
-use xcm_rust_common::xpoll_mod::*;
+use xcm_rust_common::attr_tree_mod::attr_tree;
+use xcm_rust_common::xpoll_mod::xpoll;
 
 
 unsafe extern "C" { fn attr_tree_add_value_node(
@@ -343,13 +346,13 @@ pub unsafe extern "C" fn xcm_tp_get_str_attr(
     buf: *mut libc::c_void,
     capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    let len: libc::c_ulong = strlen(value);
-    if len >= capacity {
-        *__errno_location() = 75 as libc::c_int;
-        return -(1 as libc::c_int);
+    let len: usize = strlen(value);
+    if len >= capacity as usize {
+        *__errno_location() = 75;
+        return -1;
     }
     strcpy(buf as *mut libc::c_char, value);
-    len.wrapping_add(1 as libc::c_int as libc::c_ulong) as libc::c_int
+    len.wrapping_add(1) as libc::c_int
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_tp_set_bool_attr(
@@ -360,7 +363,7 @@ pub unsafe extern "C" fn xcm_tp_set_bool_attr(
     memcpy(
         value as *mut libc::c_void,
         buf,
-        ::core::mem::size_of::<bool>() as libc::c_ulong,
+        ::core::mem::size_of::<bool>() as usize,
     );
 }}
 #[unsafe(no_mangle)]
@@ -372,7 +375,7 @@ pub unsafe extern "C" fn xcm_tp_get_bool_attr(
     memcpy(
         buf,
         &mut value as *mut bool as *const libc::c_void,
-        ::core::mem::size_of::<bool>() as libc::c_ulong,
+        ::core::mem::size_of::<bool>() as usize,
     );
     ::core::mem::size_of::<bool>() as libc::c_ulong as libc::c_int
 }}
@@ -385,7 +388,7 @@ pub unsafe extern "C" fn xcm_tp_set_double_attr(
     memcpy(
         value as *mut libc::c_void,
         buf,
-        ::core::mem::size_of::<libc::c_double>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_double>() as usize,
     );
 }}
 #[unsafe(no_mangle)]
@@ -397,7 +400,7 @@ pub unsafe extern "C" fn xcm_tp_get_double_attr(
     memcpy(
         buf,
         &mut value as *mut libc::c_double as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_double>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_double>() as usize,
     );
     ::core::mem::size_of::<libc::c_double>() as libc::c_ulong as libc::c_int
 }}
@@ -412,7 +415,7 @@ pub unsafe extern "C" fn xcm_tp_get_bin_attr(
         *__errno_location() = 75 as libc::c_int;
         return -(1 as libc::c_int);
     }
-    memcpy(buf, value as *const libc::c_void, len);
+    memcpy(buf, value as *const libc::c_void, len as usize);
     len as libc::c_int
 }}
 unsafe extern "C" fn get_type_attr(
@@ -546,7 +549,7 @@ unsafe extern "C" fn get_max_msg_attr(
     memcpy(
         value,
         &mut max_msg as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -564,7 +567,7 @@ unsafe extern "C" fn get_to_app_bytes_attr(
     memcpy(
         value,
         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -582,7 +585,7 @@ unsafe extern "C" fn get_from_app_bytes_attr(
     memcpy(
         value,
         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -600,7 +603,7 @@ unsafe extern "C" fn get_to_lower_bytes_attr(
     memcpy(
         value,
         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -618,7 +621,7 @@ unsafe extern "C" fn get_from_lower_bytes_attr(
     memcpy(
         value,
         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -636,7 +639,7 @@ unsafe extern "C" fn get_to_app_msgs_attr(
     memcpy(
         value,
         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -654,7 +657,7 @@ unsafe extern "C" fn get_from_app_msgs_attr(
     memcpy(
         value,
         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -672,7 +675,7 @@ unsafe extern "C" fn get_to_lower_msgs_attr(
     memcpy(
         value,
         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -690,7 +693,7 @@ unsafe extern "C" fn get_from_lower_msgs_attr(
     memcpy(
         value,
         &mut cnt_value as *mut libc::c_long as *const libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<libc::c_long>() as usize,
     );
     ::core::mem::size_of::<libc::c_long>() as libc::c_ulong as libc::c_int
 }}
@@ -1196,7 +1199,7 @@ pub unsafe extern "C" fn xcm_tp_register(
         }
         abort();
     }
-    if strlen(proto_name) > 32 as libc::c_int as libc::c_ulong {
+    if strlen(proto_name) > 32 as usize {
         log_console_conf(1 as libc::c_int != 0);
         if log_is_enabled(log_type_error) {
             __log_event(
@@ -1216,7 +1219,7 @@ pub unsafe extern "C" fn xcm_tp_register(
         }
         abort();
     }
-    if strlen(proto_name) > 32 as libc::c_int as libc::c_ulong {
+    if strlen(proto_name) > 32 as usize {
         log_console_conf(1 as libc::c_int != 0);
         if log_is_enabled(log_type_error) {
             __log_event(

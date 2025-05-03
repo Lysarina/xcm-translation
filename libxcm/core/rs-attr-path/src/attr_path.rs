@@ -6,7 +6,10 @@
 )]
 #![feature(extern_types)]
 
-use xcm_rust_common::c_functions::*;
+use std::process::abort;
+use libc::{strlen, snprintf, strcmp, strtol};
+
+// use xcm_rust_common::c_functions::*;
 use xcm_rust_common::xcm_tp::*;
 use rs_util::*;
 use rs_log::*;
@@ -190,7 +193,7 @@ unsafe extern "C" fn attr_pcomp_parse_index(
 ) -> libc::c_int { unsafe {
     let mut end: *mut libc::c_char = std::ptr::null_mut::<libc::c_char>();
     let index: libc::c_long = strtol(path_str, &mut end, 10 as libc::c_int);
-    if *end as libc::c_int != ']' as i32 || end == path_str as *mut libc::c_char
+    if *end as libc::c_int != ']' as i32 || std::ptr::eq(end, path_str)
         || index < 0 as libc::c_int as libc::c_long
         || index == 9223372036854775807 as libc::c_long
     {
@@ -204,8 +207,7 @@ unsafe extern "C" fn attr_pcomp_parse(
     path_str: *const libc::c_char,
     comp: *mut *mut attr_pcomp,
 ) -> libc::c_int { unsafe {
-    // print!("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    if strlen(path_str) == 0 as libc::c_int as libc::c_ulong {
+    if strlen(path_str) == 0 {
         return 0 as libc::c_int;
     }
     let c: libc::c_char = *path_str.offset(0 as libc::c_int as isize);
@@ -224,7 +226,6 @@ unsafe extern "C" fn attr_pcomp_parse_root(
     path_str: *const libc::c_char,
     comp: *mut *mut attr_pcomp,
 ) -> libc::c_int { unsafe {
-    // print!("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     attr_pcomp_parse_key(path_str, comp)
 }}
 #[unsafe(no_mangle)]
@@ -232,18 +233,18 @@ pub unsafe extern "C" fn attr_path_parse(
     path_str: *const libc::c_char,
     mut root: bool,
 ) -> *mut attr_path { unsafe {
-    if strlen(path_str) > 255 as libc::c_int as libc::c_ulong {
+    if strlen(path_str) > 255 {
         return std::ptr::null_mut::<attr_path>();
     }
     let path: *mut attr_path = ut_calloc(
         ::core::mem::size_of::<attr_path>() as libc::c_ulong,
     ) as *mut attr_path;
-    let mut offset: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
+    let mut offset: libc::c_ulong = 0;
     loop {
         let comp: *mut *mut attr_pcomp = &mut *((*path).comps)
             .as_mut_ptr()
             .offset((*path).num_comps as isize) as *mut *mut attr_pcomp;
-        if offset == strlen(path_str) {
+        if offset == strlen(path_str) as libc::c_ulong {
             break;
         }
         let rc: libc::c_int = if root as libc::c_int != 0 {
@@ -340,27 +341,23 @@ pub unsafe extern "C" fn attr_path_len(
                 }
                 abort();
             }
-            len = (len as libc::c_ulong).wrapping_add(strlen((*comp).c2rust_unnamed.key))
-                as libc::c_ulong as libc::c_ulong;
+            len = len.wrapping_add(strlen((*comp).c2rust_unnamed.key) as libc::c_ulong);
+                // as libc::c_ulong;
             root = 0 as libc::c_int != 0;
         } else if (*comp).type_0 as libc::c_uint
             == attr_pcomp_type_key as libc::c_int as libc::c_uint
         {
-            len = (len as libc::c_ulong)
-                .wrapping_add(
+            len = len.wrapping_add(
                     (strlen((*comp).c2rust_unnamed.key))
-                        .wrapping_add(1 as libc::c_int as libc::c_ulong),
-                ) as libc::c_ulong as libc::c_ulong;
+                        .wrapping_add(1) as libc::c_ulong);
         } else {
-            len = (len as libc::c_ulong)
-                .wrapping_add(
+            len = len.wrapping_add(
                     (snprintf(
                         std::ptr::null_mut::<libc::c_char>(),
-                        0 as libc::c_int as libc::c_ulong,
+                        0,
                         b"%zd\0" as *const u8 as *const libc::c_char,
                         (*comp).c2rust_unnamed.index,
-                    ) + 2 as libc::c_int) as libc::c_ulong,
-                ) as libc::c_ulong as libc::c_ulong;
+                    ) + 2) as libc::c_ulong);
         }
         i = i.wrapping_add(1);
     }
@@ -410,35 +407,30 @@ pub unsafe extern "C" fn attr_path_to_str(
     while i < (*path).num_comps {
         let comp: *mut attr_pcomp = (*path).comps[i as usize];
         if root {
-            len = (len as libc::c_ulong)
-                .wrapping_add(
+            len = len.wrapping_add(
                     snprintf(
                         str,
-                        capacity,
+                        capacity as usize,
                         b"%s\0" as *const u8 as *const libc::c_char,
                         (*comp).c2rust_unnamed.key,
                     ) as libc::c_ulong,
                 ) as libc::c_ulong as libc::c_ulong;
             root = 0 as libc::c_int != 0;
-        } else if (*comp).type_0 as libc::c_uint
-            == attr_pcomp_type_key as libc::c_int as libc::c_uint
-        {
-            len = (len as libc::c_ulong)
-                .wrapping_add(
+        } else if (*comp).type_0 == attr_pcomp_type_key {
+            len = len.wrapping_add(
                     snprintf(
                         str.offset(len as isize),
-                        capacity.wrapping_sub(len),
+                        capacity.wrapping_sub(len) as usize,
                         b"%c%s\0" as *const u8 as *const libc::c_char,
                         '.' as i32,
                         (*comp).c2rust_unnamed.key,
                     ) as libc::c_ulong,
                 ) as libc::c_ulong as libc::c_ulong;
         } else {
-            len = (len as libc::c_ulong)
-                .wrapping_add(
+            len = len.wrapping_add(
                     snprintf(
                         str.offset(len as isize),
-                        capacity.wrapping_sub(len),
+                        capacity.wrapping_sub(len) as usize,
                         b"%c%zd%c\0" as *const u8 as *const libc::c_char,
                         '[' as i32,
                         (*comp).c2rust_unnamed.index,
@@ -453,16 +445,16 @@ pub unsafe extern "C" fn attr_path_to_str(
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_path_is_valid_key(key: *const libc::c_char) -> bool { unsafe {
-    if strlen(key) == 0 as libc::c_int as libc::c_ulong {
-        return 0 as libc::c_int != 0;
+    if strlen(key) == 0 {
+        return false;
     }
-    let mut i: libc::c_ulong = 0;
+    let mut i: usize = 0;
     while i < strlen(key) {
-        let c: libc::c_char = *key.offset(i as isize);
+        let c: libc::c_char = *key.add(i);
         if !is_key_char(c) {
-            return 0 as libc::c_int != 0;
+            return false;
         }
         i = i.wrapping_add(1);
     }
-    1 as libc::c_int != 0
+    true
 }}

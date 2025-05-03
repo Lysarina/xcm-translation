@@ -3,14 +3,15 @@ name = "rs-xcm-tp"
 version = "0.1.0"
 edition = "2024"
 
-[lib]
-name = "rs_xcm_tp"
-path = "src/xcm_tp.rs"
-crate-type = ["cdylib", "rlib"]
-
 [dependencies]
 libc = "0.2.172"
 xcm-rust-common = { path = "../../../../xcm-rust-common/" }
 rs-util = { path = "../../../../common/rs-util" }
 rs-log = { path = "../../../core/rs-log"}
 rs-attr-tree = { path = "../../../core/rs-attr-tree" }
+rs-xcm-addr = {path="../../../core/rs-xcm-addr"}
+
+[lib]
+name = "rs_xcm_tp"
+path = "src/xcm_tp.rs"
+crate-type = ["cdylib", "rlib"]
