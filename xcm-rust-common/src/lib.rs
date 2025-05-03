@@ -1,57 +1,40 @@
 #![allow(non_camel_case_types, non_upper_case_globals)]
 #![feature(extern_types)]
 
-// pub mod c_functions {
-//     unsafe extern "C" {
-
-//         pub unsafe fn abort() -> !;
-//         pub unsafe fn memcpy(
-//             _: *mut libc::c_void,
-//             _: *const libc::c_void,
-//             _: libc::c_ulong,
-//         ) -> *mut libc::c_void;
-//         pub unsafe fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-//         pub unsafe fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-//         pub unsafe fn strlen(_: *const libc::c_char) -> libc::c_ulong;
-//         pub unsafe fn memset(
-//         _: *mut libc::c_void,
-//         _: libc::c_int,
-//         _: libc::c_ulong,
-//     ) -> *mut libc::c_void;
-//         pub unsafe fn snprintf(
-//             _: *mut libc::c_char,
-//             _: libc::c_ulong,
-//             _: *const libc::c_char,
-//             _: ...
-//         ) -> libc::c_int;
-//         pub unsafe fn strerror(_: libc::c_int) -> *mut libc::c_char;
-
-//         pub unsafe fn strtol(
-//             _: *const libc::c_char,
-//             _: *mut *mut libc::c_char,
-//             _: libc::c_int,
-//         ) -> libc::c_long;
-//     }
-// }
-
-use crate::xcm_tp::xcm_socket;
-unsafe extern "C" {
-    pub type ctl;
-    pub fn xcm_set_blocking(socket: *mut xcm_socket, should_block: bool) -> libc::c_int;
-    pub fn xcm_remote_addr(conn_socket: *mut xcm_socket) -> *const libc::c_char;
-    pub fn xcm_local_addr(socket: *mut xcm_socket) -> *const libc::c_char;
-    // pub fn xcm_addr_parse_proto(
-    //     addr_s: *const libc::c_char,
-    //     proto: *mut libc::c_char,
-    //     capacity: libc::c_ulong,
-    // ) -> libc::c_int;
-    pub fn ctl_create(socket: *mut xcm_socket) -> *mut ctl;
-    pub fn ctl_destroy(ctl: *mut ctl, owner: bool);
-    pub fn ctl_process(ctl: *mut ctl);
+pub mod cyclic_declarations {
+    use super::xcm_tp::xcm_socket;
+    // use super::xcm_attr::*;
+    // use super::attr_tree_mod::*;
+    unsafe extern "C" {
+        pub type ctl;
+        pub fn xcm_set_blocking(socket: *mut xcm_socket, should_block: bool) -> libc::c_int;
+        pub fn xcm_remote_addr(conn_socket: *mut xcm_socket) -> *const libc::c_char;
+        pub fn xcm_local_addr(socket: *mut xcm_socket) -> *const libc::c_char;
+        // pub fn xcm_addr_parse_proto(
+        //     addr_s: *const libc::c_char,
+        //     proto: *mut libc::c_char,
+        //     capacity: libc::c_ulong,
+        // ) -> libc::c_int;
+        pub fn ctl_create(socket: *mut xcm_socket) -> *mut ctl;
+        pub fn ctl_destroy(ctl: *mut ctl, owner: bool);
+        pub fn ctl_process(ctl: *mut ctl);
+        // fn xcm_attr_get(
+        //     socket_0: *mut xcm_socket,
+        //     name: *const libc::c_char,
+        //     type_0: *mut xcm_attr_type,
+        //     value: *mut libc::c_void,
+        //     capacity: libc::c_ulong,
+        // ) -> libc::c_int;
+        // fn xcm_attr_get_all(
+        //     socket_0: *mut xcm_socket,
+        //     cb: xcm_attr_cb,
+        //     cb_data: *mut libc::c_void,
+        // );
+    }
 }
 
 pub mod attr_node_mod {
-    use super::*;
+    use super::xcm_tp::xcm_socket;
     use super::xcm_attr::*;
     pub type attr_node_type = libc::c_uint;
     pub const attr_node_type_list: attr_node_type = 2;
@@ -143,7 +126,6 @@ pub mod attr_node_mod {
 }
 
 pub mod attr_tree_mod {
-    // use super::*;
     use super::xcm_attr::*;
     use super::attr_node_mod::*;
 
@@ -205,7 +187,7 @@ pub mod xcm_attr {
 
 pub mod xcm_tp {
 
-    use super::*;
+    use super::cyclic_declarations::ctl;
     use super::attr_tree_mod::*;
     use super::xpoll_mod::xpoll;
     

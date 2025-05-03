@@ -15,6 +15,7 @@ use libc::{__errno_location, sockaddr, strerror, memcpy, strcmp,
 use rs_common_ctl::{ctl_get_dir, ctl_derive_path};
 use rs_log::*;
 use rs_util::*;
+use xcm_rust_common::attr_tree_mod::*;
 use xcm_rust_common::xcm_tp::*;
 use xcm_rust_common::xcm_attr::*;
 use rs_xpoll::*;
@@ -108,15 +109,6 @@ pub const ctl_proto_type_get_all_attr_req: ctl_proto_type = 3;
 pub const ctl_proto_type_get_attr_rej: ctl_proto_type = 2;
 pub const ctl_proto_type_get_attr_cfm: ctl_proto_type = 1;
 pub const ctl_proto_type_get_attr_req: ctl_proto_type = 0;
-pub type xcm_attr_cb = Option::<
-    unsafe extern "C" fn(
-        *const libc::c_char,
-        xcm_attr_type,
-        *mut libc::c_void,
-        size_t,
-        *mut libc::c_void,
-    ) -> (),
->;
 unsafe extern "C" fn create_ux(s: *mut xcm_socket) -> libc::c_int { unsafe {
     let mut ctl_dir: [libc::c_char; 108] = [0; 108];
     ctl_get_dir(

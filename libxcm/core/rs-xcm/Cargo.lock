@@ -138,6 +138,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "rs-common-tp"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "rs-log",
+ "rs-xcm-addr",
+ "xcm-rust-common",
+]
+
+[[package]]
 name = "rs-log"
 version = "0.1.0"
 dependencies = [
@@ -169,6 +179,9 @@ dependencies = [
  "libc",
  "rs-attr-node",
  "rs-attr-tree",
+ "rs-common-tp",
+ "rs-log",
+ "rs-util",
  "rs-xcm-tp",
  "rs-xpoll",
  "xcm-rust-common",
