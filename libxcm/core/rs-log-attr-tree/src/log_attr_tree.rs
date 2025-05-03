@@ -63,7 +63,7 @@ pub unsafe extern "C" fn log_attr_str_value(
             );
             *buf
                 .offset(
-                    capacity.wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize,
+                    capacity.wrapping_sub(1) as isize,
                 ) = '\0' as i32 as libc::c_char;
         }
         4 => {
@@ -98,8 +98,7 @@ pub unsafe extern "C" fn log_attr_str_value(
                             *value_bin.offset(i as isize) as libc::c_int,
                         );
                         offset = (offset as libc::c_ulong)
-                            .wrapping_add(2 as libc::c_int as libc::c_ulong) as libc::c_ulong
-                            as libc::c_ulong;
+                            .wrapping_add(2 as libc::c_int as libc::c_ulong) as libc::c_ulong;
                         i += 1;
                     }
                 }

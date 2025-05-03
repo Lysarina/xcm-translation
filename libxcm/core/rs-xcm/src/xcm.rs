@@ -22,7 +22,6 @@ use rs_attr_tree::{attr_tree_destroy, attr_tree_get_all, attr_tree_get_list_len,
 
 unsafe extern "C" {
     pub type xcm_attr_map;
-    pub type ctl;
     fn xcm_attr_map_create() -> *mut xcm_attr_map;
     fn xcm_attr_map_add_bool(
         attr_map: *mut xcm_attr_map,
@@ -39,7 +38,6 @@ unsafe extern "C" {
         user: *mut libc::c_void,
     );
     fn xcm_attr_map_destroy(attr_map: *mut xcm_attr_map);
-    // fn tp_so_condition_name(condition: libc::c_int) -> *const libc::c_char;
     fn xcm_version() -> *const libc::c_char;
     fn xcm_version_api() -> *const libc::c_char;
 }
@@ -80,10 +78,6 @@ unsafe extern "C" fn assure_library_version_logged() { unsafe {
             );
         }
         version_logged.store(true, Ordering::Relaxed);
-        // ::core::intrinsics::atomic_store_relaxed(
-        //     &mut version_logged,
-        //     1 as libc::c_int != 0,
-        // );
     }
 }}
 unsafe extern "C" fn await_0(s: *mut xcm_socket, condition: libc::c_int) { unsafe {
@@ -327,7 +321,6 @@ pub unsafe extern "C" fn xcm_server_a(
     local_addr: *const libc::c_char,
     attrs: *const xcm_attr_map,
 ) -> *mut xcm_socket { unsafe {
-    // let s: *mut xcm_socket; // = std::ptr::null_mut::<xcm_socket>()
     assure_library_version_logged();
     let proto: *const xcm_tp_proto = xcm_tp_proto_by_addr(local_addr);
     if !proto.is_null() {

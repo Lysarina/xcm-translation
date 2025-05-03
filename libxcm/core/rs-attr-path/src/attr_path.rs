@@ -4,12 +4,10 @@
     non_upper_case_globals,
     clippy::missing_safety_doc
 )]
-#![feature(extern_types)]
 
 use std::process::abort;
 use libc::{strlen, snprintf, strcmp, strtol};
 
-// use xcm_rust_common::c_functions::*;
 use xcm_rust_common::xcm_tp::*;
 use rs_util::*;
 use rs_log::*;
@@ -36,10 +34,11 @@ pub struct attr_path {
     pub num_comps: libc::c_ulong,
 }
 unsafe extern "C" fn is_special(c: libc::c_char) -> bool {
-    match c as libc::c_int {
-        91 | 93 | 46 => 1 as libc::c_int != 0,
-        _ => 0 as libc::c_int != 0,
-    }
+    matches!(c as libc::c_int, 91 | 93 | 46)
+    // match c as libc::c_int {
+    //     91 | 93 | 46 => true,
+    //     _ => false,
+    // }
 }
 unsafe extern "C" fn is_key_char(c: libc::c_char) -> bool { unsafe {
     !is_special(c)
@@ -51,7 +50,6 @@ unsafe extern "C" fn attr_path_key_create(
         ::core::mem::size_of::<attr_pcomp>() as libc::c_ulong,
     ) as *mut attr_pcomp;
     *comp = {
-        
         attr_pcomp {
             type_0: attr_pcomp_type_key,
             c2rust_unnamed: C2RustUnnamed {
@@ -76,8 +74,7 @@ unsafe extern "C" fn attr_path_index_create(index: libc::c_ulong) -> *mut attr_p
 }}
 unsafe extern "C" fn attr_pcomp_destroy(comp: *mut attr_pcomp) { unsafe {
     if !comp.is_null() {
-        if (*comp).type_0 as libc::c_uint
-            == attr_pcomp_type_key as libc::c_int as libc::c_uint
+        if (*comp).type_0 == attr_pcomp_type_key
         {
             ut_free((*comp).c2rust_unnamed.key as *mut libc::c_void);
         }
@@ -89,13 +86,11 @@ unsafe extern "C" fn attr_pcomp_equal(
     comp_b: *mut attr_pcomp,
 ) -> bool { unsafe {
     if (*comp_a).type_0 as libc::c_uint != (*comp_b).type_0 as libc::c_uint {
-        return 0 as libc::c_int != 0;
+        return false;
     }
-    if (*comp_a).type_0 as libc::c_uint
-        == attr_pcomp_type_key as libc::c_int as libc::c_uint
+    if (*comp_a).type_0 == attr_pcomp_type_key
     {
-        strcmp((*comp_a).c2rust_unnamed.key, (*comp_b).c2rust_unnamed.key)
-            == 0 as libc::c_int
+        strcmp((*comp_a).c2rust_unnamed.key, (*comp_b).c2rust_unnamed.key) == 0
     } else {
         (*comp_a).c2rust_unnamed.index == (*comp_b).c2rust_unnamed.index
     }
@@ -108,13 +103,11 @@ pub unsafe extern "C" fn attr_pcomp_get_type(
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_pcomp_is_key(pcomp: *const attr_pcomp) -> bool { unsafe {
-    (*pcomp).type_0 as libc::c_uint
-        == attr_pcomp_type_key as libc::c_int as libc::c_uint
+    (*pcomp).type_0 == attr_pcomp_type_key
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_pcomp_is_index(pcomp: *const attr_pcomp) -> bool { unsafe {
-    (*pcomp).type_0 as libc::c_uint
-        == attr_pcomp_type_index as libc::c_int as libc::c_uint
+    (*pcomp).type_0 == attr_pcomp_type_index
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn attr_pcomp_get_key(
@@ -171,7 +164,7 @@ unsafe extern "C" fn attr_pcomp_parse_key(
     comp: *mut *mut attr_pcomp,
 ) -> libc::c_int { unsafe {
     let mut key: [libc::c_char; 256] = [0; 256];
-    let mut key_len: libc::c_ulong = 0 as libc::c_int as libc::c_ulong;
+    let mut key_len: libc::c_ulong = 0;
     loop {
         let c: libc::c_char = *path_str.offset(key_len as isize);
         if c as libc::c_int == '\0' as i32 || !is_key_char(c) {
@@ -192,23 +185,22 @@ unsafe extern "C" fn attr_pcomp_parse_index(
     comp: *mut *mut attr_pcomp,
 ) -> libc::c_int { unsafe {
     let mut end: *mut libc::c_char = std::ptr::null_mut::<libc::c_char>();
-    let index: libc::c_long = strtol(path_str, &mut end, 10 as libc::c_int);
+    let index: libc::c_long = strtol(path_str, &mut end, 10);
     if *end as libc::c_int != ']' as i32 || std::ptr::eq(end, path_str)
         || index < 0 as libc::c_int as libc::c_long
         || index == 9223372036854775807 as libc::c_long
     {
-        return -(1 as libc::c_int);
+        return -1;
     }
     *comp = attr_path_index_create(index as libc::c_ulong);
-    (end.offset_from(path_str) as libc::c_long + 1 as libc::c_int as libc::c_long)
-        as libc::c_int
+    (end.offset_from(path_str) as libc::c_long + 1) as libc::c_int
 }}
 unsafe extern "C" fn attr_pcomp_parse(
     path_str: *const libc::c_char,
     comp: *mut *mut attr_pcomp,
 ) -> libc::c_int { unsafe {
     if strlen(path_str) == 0 {
-        return 0 as libc::c_int;
+        return 0;
     }
     let c: libc::c_char = *path_str.offset(0 as libc::c_int as isize);
     let mut rc: libc::c_int = -(1 as libc::c_int);
@@ -218,7 +210,7 @@ unsafe extern "C" fn attr_pcomp_parse(
         rc = attr_pcomp_parse_key(path_str.offset(1 as libc::c_int as isize), comp);
     }
     if rc < 0 as libc::c_int {
-        return -(1 as libc::c_int);
+        return -1;
     }
     rc + 1 as libc::c_int
 }}

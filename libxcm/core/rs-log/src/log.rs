@@ -81,17 +81,13 @@ unsafe extern "C" fn log_console(
         let c_str = CStr::from_ptr(buf.as_ptr());
         match c_str.to_str() {
             Ok(s) => {
-                // Print to stderr
                 let _ = writeln!(stderr(), "{}", s);
             }
             Err(e) => {
                 let _ = writeln!(stderr(), "Invalid UTF-8: {}", e);
             }
         }
-        // stderr().lock().write_all(buf);
-        // fputs(buf.as_mut_ptr(), stderr);
         let _ = stderr().flush();
-        // fflush(stderr);
         *__errno_location() = _oerrno;
     }
 }}

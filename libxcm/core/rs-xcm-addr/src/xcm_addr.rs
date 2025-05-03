@@ -4,51 +4,17 @@
     non_upper_case_globals,
     clippy::missing_safety_doc
 )]
-#![feature(extern_types)]
 
 use std::process::abort;
 use libc::{__errno_location, snprintf, strtol, memcpy, strcpy,
-    strncpy, strcmp, strchr, strrchr, strlen};
+    strncpy, strcmp, strchr, strrchr, strlen, ntohs, in6addr_any,
+    in_addr, in6_addr};
 
 use rs_log::*;
 use rs_xcm_dns::*;
-
 use xcm_rust_common::xcm_tp::xcm_socket;
 
 unsafe extern "C" {
-    pub type ctl;
-    pub type xpoll;
-    pub type attr_tree;
-    // fn __errno_location() -> *mut libc::c_int;
-    static in6addr_any: in6_addr;
-    fn ntohs(__netshort: uint16_t) -> uint16_t;
-    // fn snprintf(
-    //     _: *mut libc::c_char,
-    //     _: libc::c_ulong,
-    //     _: *const libc::c_char,
-    //     _: ...
-    // ) -> libc::c_int;
-    // fn strtol(
-    //     _: *const libc::c_char,
-    //     _: *mut *mut libc::c_char,
-    //     _: libc::c_int,
-    // ) -> libc::c_long;
-    // fn abort() -> !;
-    // fn memcpy(
-    //     _: *mut libc::c_void,
-    //     _: *const libc::c_void,
-    //     _: libc::c_ulong,
-    // ) -> *mut libc::c_void;
-    // fn strcpy(_: *mut libc::c_char, _: *const libc::c_char) -> *mut libc::c_char;
-    // fn strncpy(
-    //     _: *mut libc::c_char,
-    //     _: *const libc::c_char,
-    //     _: libc::c_ulong,
-    // ) -> *mut libc::c_char;
-    // fn strcmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
-    // fn strchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
-    // fn strrchr(_: *const libc::c_char, _: libc::c_int) -> *mut libc::c_char;
-    // fn strlen(_: *const libc::c_char) -> libc::c_ulong;
     fn inet_pton(
         __af: libc::c_int,
         __cp: *const libc::c_char,
@@ -58,42 +24,16 @@ unsafe extern "C" {
         __af: libc::c_int,
         __cp: *const libc::c_void,
         __buf: *mut libc::c_char,
-        __len: socklen_t,
+        __len: libc::c_uint,
     ) -> *const libc::c_char;
-    // fn xcm_dns_is_valid_name(name: *const libc::c_char) -> bool;
     fn __ctype_b_loc() -> *mut *const libc::c_ushort;
-}
-pub type __uint8_t = libc::c_uchar;
-pub type __uint16_t = libc::c_ushort;
-pub type __uint32_t = libc::c_uint;
-pub type __int64_t = libc::c_long;
-pub type __uint64_t = libc::c_ulong;
-pub type __socklen_t = libc::c_uint;
-pub type int64_t = __int64_t;
-pub type uint8_t = __uint8_t;
-pub type uint16_t = __uint16_t;
-pub type uint32_t = __uint32_t;
-pub type uint64_t = __uint64_t;
-pub type size_t = libc::c_ulong;
-pub type socklen_t = __socklen_t;
-pub type sa_family_t = libc::c_ushort;
-pub type in_addr_t = uint32_t;
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct in_addr {
-    pub s_addr: in_addr_t,
-}
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct in6_addr {
-    pub __in6_u: C2RustUnnamed,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed {
-    pub __u6_addr8: [uint8_t; 16],
-    pub __u6_addr16: [uint16_t; 8],
-    pub __u6_addr32: [uint32_t; 4],
+    pub __u6_addr8: [libc::c_uchar; 16],
+    pub __u6_addr16: [libc::c_ushort; 8],
+    pub __u6_addr32: [libc::c_uint; 4],
 }
 pub type xcm_addr_type = libc::c_uint;
 pub const xcm_addr_type_ip: xcm_addr_type = 1;
@@ -101,14 +41,14 @@ pub const xcm_addr_type_name: xcm_addr_type = 0;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct xcm_addr_ip {
-    pub family: sa_family_t,
+    pub family: libc::c_ushort,
     pub addr: C2RustUnnamed_0,
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub union C2RustUnnamed_0 {
-    pub ip4: in_addr_t,
-    pub ip6: [uint8_t; 16],
+    pub ip4: libc::c_uint,
+    pub ip6: [libc::c_uchar; 16],
 }
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -123,43 +63,21 @@ pub union C2RustUnnamed_1 {
     pub name: [libc::c_char; 254],
 }
 pub const _ISspace: libc::c_uint = 8192;
-
-// pub type C2RustUnnamed_2 = libc::c_uint;
-// pub const _ISalnum: C2RustUnnamed_2 = 8;
-// pub const _ISpunct: C2RustUnnamed_2 = 4;
-// pub const _IScntrl: C2RustUnnamed_2 = 2;
-// pub const _ISblank: C2RustUnnamed_2 = 1;
-// pub const _ISgraph: C2RustUnnamed_2 = 32768;
-// pub const _ISprint: C2RustUnnamed_2 = 16384;
-// pub const _ISxdigit: C2RustUnnamed_2 = 4096;
-// pub const _ISdigit: C2RustUnnamed_2 = 2048;
-// pub const _ISalpha: C2RustUnnamed_2 = 1024;
-// pub const _ISlower: C2RustUnnamed_2 = 512;
-// pub const _ISupper: C2RustUnnamed_2 = 256;
 unsafe extern "C" fn supports_tls() -> bool {
-    1 as libc::c_int != 0
+    true
 }
 unsafe extern "C" fn supports_sctp() -> bool {
-    0 as libc::c_int != 0
+    false
 }
 unsafe extern "C" fn is_valid_addr(
     xcm_addr_s: *const libc::c_char,
     require_supported: bool,
 ) -> bool { unsafe {
-    let mut host: xcm_addr_host; 
-    // = xcm_addr_host {
-    //     type_0: xcm_addr_type_name,
-    //     c2rust_unnamed: C2RustUnnamed_1 {
-    //         ip: xcm_addr_ip {
-    //             family: 0,
-    //             addr: C2RustUnnamed_0 { ip4: 0 },
-    //         },
-    //     },
-    // };
-    let mut port: uint16_t; //= 0;
-    let mut ux_name: [libc::c_char; 579]; //= [0; 579];
+    let mut host: xcm_addr_host;
+    let mut port: libc::c_ushort;
+    let mut ux_name: [libc::c_char; 579];
     let mut proto: [libc::c_char; 32] = [0; 32];
-    let mut rc: libc::c_int; //= -(1 as libc::c_int);
+    let mut rc: libc::c_int;
     let mut _oerrno: libc::c_int = *__errno_location();
     rc = xcm_addr_parse_proto(
         xcm_addr_s,
@@ -260,20 +178,20 @@ unsafe extern "C" fn has_space(s: *const libc::c_char) -> bool { unsafe {
 unsafe extern "C" fn proto_addr_parse(
     addr_s: *const libc::c_char,
     proto: *mut libc::c_char,
-    proto_capacity: size_t,
+    proto_capacity: libc::c_ulong,
     proto_addr: *mut libc::c_char,
-    proto_addr_capacity: size_t,
+    proto_addr_capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
-    let proto_addr_start: *const libc::c_char; //= std::ptr::null::<libc::c_char>();
-    let proto_sep: *const libc::c_char; // = std::ptr::null::<libc::c_char>();
-    let proto_len: size_t; // = 0;
+    let proto_addr_start: *const libc::c_char;
+    let proto_sep: *const libc::c_char;
+    let proto_len: libc::c_ulong;
     if !(strlen(addr_s)
         > (32 + 512 + 32 + 2)
             as usize || has_space(addr_s))
     {
         proto_sep = strchr(addr_s, ':' as i32);
         if !proto_sep.is_null() {
-            proto_len = proto_sep.offset_from(addr_s) as libc::c_long as size_t;
+            proto_len = proto_sep.offset_from(addr_s) as libc::c_long as libc::c_ulong;
             if proto_len <= 32 as libc::c_int as libc::c_ulong {
                 if proto_len < proto_capacity {
                     proto_addr_start = addr_s
@@ -298,7 +216,7 @@ unsafe extern "C" fn proto_addr_parse(
 pub unsafe extern "C" fn xcm_addr_parse_proto(
     addr_s: *const libc::c_char,
     proto: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let mut proto_addr: [libc::c_char; 579] = [0; 579];
     proto_addr_parse(
@@ -313,7 +231,7 @@ unsafe extern "C" fn addr_parse_ux_uxf(
     ux_proto: *const libc::c_char,
     ux_addr_s: *const libc::c_char,
     ux_name: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let mut proto: [libc::c_char; 33] = [0; 33];
     let mut name: [libc::c_char; 579] = [0; 579];
@@ -345,7 +263,7 @@ unsafe extern "C" fn addr_parse_ux_uxf(
 pub unsafe extern "C" fn xcm_addr_parse_ux(
     ux_addr_s: *const libc::c_char,
     ux_name: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     addr_parse_ux_uxf(
         b"ux\0" as *const u8 as *const libc::c_char,
@@ -358,7 +276,7 @@ pub unsafe extern "C" fn xcm_addr_parse_ux(
 pub unsafe extern "C" fn xcm_addr_parse_uxf(
     uxf_addr_s: *const libc::c_char,
     uxf_name: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     addr_parse_ux_uxf(
         b"uxf\0" as *const u8 as *const libc::c_char,
@@ -382,7 +300,7 @@ unsafe extern "C" fn host_parse(
 
     // IPv6 in brackets: [::1]
     if first == b'[' as i8 && last == b']' as i8 && len >= 2 {
-        let ip6_len = len - 2; // Remove brackets
+        let ip6_len = len - 2;
         let mut ip6_s = vec![0 as libc::c_char; ip6_len + 1];
         strncpy(ip6_s.as_mut_ptr(), host_s.add(1), ip6_len);
         *ip6_s.as_mut_ptr().add(ip6_len) = 0;
@@ -390,12 +308,12 @@ unsafe extern "C" fn host_parse(
         if strcmp(ip6_s.as_ptr(), c"*".as_ptr() as *const libc::c_char) == 0 {
             memcpy(
                 (*host).c2rust_unnamed.ip.addr.ip6.as_mut_ptr() as *mut libc::c_void,
-                in6addr_any.__in6_u.__u6_addr8.as_ptr() as *const libc::c_void,
+                in6addr_any.s6_addr.as_ptr() as *const libc::c_void,
                 16,
             );
         } else {
             let mut addr = in6_addr {
-                __in6_u: C2RustUnnamed { __u6_addr8: [0; 16] },
+                s6_addr: [0; 16]
             };
             if inet_pton(libc::AF_INET6, ip6_s.as_ptr(), &mut addr as *mut _ as *mut libc::c_void)
                 != 1
@@ -405,20 +323,20 @@ unsafe extern "C" fn host_parse(
             }
             memcpy(
                 (*host).c2rust_unnamed.ip.addr.ip6.as_mut_ptr() as *mut libc::c_void,
-                addr.__in6_u.__u6_addr8.as_ptr() as *const libc::c_void,
+                addr.s6_addr.as_ptr() as *const libc::c_void,
                 16,
             );
         }
 
         (*host).type_0 = xcm_addr_type_ip;
-        (*host).c2rust_unnamed.ip.family = libc::AF_INET6 as sa_family_t;
+        (*host).c2rust_unnamed.ip.family = libc::AF_INET6 as libc::c_ushort;
         return 0;
     }
 
     // IPv4 wildcard: "*"
     if strcmp(host_s, c"*".as_ptr() as *const libc::c_char) == 0 {
         (*host).type_0 = xcm_addr_type_ip;
-        (*host).c2rust_unnamed.ip.family = libc::AF_INET as sa_family_t;
+        (*host).c2rust_unnamed.ip.family = libc::AF_INET as libc::c_ushort;
         (*host).c2rust_unnamed.ip.addr.ip4 = 0;
         return 0;
     }
@@ -427,7 +345,7 @@ unsafe extern "C" fn host_parse(
     let mut addr = in_addr { s_addr: 0 };
     if inet_pton(libc::AF_INET, host_s, &mut addr as *mut _ as *mut libc::c_void) == 1 {
         (*host).type_0 = xcm_addr_type_ip;
-        (*host).c2rust_unnamed.ip.family = libc::AF_INET as sa_family_t;
+        (*host).c2rust_unnamed.ip.family = libc::AF_INET as libc::c_ushort;
         (*host).c2rust_unnamed.ip.addr.ip4 = addr.s_addr;
         return 0;
     }
@@ -446,7 +364,7 @@ unsafe extern "C" fn host_port_parse(
     proto: *const libc::c_char,
     addr_s: *const libc::c_char,
     host: *mut xcm_addr_host,
-    port: *mut uint16_t,
+    port: *mut libc::c_ushort,
 ) -> libc::c_int { unsafe {
     let mut actual_proto: [libc::c_char; 33] = [0; 33];
     let mut paddr: [libc::c_char; 579] = [0; 579];
@@ -502,14 +420,14 @@ unsafe extern "C" fn host_port_parse(
         return -1;
     }
 
-    *port = ntohs(lport as uint16_t);
+    *port = ntohs(lport as libc::c_ushort);
     0
 }}
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_addr_parse_utls(
     utls_addr_s: *const libc::c_char,
     host: *mut xcm_addr_host,
-    port: *mut uint16_t,
+    port: *mut libc::c_ushort,
 ) -> libc::c_int { unsafe {
     host_port_parse(
         b"utls\0" as *const u8 as *const libc::c_char,
@@ -522,7 +440,7 @@ pub unsafe extern "C" fn xcm_addr_parse_utls(
 pub unsafe extern "C" fn xcm_addr_parse_tls(
     tls_addr_s: *const libc::c_char,
     host: *mut xcm_addr_host,
-    port: *mut uint16_t,
+    port: *mut libc::c_ushort,
 ) -> libc::c_int { unsafe {
     host_port_parse(
         b"tls\0" as *const u8 as *const libc::c_char,
@@ -535,7 +453,7 @@ pub unsafe extern "C" fn xcm_addr_parse_tls(
 pub unsafe extern "C" fn xcm_addr_parse_tcp(
     tcp_addr_s: *const libc::c_char,
     host: *mut xcm_addr_host,
-    port: *mut uint16_t,
+    port: *mut libc::c_ushort,
 ) -> libc::c_int { unsafe {
     host_port_parse(
         b"tcp\0" as *const u8 as *const libc::c_char,
@@ -548,7 +466,7 @@ pub unsafe extern "C" fn xcm_addr_parse_tcp(
 pub unsafe extern "C" fn xcm_addr_parse_sctp(
     sctp_addr_s: *const libc::c_char,
     host: *mut xcm_addr_host,
-    port: *mut uint16_t,
+    port: *mut libc::c_ushort,
 ) -> libc::c_int { unsafe {
     host_port_parse(
         b"sctp\0" as *const u8 as *const libc::c_char,
@@ -561,7 +479,7 @@ pub unsafe extern "C" fn xcm_addr_parse_sctp(
 pub unsafe extern "C" fn xcm_addr_parse_btcp(
     btcp_addr_s: *const libc::c_char,
     host: *mut xcm_addr_host,
-    port: *mut uint16_t,
+    port: *mut libc::c_ushort,
 ) -> libc::c_int { unsafe {
     host_port_parse(
         b"btcp\0" as *const u8 as *const libc::c_char,
@@ -574,7 +492,7 @@ pub unsafe extern "C" fn xcm_addr_parse_btcp(
 pub unsafe extern "C" fn xcm_addr_parse_btls(
     btls_addr_s: *const libc::c_char,
     host: *mut xcm_addr_host,
-    port: *mut uint16_t,
+    port: *mut libc::c_ushort,
 ) -> libc::c_int { unsafe {
     host_port_parse(
         b"btls\0" as *const u8 as *const libc::c_char,
@@ -586,9 +504,9 @@ pub unsafe extern "C" fn xcm_addr_parse_btls(
 unsafe extern "C" fn name_port_make(
     proto: *const libc::c_char,
     domain_name: *const libc::c_char,
-    port: uint16_t,
+    port: libc::c_ushort,
     addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let rc: libc::c_int = snprintf(
         addr_s,
@@ -609,16 +527,16 @@ unsafe extern "C" fn name_port_make(
 unsafe extern "C" fn ip_port_make(
     proto: *const libc::c_char,
     ip: *const xcm_addr_ip,
-    port: uint16_t,
+    port: libc::c_ushort,
     addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     let mut ip_s: [libc::c_char; 46] = [0; 46];
     if (inet_ntop(
         (*ip).family as libc::c_int,
-        &(*ip).addr.ip4 as *const in_addr_t as *const libc::c_void,
+        &(*ip).addr.ip4 as *const libc::c_uint as *const libc::c_void,
         ip_s.as_mut_ptr(),
-        ::core::mem::size_of::<[libc::c_char; 46]>() as libc::c_ulong as socklen_t,
+        ::core::mem::size_of::<[libc::c_char; 46]>() as libc::c_ulong as libc::c_uint,
     ))
         .is_null()
     {
@@ -661,9 +579,9 @@ unsafe extern "C" fn ip_port_make(
 unsafe extern "C" fn host_port_make(
     proto: *const libc::c_char,
     host: *const xcm_addr_host,
-    port: uint16_t,
+    port: libc::c_ushort,
     addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     match (*host).type_0 as libc::c_uint {
         0 => {
@@ -713,9 +631,9 @@ unsafe extern "C" fn host_port_make(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_addr_make_utls(
     host: *const xcm_addr_host,
-    port: uint16_t,
+    port: libc::c_ushort,
     utls_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     host_port_make(
         b"utls\0" as *const u8 as *const libc::c_char,
@@ -728,9 +646,9 @@ pub unsafe extern "C" fn xcm_addr_make_utls(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_addr_make_tls(
     host: *const xcm_addr_host,
-    port: uint16_t,
+    port: libc::c_ushort,
     tls_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     host_port_make(
         b"tls\0" as *const u8 as *const libc::c_char,
@@ -743,9 +661,9 @@ pub unsafe extern "C" fn xcm_addr_make_tls(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_addr_make_tcp(
     host: *const xcm_addr_host,
-    port: uint16_t,
+    port: libc::c_ushort,
     tcp_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     host_port_make(
         b"tcp\0" as *const u8 as *const libc::c_char,
@@ -758,9 +676,9 @@ pub unsafe extern "C" fn xcm_addr_make_tcp(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_addr_make_sctp(
     host: *const xcm_addr_host,
-    port: uint16_t,
+    port: libc::c_ushort,
     sctp_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     host_port_make(
         b"sctp\0" as *const u8 as *const libc::c_char,
@@ -774,7 +692,7 @@ unsafe extern "C" fn addr_make_ux_uxf(
     ux_proto: *const libc::c_char,
     ux_name: *const libc::c_char,
     ux_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     if strlen(ux_name) > (107) {
         *__errno_location() = 22;
@@ -798,7 +716,7 @@ unsafe extern "C" fn addr_make_ux_uxf(
 pub unsafe extern "C" fn xcm_addr_make_ux(
     ux_name: *const libc::c_char,
     ux_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     addr_make_ux_uxf(
         b"ux\0" as *const u8 as *const libc::c_char,
@@ -811,7 +729,7 @@ pub unsafe extern "C" fn xcm_addr_make_ux(
 pub unsafe extern "C" fn xcm_addr_make_uxf(
     uxf_name: *const libc::c_char,
     uxf_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     addr_make_ux_uxf(
         b"uxf\0" as *const u8 as *const libc::c_char,
@@ -825,7 +743,7 @@ pub unsafe extern "C" fn xcm_addr_make_btcp(
     host: *const xcm_addr_host,
     port: libc::c_ushort,
     btcp_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     host_port_make(
         b"btcp\0" as *const u8 as *const libc::c_char,
@@ -840,7 +758,7 @@ pub unsafe extern "C" fn xcm_addr_make_btls(
     host: *const xcm_addr_host,
     port: libc::c_ushort,
     btls_addr_s: *mut libc::c_char,
-    capacity: size_t,
+    capacity: libc::c_ulong,
 ) -> libc::c_int { unsafe {
     host_port_make(
         b"btls\0" as *const u8 as *const libc::c_char,

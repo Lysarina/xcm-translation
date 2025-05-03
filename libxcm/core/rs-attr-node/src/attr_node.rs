@@ -5,14 +5,11 @@
     non_upper_case_globals,
     clippy::missing_safety_doc
 )]
-#![feature(extern_types)]
 
 use std::process::abort;
 use libc::strcmp;
 
-use xcm_rust_common::xcm_tp::*;
-use xcm_rust_common::attr_node_mod::*;
-use xcm_rust_common::xcm_attr::*;
+use xcm_rust_common::{xcm_tp::*, attr_node_mod::*, xcm_attr::*};
 use rs_attr_path::attr_path_is_valid_key;
 use rs_util::*;
 use rs_log::*;
