@@ -85,7 +85,11 @@ libxcm_la_LDFLAGS = @ANL_LIBS@ @CARES_LIBS@ @SSL_LIBS@ \
 	-L$(srcdir)/libxcm/core/rs-xcm/target/release -lrs_xcm \
 	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm/target/release \
 	-L$(srcdir)/libxcm/core/rs-xcm-version/target/release -lrs_xcm_version \
-	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-version/target/release
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-version/target/release \
+	-L$(srcdir)/libxcm/ctl/rs-ctl/target/release -lrs_ctl \
+	-Wl,-rpath,$(srcdir)/libxcm/ctl/rs-ctl/target/release \
+	-L$(srcdir)/libxcm/core/rs-xcm-attr-map/target/release -lrs_xcm_attr_map \
+	-Wl,-rpath,$(srcdir)/libxcm/core/rs-xcm-attr-map/target/release
 libxcm_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/libxcm/core \
 	-I$(srcdir)/libxcm/tp/common -I$(srcdir)/libxcm/tp/ux \
 	-I$(srcdir)/libxcm/tp/tcp -I$(srcdir)/libxcm/tp/dns

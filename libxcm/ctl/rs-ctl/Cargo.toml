@@ -13,4 +13,4 @@ rs-xpoll = { path = "../../core/rs-xpoll"}
 
 [lib]
 path="src/ctl.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
