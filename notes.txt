@@ -1,0 +1,47 @@
+cargo +nightly clippy --fix --allow-dirty, struggles with fixing unused mut
+
+claims that i does not need to be mutable here, even though we clearly assign i in the while-loop (trying to build it after removing mut indeed causes build errors)
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn attr_path_destroy(path: *mut attr_path) { unsafe {
+    if !path.is_null() {
+        let mut i: libc::c_ulong = 0;
+        while i < (*path).num_comps {
+            attr_pcomp_destroy((*path).comps[i as usize]);
+            i = i.wrapping_add(1);
+        }
+        ut_free(path as *mut libc::c_void);
+    }
+}}
+
+When including xcm_attr_map in xcm.rs, for some reason got undefined referenecs to ctl_create, ctl_destroy, ctl_process. 
+
+usr/bin/ld: ./libxcm/core/rs-xcm/target/release/librs_xcm.so: undefined reference to ctl_process'
+/usr/bin/ld: ./libxcm/core/rs-xcm/target/release/librs_xcm.so: undefined reference to ctl_create'
+/usr/bin/ld: ./libxcm/core/rs-xcm/target/release/librs_xcm.so: undefined reference to ctl_destroy'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:1152: xcmpong] Error 1
+
+Even though xcm_attr_map does not use any of these functions (nor does xcm.rs).
+
+Ran:
+$ nm -D libxcm/core/rs-xcm/target/release/librs_xcm.so | grep ctl_
+                 U ctl_create
+                 U ctl_destroy
+                 U ctl_process
+johan@johan-HP-Spectre-x360-Convertible-13-aw2xxx:~/coding/thesis/xcm-translation$ nm -D libxcm/ctl/rs-ctl/target/release/librs_ctl.so | grep ctl_
+0000000000016e20 T ctl_create
+00000000000192c0 T ctl_derive_path
+0000000000017220 T ctl_destroy
+0000000000019260 T ctl_get_dir
+0000000000019360 T ctl_parse_info
+0000000000017430 T ctl_process
+
+rs-ctl needed in at least:
+xcmrelay_LDFLAGS
+xcm_LDFLAGS
+xcmpong_LDFLAGS
+
+xcm_attr_map not needed anywhere, not even in libxcm_la_LDFLAGS, from whichs source it was removed
+
+
+Clippy's suggestions for xcm_attr_map.rs caused a bunch of testcases to fail.
