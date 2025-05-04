@@ -524,137 +524,238 @@ unsafe extern "C" fn client_send(
     );
     0 as libc::c_int
 }}
-unsafe extern "C" fn client_receive(
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn client_receive(
     client: *mut client,
     ctl: *mut ctl,
 ) -> libc::c_int { unsafe {
-    let res: *mut ctl_proto_msg;// = std::ptr::null_mut::<ctl_proto_msg>();
-    let current_block: u64;
     if !ut_is_readable((*client).fd) {
-        return 0 as libc::c_int;
+        return 0;
     }
-    let mut rc: libc::c_int = -(1 as libc::c_int);
-    let req: *mut ctl_proto_msg = ut_malloc(
-        ::core::mem::size_of::<ctl_proto_msg>() as libc::c_ulong,
-    ) as *mut ctl_proto_msg;
-    let mut _oerrno: libc::c_int = *__errno_location();
-    let recv_rc: libc::c_int = recv(
+
+    let mut rc = -1;
+    let req = ut_malloc(std::mem::size_of::<ctl_proto_msg>() as libc::c_ulong)
+        as *mut ctl_proto_msg;
+
+    let saved_errno = *__errno_location();
+    let recv_rc = recv(
         (*client).fd,
         req as *mut libc::c_void,
-        ::core::mem::size_of::<ctl_proto_msg>(),
-        0 as libc::c_int,
-    ) as libc::c_int;
-    let recv_errno: libc::c_int = *__errno_location();
-    *__errno_location() = _oerrno;
-    if recv_rc < 0 as libc::c_int {
-        if recv_errno == 11 as libc::c_int {
-            rc = 0 as libc::c_int;
+        std::mem::size_of::<ctl_proto_msg>(),
+        0,
+    );
+    let recv_errno = *__errno_location();
+    *__errno_location() = saved_errno;
+
+    if recv_rc < 0 {
+        if recv_errno == libc::EAGAIN {
+            rc = 0;
         } else if log_is_enabled(log_type_debug) {
             __log_event(
                 log_type_debug,
-                b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c\0"
-                    as *const u8 as *const libc::c_char,
-                273 as libc::c_int,
-                (*::core::mem::transmute::<
-                    &[u8; 15],
-                    &[libc::c_char; 15],
-                >(b"client_receive\0"))
-                    .as_ptr(),
+                c"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c".as_ptr() as *const _,
+                273,
+                c"client_receive".as_ptr() as *const _,
                 (*ctl).socket,
-                b"Error talking to control client on fd %d; errno %d (%s).\0"
-                    as *const u8 as *const libc::c_char,
+                c"Error talking to control client on fd %d; errno %d (%s).".as_ptr() as *const _,
                 (*client).fd,
                 recv_errno,
                 strerror(recv_errno),
             );
         }
-    } else if recv_rc == 0 as libc::c_int {
+    } else if recv_rc == 0 {
         if log_is_enabled(log_type_debug) {
             __log_event(
                 log_type_debug,
-                b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c\0"
-                    as *const u8 as *const libc::c_char,
-                276 as libc::c_int,
-                (*::core::mem::transmute::<
-                    &[u8; 15],
-                    &[libc::c_char; 15],
-                >(b"client_receive\0"))
-                    .as_ptr(),
+                c"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c".as_ptr() as *const _,
+                276,
+                c"client_receive".as_ptr() as *const _,
                 (*ctl).socket,
-                b"Client disconnected.\0" as *const u8 as *const libc::c_char,
+                c"Client disconnected.".as_ptr() as *const _,
             );
         }
-    } else if recv_rc as libc::c_ulong
-        != ::core::mem::size_of::<ctl_proto_msg>() as libc::c_ulong
-    {
+    } else if recv_rc as usize != std::mem::size_of::<ctl_proto_msg>() {
         if log_is_enabled(log_type_debug) {
             __log_event(
                 log_type_debug,
-                b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c\0"
-                    as *const u8 as *const libc::c_char,
-                279 as libc::c_int,
-                (*::core::mem::transmute::<
-                    &[u8; 15],
-                    &[libc::c_char; 15],
-                >(b"client_receive\0"))
-                    .as_ptr(),
+                c"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c".as_ptr() as *const _,
+                279,
+                c"client_receive".as_ptr() as *const _,
                 (*ctl).socket,
-                b"Received malformed control message from client.\0" as *const u8
-                    as *const libc::c_char,
+                c"Received malformed control message from client.".as_ptr() as *const _,
             );
         }
     } else {
-        (*client).is_response_pending = 1 as libc::c_int != 0;
+        (*client).is_response_pending = true;
         xpoll_fd_reg_mod(
             (*(*ctl).socket).xpoll,
             (*client).fd_reg_id,
-            EPOLLOUT as libc::c_int,
+            EPOLLOUT,
         );
-        res = &mut (*client).pending_response;
+
+        let res = &mut (*client).pending_response;
         match (*req).type_0 as libc::c_uint {
             0 => {
-                process_get_attr(
-                    (*ctl).socket,
-                    &mut (*req).c2rust_unnamed.get_attr_req,
-                    res,
-                );
-                current_block = 15897653523371991391;
+                process_get_attr((*ctl).socket, &mut (*req).c2rust_unnamed.get_attr_req, res);
+                rc = 0;
             }
             3 => {
                 process_get_all_attr((*ctl).socket, res);
-                current_block = 15897653523371991391;
+                rc = 0;
             }
             _ => {
                 if log_is_enabled(log_type_debug) {
                     __log_event(
                         log_type_debug,
-                        b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c\0"
-                            as *const u8 as *const libc::c_char,
-                        296 as libc::c_int,
-                        (*::core::mem::transmute::<
-                            &[u8; 15],
-                            &[libc::c_char; 15],
-                        >(b"client_receive\0"))
-                            .as_ptr(),
+                        c"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c".as_ptr() as *const _,
+                        296,
+                        c"client_receive".as_ptr() as *const _,
                         (*ctl).socket,
-                        b"Received malformed control message from client.\0" as *const u8
-                            as *const libc::c_char,
+                        c"Received malformed control message from client.".as_ptr() as *const _,
                     );
                 }
-                (*client).is_response_pending = 0 as libc::c_int != 0;
-                current_block = 59788533810856093;
-            }
-        }
-        match current_block {
-            59788533810856093 => {}
-            _ => {
-                rc = 0 as libc::c_int;
+                (*client).is_response_pending = false;
             }
         }
     }
+
     ut_free(req as *mut libc::c_void);
     rc
 }}
+
+
+// unsafe extern "C" fn client_receive(
+//     client: *mut client,
+//     ctl: *mut ctl,
+// ) -> libc::c_int { unsafe {
+//     let res: *mut ctl_proto_msg;// = std::ptr::null_mut::<ctl_proto_msg>();
+//     let current_block: u64;
+//     if !ut_is_readable((*client).fd) {
+//         return 0 as libc::c_int;
+//     }
+//     let mut rc: libc::c_int = -(1 as libc::c_int);
+//     let req: *mut ctl_proto_msg = ut_malloc(
+//         ::core::mem::size_of::<ctl_proto_msg>() as libc::c_ulong,
+//     ) as *mut ctl_proto_msg;
+//     let mut _oerrno: libc::c_int = *__errno_location();
+//     let recv_rc: libc::c_int = recv(
+//         (*client).fd,
+//         req as *mut libc::c_void,
+//         ::core::mem::size_of::<ctl_proto_msg>(),
+//         0 as libc::c_int,
+//     ) as libc::c_int;
+//     let recv_errno: libc::c_int = *__errno_location();
+//     *__errno_location() = _oerrno;
+//     if recv_rc < 0 as libc::c_int {
+//         if recv_errno == 11 as libc::c_int {
+//             rc = 0 as libc::c_int;
+//         } else if log_is_enabled(log_type_debug) {
+//             __log_event(
+//                 log_type_debug,
+//                 b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c\0"
+//                     as *const u8 as *const libc::c_char,
+//                 273 as libc::c_int,
+//                 (*::core::mem::transmute::<
+//                     &[u8; 15],
+//                     &[libc::c_char; 15],
+//                 >(b"client_receive\0"))
+//                     .as_ptr(),
+//                 (*ctl).socket,
+//                 b"Error talking to control client on fd %d; errno %d (%s).\0"
+//                     as *const u8 as *const libc::c_char,
+//                 (*client).fd,
+//                 recv_errno,
+//                 strerror(recv_errno),
+//             );
+//         }
+//     } else if recv_rc == 0 as libc::c_int {
+//         if log_is_enabled(log_type_debug) {
+//             __log_event(
+//                 log_type_debug,
+//                 b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c\0"
+//                     as *const u8 as *const libc::c_char,
+//                 276 as libc::c_int,
+//                 (*::core::mem::transmute::<
+//                     &[u8; 15],
+//                     &[libc::c_char; 15],
+//                 >(b"client_receive\0"))
+//                     .as_ptr(),
+//                 (*ctl).socket,
+//                 b"Client disconnected.\0" as *const u8 as *const libc::c_char,
+//             );
+//         }
+//     } else if recv_rc as libc::c_ulong
+//         != ::core::mem::size_of::<ctl_proto_msg>() as libc::c_ulong
+//     {
+//         if log_is_enabled(log_type_debug) {
+//             __log_event(
+//                 log_type_debug,
+//                 b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c\0"
+//                     as *const u8 as *const libc::c_char,
+//                 279 as libc::c_int,
+//                 (*::core::mem::transmute::<
+//                     &[u8; 15],
+//                     &[libc::c_char; 15],
+//                 >(b"client_receive\0"))
+//                     .as_ptr(),
+//                 (*ctl).socket,
+//                 b"Received malformed control message from client.\0" as *const u8
+//                     as *const libc::c_char,
+//             );
+//         }
+//     } else {
+//         (*client).is_response_pending = 1 as libc::c_int != 0;
+//         xpoll_fd_reg_mod(
+//             (*(*ctl).socket).xpoll,
+//             (*client).fd_reg_id,
+//             EPOLLOUT as libc::c_int,
+//         );
+//         res = &mut (*client).pending_response;
+//         match (*req).type_0 as libc::c_uint {
+//             0 => {
+//                 process_get_attr(
+//                     (*ctl).socket,
+//                     &mut (*req).c2rust_unnamed.get_attr_req,
+//                     res,
+//                 );
+//                 current_block = 15897653523371991391;
+//             }
+//             3 => {
+//                 process_get_all_attr((*ctl).socket, res);
+//                 current_block = 15897653523371991391;
+//             }
+//             _ => {
+//                 if log_is_enabled(log_type_debug) {
+//                     __log_event(
+//                         log_type_debug,
+//                         b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/ctl/ctl.c\0"
+//                             as *const u8 as *const libc::c_char,
+//                         296 as libc::c_int,
+//                         (*::core::mem::transmute::<
+//                             &[u8; 15],
+//                             &[libc::c_char; 15],
+//                         >(b"client_receive\0"))
+//                             .as_ptr(),
+//                         (*ctl).socket,
+//                         b"Received malformed control message from client.\0" as *const u8
+//                             as *const libc::c_char,
+//                     );
+//                 }
+//                 (*client).is_response_pending = 0 as libc::c_int != 0;
+//                 current_block = 59788533810856093;
+//             }
+//         }
+//         match current_block {
+//             59788533810856093 => {}
+//             _ => {
+//                 rc = 0 as libc::c_int;
+//             }
+//         }
+//     }
+//     ut_free(req as *mut libc::c_void);
+//     rc
+// }}
 unsafe extern "C" fn process_client(
     client: *mut client,
     ctl: *mut ctl,
