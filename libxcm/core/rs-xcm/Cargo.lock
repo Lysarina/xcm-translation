@@ -182,6 +182,7 @@ dependencies = [
  "rs-common-tp",
  "rs-log",
  "rs-util",
+ "rs-xcm-attr-map",
  "rs-xcm-tp",
  "rs-xcm-version",
  "rs-xpoll",
@@ -195,6 +196,16 @@ dependencies = [
  "libc",
  "rs-log",
  "rs-xcm-dns",
+ "xcm-rust-common",
+]
+
+[[package]]
+name = "rs-xcm-attr-map"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "rs-log",
+ "rs-util",
  "xcm-rust-common",
 ]
 

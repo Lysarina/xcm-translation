@@ -14,6 +14,7 @@ rs-xpoll = {path="../rs-xpoll"}
 rs-log = {path="../rs-log"}
 rs-util = {path="../../../common/rs-util"}
 rs-xcm-version = {path="../rs-xcm-version"}
+rs-xcm-attr-map = { path = "../rs-xcm-attr-map"}
 
 [lib]
 path="src/xcm.rs"

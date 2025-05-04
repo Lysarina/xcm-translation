@@ -1,0 +1,15 @@
+[package]
+name = "rs-xcm-attr-map"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libc = "0.2.172"
+xcm-rust-common = { path = "../../../xcm-rust-common/" }
+rs-log = { path = "../rs-log/" }
+rs-util = { path = "../../../common/rs-util/"}
+
+
+[lib]
+path="src/xcm_attr_map.rs"
+crate-type = ["cdylib", "rlib"]
