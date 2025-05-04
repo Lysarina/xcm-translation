@@ -20,44 +20,12 @@ use rs_util::*;
 use rs_attr_tree::{attr_tree_destroy, attr_tree_get_all, attr_tree_get_list_len,
     attr_tree_get_value, attr_tree_set_value, attr_tree_create};
 use rs_xcm_version::*;
-
 use rs_xcm_attr_map::*;
 
 unsafe extern "C" {
-    // Translate attr map??
-    // pub type xcm_attr_map;
-    // fn xcm_attr_map_create() -> *mut xcm_attr_map; //xcm_attr_map.rs
-    // // xcm_attr_map.rs
-    // fn xcm_attr_map_add_bool( 
-    //     attr_map: *mut xcm_attr_map,
-    //     attr_name: *const libc::c_char,
-    //     attr_value: bool,
-    // );
-    //     // xcm_attr_map.rs
-    // fn xcm_attr_map_exists(
-    //     attr_map: *const xcm_attr_map,
-    //     attr_name: *const libc::c_char,
-    // ) -> bool;
-    // // xcm_attr_map.rs
-    // fn xcm_attr_map_foreach(
-    //     attr_map: *const xcm_attr_map,
-    //     cb: xcm_attr_map_foreach_cb,
-    //     user: *mut libc::c_void,
-    // );
-    // // xcm_attr_map.rs
-    // fn xcm_attr_map_destroy(attr_map: *mut xcm_attr_map);
+    
 }
 
-// xcm_attr_map.rs
-// pub type xcm_attr_map_foreach_cb = Option::<
-//     unsafe extern "C" fn(
-//         *const libc::c_char,
-//         xcm_attr_type,
-//         *const libc::c_void,
-//         libc::c_ulong,
-//         *mut libc::c_void,
-//     ) -> (),
-// >;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct set_attr_state {
