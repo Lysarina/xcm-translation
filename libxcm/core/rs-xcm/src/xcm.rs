@@ -102,7 +102,7 @@ pub unsafe extern "C" fn xcm_connect(
     flags: libc::c_int,
 ) -> *mut xcm_socket { unsafe {
     let mut attrs: *mut xcm_attr_map = std::ptr::null_mut::<xcm_attr_map>();
-    if flags & (1 as libc::c_int) << 0 as libc::c_int != 0 {
+    if flags & ((1 as libc::c_int) << 0 as libc::c_int) != 0 {
         attrs = xcm_attr_map_create();
         xcm_attr_map_add_bool(
             attrs,
@@ -226,66 +226,123 @@ unsafe extern "C" fn socket_destroy(s: *mut xcm_socket) { unsafe {
         xpoll_destroy(xpoll);
     }
 }}
+
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_connect_a(
     remote_addr: *const libc::c_char,
     attrs: *const xcm_attr_map,
 ) -> *mut xcm_socket { unsafe {
-    let current_block: u64;
     assure_library_version_logged();
-    let proto: *const xcm_tp_proto = xcm_tp_proto_by_addr(remote_addr);
+
+    let proto = xcm_tp_proto_by_addr(remote_addr);
     if proto.is_null() {
-        return std::ptr::null_mut::<xcm_socket>();
+        return std::ptr::null_mut();
     }
-    let s: *mut xcm_socket = socket_create(
-        proto,
-        xcm_socket_type_conn,
-        1 as libc::c_int != 0,
-    );
-    if !s.is_null() {
-        if xcm_tp_socket_init(s, std::ptr::null_mut::<xcm_socket>()) >= 0 as libc::c_int {
-            if set_attrs(s, std::ptr::null_mut::<xcm_socket>(), attrs) < 0 as libc::c_int {
-                current_block = 12691915414181357882;
-            } else if xcm_tp_socket_connect(s, remote_addr) < 0 as libc::c_int {
-                current_block = 7471077250034626850;
-            } else {
-                if (*s).is_blocking as libc::c_int != 0
-                    && socket_finish(s) < 0 as libc::c_int
-                {
-                    if log_is_enabled(log_type_debug) {
-                        __log_event(
-                            log_type_debug,
-                            b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c\0"
-                                as *const u8 as *const libc::c_char,
-                            213 as libc::c_int,
-                            (*::core::mem::transmute::<
-                                &[u8; 14],
-                                &[libc::c_char; 14],
-                            >(b"xcm_connect_a\0"))
-                                .as_ptr(),
-                            s,
-                            b"Failed to establish connection; errno %d (%s).\0"
-                                as *const u8 as *const libc::c_char,
-                            *__errno_location(),
-                            strerror(*__errno_location()),
-                        );
-                    }
-                } else {
-                    return s
-                }
-                current_block = 12691915414181357882;
-            }
-            match current_block {
-                7471077250034626850 => {}
-                _ => {
-                    xcm_tp_socket_close(s);
-                }
-            }
-        }
+
+    let s = socket_create(proto, xcm_socket_type_conn, true);
+    if s.is_null() {
+        return std::ptr::null_mut();
+    }
+
+    if xcm_tp_socket_init(s, std::ptr::null_mut()) < 0 {
         socket_destroy(s);
+        return std::ptr::null_mut();
     }
-    std::ptr::null_mut::<xcm_socket>()
+
+    if set_attrs(s, std::ptr::null_mut(), attrs) < 0 {
+        xcm_tp_socket_close(s);
+        socket_destroy(s);
+        return std::ptr::null_mut();
+    }
+
+    if xcm_tp_socket_connect(s, remote_addr) < 0 {
+        socket_destroy(s);
+        return std::ptr::null_mut();
+    }
+
+    if (*s).is_blocking && socket_finish(s) < 0 {
+        if log_is_enabled(log_type_debug) {
+            __log_event(
+                log_type_debug,
+                c"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c".as_ptr() as *const libc::c_char,
+                213,
+                c"xcm_connect_a".as_ptr() as *const libc::c_char,
+                s,
+                c"Failed to establish connection; errno %d (%s).".as_ptr() as *const libc::c_char,
+                *__errno_location(),
+                strerror(*__errno_location()),
+            );
+        }
+        xcm_tp_socket_close(s);
+        socket_destroy(s);
+        return std::ptr::null_mut();
+    }
+
+    s
 }}
+
+
+// #[unsafe(no_mangle)]
+// pub unsafe extern "C" fn xcm_connect_a(
+//     remote_addr: *const libc::c_char,
+//     attrs: *const xcm_attr_map,
+// ) -> *mut xcm_socket { unsafe {
+//     let current_block: u64;
+//     assure_library_version_logged();
+//     let proto: *const xcm_tp_proto = xcm_tp_proto_by_addr(remote_addr);
+//     if proto.is_null() {
+//         return std::ptr::null_mut::<xcm_socket>();
+//     }
+//     let s: *mut xcm_socket = socket_create(
+//         proto,
+//         xcm_socket_type_conn,
+//         1 as libc::c_int != 0,
+//     );
+//     if !s.is_null() {
+//         if xcm_tp_socket_init(s, std::ptr::null_mut::<xcm_socket>()) >= 0 as libc::c_int {
+//             if set_attrs(s, std::ptr::null_mut::<xcm_socket>(), attrs) < 0 as libc::c_int {
+//                 current_block = 12691915414181357882;
+//             } else if xcm_tp_socket_connect(s, remote_addr) < 0 as libc::c_int {
+//                 current_block = 7471077250034626850;
+//             } else {
+//                 if (*s).is_blocking as libc::c_int != 0
+//                     && socket_finish(s) < 0 as libc::c_int
+//                 {
+//                     if log_is_enabled(log_type_debug) {
+//                         __log_event(
+//                             log_type_debug,
+//                             b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c\0"
+//                                 as *const u8 as *const libc::c_char,
+//                             213 as libc::c_int,
+//                             (*::core::mem::transmute::<
+//                                 &[u8; 14],
+//                                 &[libc::c_char; 14],
+//                             >(b"xcm_connect_a\0"))
+//                                 .as_ptr(),
+//                             s,
+//                             b"Failed to establish connection; errno %d (%s).\0"
+//                                 as *const u8 as *const libc::c_char,
+//                             *__errno_location(),
+//                             strerror(*__errno_location()),
+//                         );
+//                     }
+//                 } else {
+//                     return s
+//                 }
+//                 current_block = 12691915414181357882;
+//             }
+//             match current_block {
+//                 7471077250034626850 => {}
+//                 _ => {
+//                     xcm_tp_socket_close(s);
+//                 }
+//             }
+//         }
+//         socket_destroy(s);
+//     }
+//     std::ptr::null_mut::<xcm_socket>()
+// }}
+
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_server(
     local_addr: *const libc::c_char,
@@ -333,92 +390,161 @@ pub unsafe extern "C" fn xcm_cleanup(s: *mut xcm_socket) { unsafe {
 pub unsafe extern "C" fn xcm_accept(server_s: *mut xcm_socket) -> *mut xcm_socket { unsafe {
     xcm_accept_a(server_s, std::ptr::null::<xcm_attr_map>())
 }}
+
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_accept_a(
     server_s: *mut xcm_socket,
     attrs: *const xcm_attr_map,
 ) -> *mut xcm_socket { unsafe {
-    let mut current_block: u64;
-    if (*server_s).type_0 as libc::c_uint
-        != xcm_socket_type_server as libc::c_int as libc::c_uint
-    {
+    // Check socket type
+    if (*server_s).type_0 != xcm_socket_type_server {
         if log_is_enabled(log_type_debug) {
             __log_event(
                 log_type_debug,
-                b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c\0"
-                    as *const u8 as *const libc::c_char,
-                290 as libc::c_int,
-                (*::core::mem::transmute::<
-                    &[u8; 13],
-                    &[libc::c_char; 13],
-                >(b"xcm_accept_a\0"))
-                    .as_ptr(),
+                c"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c".as_ptr() as *const _,
+                290,
+                c"xcm_accept_a".as_ptr() as *const _,
                 server_s,
-                b"Operation failed; socket is of the wrong type.\0" as *const u8
-                    as *const libc::c_char,
+                c"Operation failed; socket is of the wrong type.".as_ptr() as *const _,
             );
         }
-        *__errno_location() = 22 as libc::c_int;
-        return std::ptr::null_mut::<xcm_socket>();
+        *__errno_location() = libc::EINVAL;
+        return std::ptr::null_mut();
     }
-    let is_blocking: bool = (*server_s).is_blocking;
-    let mut conn_s: *mut xcm_socket; // = std::ptr::null_mut::<xcm_socket>()
+
+    let is_blocking = (*server_s).is_blocking;
+
     loop {
-        conn_s = socket_create(
-            (*server_s).proto,
-            xcm_socket_type_conn,
-            (*server_s).is_blocking,
-        );
+        let conn_s = socket_create((*server_s).proto, xcm_socket_type_conn, is_blocking);
         if conn_s.is_null() {
-            current_block = 14252043271018405008;
-            break;
+            return std::ptr::null_mut();
         }
-        if is_blocking as libc::c_int != 0
-            && socket_wait(server_s, (1 as libc::c_int) << 2 as libc::c_int)
-                < 0 as libc::c_int
-        {
-            current_block = 14418216915952698982;
-            break;
-        }
-        if xcm_tp_socket_init(conn_s, server_s) < 0 as libc::c_int {
-            current_block = 14418216915952698982;
-            break;
-        }
-        if set_attrs(conn_s, server_s, attrs) < 0 as libc::c_int {
-            current_block = 11449320154384187214;
-            break;
-        }
-        if xcm_tp_socket_accept(conn_s, server_s) < 0 as libc::c_int {
-            if !(is_blocking as libc::c_int != 0
-                && *__errno_location() == 11 as libc::c_int)
-            {
-                current_block = 14418216915952698982;
-                break;
-            }
+
+        if is_blocking && socket_wait(server_s, (1 as libc::c_int) << 2 as libc::c_int) < 0 {
             socket_destroy(conn_s);
-        } else if is_blocking as libc::c_int != 0
-            && socket_finish(conn_s) < 0 as libc::c_int
-        {
-            current_block = 11449320154384187214;
-            break;
-        } else {
-            current_block = 13242334135786603907;
-            break;
+            return std::ptr::null_mut();
         }
-    }
-    match current_block {
-        11449320154384187214 => {
+
+        if xcm_tp_socket_init(conn_s, server_s) < 0 {
+            socket_destroy(conn_s);
+            return std::ptr::null_mut();
+        }
+
+        if set_attrs(conn_s, server_s, attrs) < 0 {
             xcm_tp_socket_close(conn_s);
-            current_block = 14418216915952698982;
+            socket_destroy(conn_s);
+            return std::ptr::null_mut();
         }
-        13242334135786603907 => return conn_s,
-        _ => {}
+
+        let rc = xcm_tp_socket_accept(conn_s, server_s);
+        if rc < 0 {
+            if is_blocking && *__errno_location() == libc::EAGAIN {
+                socket_destroy(conn_s);
+                continue; // Retry via loop
+            } else {
+                socket_destroy(conn_s);
+                return std::ptr::null_mut();
+            }
+        }
+
+        if is_blocking && socket_finish(conn_s) < 0 {
+            xcm_tp_socket_close(conn_s);
+            socket_destroy(conn_s);
+            return std::ptr::null_mut();
+        }
+
+        return conn_s;
     }
-    if current_block == 14418216915952698982 {
-        socket_destroy(conn_s);
-    }
-    std::ptr::null_mut::<xcm_socket>()
 }}
+
+
+// #[unsafe(no_mangle)]
+// pub unsafe extern "C" fn xcm_accept_a(
+//     server_s: *mut xcm_socket,
+//     attrs: *const xcm_attr_map,
+// ) -> *mut xcm_socket { unsafe {
+//     let mut current_block: u64;
+//     if (*server_s).type_0 as libc::c_uint
+//         != xcm_socket_type_server as libc::c_int as libc::c_uint
+//     {
+//         if log_is_enabled(log_type_debug) {
+//             __log_event(
+//                 log_type_debug,
+//                 b"/home/lysarina/skool/exjobb/xcm-translation/libxcm/core/xcm.c\0"
+//                     as *const u8 as *const libc::c_char,
+//                 290 as libc::c_int,
+//                 (*::core::mem::transmute::<
+//                     &[u8; 13],
+//                     &[libc::c_char; 13],
+//                 >(b"xcm_accept_a\0"))
+//                     .as_ptr(),
+//                 server_s,
+//                 b"Operation failed; socket is of the wrong type.\0" as *const u8
+//                     as *const libc::c_char,
+//             );
+//         }
+//         *__errno_location() = 22 as libc::c_int;
+//         return std::ptr::null_mut::<xcm_socket>();
+//     }
+//     let is_blocking: bool = (*server_s).is_blocking;
+//     let mut conn_s: *mut xcm_socket; // = std::ptr::null_mut::<xcm_socket>()
+//     loop {
+//         conn_s = socket_create(
+//             (*server_s).proto,
+//             xcm_socket_type_conn,
+//             (*server_s).is_blocking,
+//         );
+//         if conn_s.is_null() {
+//             current_block = 14252043271018405008;
+//             break;
+//         }
+//         if is_blocking as libc::c_int != 0
+//             && socket_wait(server_s, (1 as libc::c_int) << 2 as libc::c_int)
+//                 < 0 as libc::c_int
+//         {
+//             current_block = 14418216915952698982;
+//             break;
+//         }
+//         if xcm_tp_socket_init(conn_s, server_s) < 0 as libc::c_int {
+//             current_block = 14418216915952698982;
+//             break;
+//         }
+//         if set_attrs(conn_s, server_s, attrs) < 0 as libc::c_int {
+//             current_block = 11449320154384187214;
+//             break;
+//         }
+//         if xcm_tp_socket_accept(conn_s, server_s) < 0 as libc::c_int {
+//             if !(is_blocking as libc::c_int != 0
+//                 && *__errno_location() == 11 as libc::c_int)
+//             {
+//                 current_block = 14418216915952698982;
+//                 break;
+//             }
+//             socket_destroy(conn_s);
+//         } else if is_blocking as libc::c_int != 0
+//             && socket_finish(conn_s) < 0 as libc::c_int
+//         {
+//             current_block = 11449320154384187214;
+//             break;
+//         } else {
+//             current_block = 13242334135786603907;
+//             break;
+//         }
+//     }
+//     match current_block {
+//         11449320154384187214 => {
+//             xcm_tp_socket_close(conn_s);
+//             current_block = 14418216915952698982;
+//         }
+//         13242334135786603907 => return conn_s,
+//         _ => {}
+//     }
+//     if current_block == 14418216915952698982 {
+//         socket_destroy(conn_s);
+//     }
+//     std::ptr::null_mut::<xcm_socket>()
+// }}
+
 unsafe extern "C" fn bytestream_bsend(
     conn_s: *mut xcm_socket,
     buf: *const libc::c_void,
@@ -591,8 +717,7 @@ pub unsafe extern "C" fn xcm_await(
             1 as libc::c_int
         }
     } else if condition
-        & !((1 as libc::c_int) << 0 as libc::c_int
-            | (1 as libc::c_int) << 1 as libc::c_int) != 0
+        & !(((1 as libc::c_int) << 0 as libc::c_int) | ((1 as libc::c_int) << 1 as libc::c_int)) != 0
     {
         0 as libc::c_int
     } else {
