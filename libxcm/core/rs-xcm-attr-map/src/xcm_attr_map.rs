@@ -518,6 +518,30 @@ pub unsafe extern "C" fn xcm_attr_map_equal(
     1 as libc::c_int != 0
 }
 
+
+
+// Partially fixed from c2rust, but ignoring unused_mut on attr_map parameter.
+#[allow(unused_mut)]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn xcm_attr_map_destroy(mut attr_map: *mut xcm_attr_map) {
+    if !attr_map.is_null() {
+        loop {
+            let attr = (*attr_map).attrs.lh_first;
+            if attr.is_null() {
+                break;
+            }
+            if !((*attr).entry.le_next).is_null() {
+                (*(*attr).entry.le_next).entry.le_prev = (*attr).entry.le_prev;
+            }
+            *(*attr).entry.le_prev = (*attr).entry.le_next;
+            attr_destroy(attr);
+        }
+        ut_free(attr_map as *mut libc::c_void);
+    }
+}
+
+
+
 // Suggested by clippy, causes several failed tests such as attr_map_access_int64, attr_map:access_str, etc.
 // #[unsafe(no_mangle)]
 // pub unsafe extern "C" fn xcm_attr_map_destroy(attr_map: *mut xcm_attr_map) {
@@ -537,22 +561,26 @@ pub unsafe extern "C" fn xcm_attr_map_equal(
 //     }
 // }
 
+
 //From c2rust
-#[unsafe(no_mangle)]
-pub unsafe extern "C" fn xcm_attr_map_destroy(mut attr_map: *mut xcm_attr_map) {
-    if !attr_map.is_null() {
-        let mut attr: *mut attr = 0 as *mut attr;
-        loop {
-            attr = (*attr_map).attrs.lh_first;
-            if attr.is_null() {
-                break;
-            }
-            if !((*attr).entry.le_next).is_null() {
-                (*(*attr).entry.le_next).entry.le_prev = (*attr).entry.le_prev;
-            }
-            *(*attr).entry.le_prev = (*attr).entry.le_next;
-            attr_destroy(attr);
-        }
-        ut_free(attr_map as *mut libc::c_void);
-    }
-}
+// #[allow(clippy::zero_ptr)]
+// #[allow(unused_mut)]
+// #[allow(unused_assignments)]
+// #[unsafe(no_mangle)]
+// pub unsafe extern "C" fn xcm_attr_map_destroy(mut attr_map: *mut xcm_attr_map) {
+//     if !attr_map.is_null() {
+//         let mut attr: *mut attr = 0 as *mut attr;
+//         loop {
+//             attr = (*attr_map).attrs.lh_first;
+//             if attr.is_null() {
+//                 break;
+//             }
+//             if !((*attr).entry.le_next).is_null() {
+//                 (*(*attr).entry.le_next).entry.le_prev = (*attr).entry.le_prev;
+//             }
+//             *(*attr).entry.le_prev = (*attr).entry.le_next;
+//             attr_destroy(attr);
+//         }
+//         ut_free(attr_map as *mut libc::c_void);
+//     }
+// }
