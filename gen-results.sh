@@ -1,4 +1,5 @@
 for i in $(seq 1 10);
 do
-    sudo make check &> perf_results/rs-7-res-$i.txt
+    # mv perf_results/rustlike-$i.txt perf_results/rustlike-res-$i.txt
+    sudo make check &> perf_results/rustlike-2-res-$i.txt
 done

@@ -6,10 +6,10 @@ from scipy import stats
 
 test_count = 165
 
-versions = ["original-c", "rs-6"]
+versions = ["original-c", "full-c2rust-translation-final", "rustlike"]
 # files = (10, 5)
 # versions = ["rs-1", "c-code"]
-files = [10, 10]
+files = [10, 10, 10]
 
 test_times = re.compile(".*<.*>") # find test times
 total_time = re.compile("165 tests run in .*") #catch whole res line
@@ -110,6 +110,8 @@ for t, v in data_test.items():
 
 plot_all_values = True
 
+count = 0
+
 for t in sig_tests:
     print(t)
     plt.figure(figsize=(10, 6))
@@ -153,6 +155,11 @@ for t in sig_tests:
         plt.ylabel('Time (s)')
     # Set xticks to be the version indices
     plt.xticks(range(len(versions)), versions, rotation=45)
+
+    count += 1
+    if count > 30:
+        break
+    
 
 print(f"Total significantly different tests: {len(sig_tests)}")
 
