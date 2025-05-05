@@ -6,7 +6,7 @@ from scipy import stats
 
 test_count = 165
 
-versions = ["original-c", "full-c2rust-translation"]
+versions = ["original-c", "full-c2rust-translation-final"]
 # files = (10, 5)
 # versions = ["rs-1", "c-code"]
 files = [10, 10]
