@@ -9,4 +9,4 @@ rs-common-ctl = { path = "../../../common/rs-common-ctl" }
 
 [lib]
 path="src/ctl.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]

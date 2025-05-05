@@ -9,4 +9,4 @@ rs-attr-path = {path="../rs-attr-path"}
 
 [lib]
 path = "src/attr_node.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]

@@ -11,6 +11,8 @@
 
 use std::sync::atomic::{AtomicBool, Ordering};
 
+use rs_common_tp::*;
+
 unsafe extern "C" {
     pub type xcm_attr_map;
     pub type ctl;
@@ -60,12 +62,12 @@ unsafe extern "C" {
     fn xcm_tp_socket_send(
         s: *mut xcm_socket,
         buf: *const libc::c_void,
-        len: libc::c_ulong,
+        len: size_t,
     ) -> libc::c_int;
     fn xcm_tp_socket_receive(
         s: *mut xcm_socket,
         buf: *mut libc::c_void,
-        capacity: libc::c_ulong,
+        capacity: size_t,
     ) -> libc::c_int;
     fn xcm_tp_socket_update(s: *mut xcm_socket);
     fn xcm_tp_socket_finish(s: *mut xcm_socket) -> libc::c_int;
@@ -88,7 +90,7 @@ unsafe extern "C" {
         path: *const libc::c_char,
         type_0: xcm_attr_type,
         value: *const libc::c_void,
-        len: libc::c_ulong,
+        len: size_t,
         log_ref: *mut libc::c_void,
     ) -> libc::c_int;
     fn attr_tree_get_value(
@@ -96,7 +98,7 @@ unsafe extern "C" {
         path: *const libc::c_char,
         type_0: *mut xcm_attr_type,
         value: *mut libc::c_void,
-        capacity: libc::c_ulong,
+        capacity: size_t,
         log_ref: *mut libc::c_void,
     ) -> libc::c_int;
     fn attr_tree_get_list_len(
@@ -143,18 +145,23 @@ pub struct __va_list_tag {
     pub overflow_arg_area: *mut libc::c_void,
     pub reg_save_area: *mut libc::c_void,
 }
+pub type size_t = libc::c_ulong;
+pub type __int64_t = libc::c_long;
+pub type __uint64_t = libc::c_ulong;
+pub type int64_t = __int64_t;
 pub type xcm_attr_type = libc::c_uint;
 pub const xcm_attr_type_double: xcm_attr_type = 5;
 pub const xcm_attr_type_bin: xcm_attr_type = 4;
 pub const xcm_attr_type_str: xcm_attr_type = 3;
 pub const xcm_attr_type_int64: xcm_attr_type = 2;
 pub const xcm_attr_type_bool: xcm_attr_type = 1;
+pub type uint64_t = __uint64_t;
 pub type xcm_attr_map_foreach_cb = Option::<
     unsafe extern "C" fn(
         *const libc::c_char,
         xcm_attr_type,
         *const libc::c_void,
-        libc::c_ulong,
+        size_t,
         *mut libc::c_void,
     ) -> (),
 >;
@@ -163,14 +170,14 @@ pub type xcm_attr_map_foreach_cb = Option::<
 pub struct xcm_socket {
     pub proto: *const xcm_tp_proto,
     pub type_0: xcm_socket_type,
-    pub sock_id: libc::c_long,
+    pub sock_id: int64_t,
     pub auto_enable_ctl: bool,
     pub auto_update: bool,
     pub is_blocking: bool,
     pub xpoll: *mut xpoll,
     pub condition: libc::c_int,
     pub ctl: *mut ctl,
-    pub skipped_ctl_calls: libc::c_ulong,
+    pub skipped_ctl_calls: uint64_t,
 }
 pub type xcm_socket_type = libc::c_uint;
 pub const xcm_socket_type_server: xcm_socket_type = 1;
@@ -199,10 +206,10 @@ pub struct xcm_tp_ops {
         unsafe extern "C" fn(*mut xcm_socket, *mut xcm_socket) -> libc::c_int,
     >,
     pub send: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, libc::c_ulong) -> libc::c_int,
+        unsafe extern "C" fn(*mut xcm_socket, *const libc::c_void, size_t) -> libc::c_int,
     >,
     pub receive: Option::<
-        unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, libc::c_ulong) -> libc::c_int,
+        unsafe extern "C" fn(*mut xcm_socket, *mut libc::c_void, size_t) -> libc::c_int,
     >,
     pub update: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
     pub finish: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_int>,
@@ -218,13 +225,13 @@ pub struct xcm_tp_ops {
     pub set_local_addr: Option::<
         unsafe extern "C" fn(*mut xcm_socket, *const libc::c_char) -> libc::c_int,
     >,
-    pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> libc::c_ulong>,
-    pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> libc::c_long>,
+    pub max_msg: Option::<unsafe extern "C" fn(*mut xcm_socket) -> size_t>,
+    pub get_cnt: Option::<unsafe extern "C" fn(*mut xcm_socket, xcm_tp_cnt) -> int64_t>,
     pub enable_ctl: Option::<unsafe extern "C" fn(*mut xcm_socket) -> ()>,
     pub attr_populate: Option::<
         unsafe extern "C" fn(*mut xcm_socket, *mut attr_tree) -> (),
     >,
-    pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> libc::c_ulong>,
+    pub priv_size: Option::<unsafe extern "C" fn(xcm_socket_type) -> size_t>,
 }
 pub type xcm_tp_cnt = libc::c_uint;
 pub const xcm_tp_cnt_from_lower_msgs: xcm_tp_cnt = 7;
@@ -258,12 +265,12 @@ pub type xcm_attr_cb = Option::<
         *const libc::c_char,
         xcm_attr_type,
         *mut libc::c_void,
-        libc::c_ulong,
+        size_t,
         *mut libc::c_void,
     ) -> (),
 >;
-// static mut version_logged: bool = 0 as libc::c_int != 0;
 static version_logged: AtomicBool = AtomicBool::new(false);
+// static mut version_logged: bool = 0 as libc::c_int != 0;
 unsafe extern "C" fn assure_library_version_logged() {
     if !version_logged.load(Ordering::Relaxed) {
     // if !::core::intrinsics::atomic_load_relaxed(&mut version_logged as *mut bool) {
@@ -346,7 +353,7 @@ pub unsafe extern "C" fn xcm_connect(
             0 as libc::c_int != 0,
         );
     }
-    let conn: *mut xcm_socket = xcm_connect_a(remote_addr, attrs);
+    let mut conn: *mut xcm_socket = xcm_connect_a(remote_addr, attrs);
     xcm_attr_map_destroy(attrs);
     return conn;
 }
@@ -413,7 +420,7 @@ unsafe extern "C" fn set_user_attrs(
                     *const libc::c_char,
                     xcm_attr_type,
                     *const libc::c_void,
-                    libc::c_ulong,
+                    size_t,
                     *mut libc::c_void,
                 ) -> (),
         ),
@@ -447,7 +454,7 @@ unsafe extern "C" fn socket_create(
         1 as libc::c_int != 0,
         is_blocking,
     );
-    let xpoll: *mut xpoll = xpoll_create(s as *mut libc::c_void);
+    let mut xpoll: *mut xpoll = xpoll_create(s as *mut libc::c_void);
     if xpoll.is_null() {
         xcm_tp_socket_destroy(s);
         return 0 as *mut xcm_socket;
@@ -457,7 +464,7 @@ unsafe extern "C" fn socket_create(
 }
 unsafe extern "C" fn socket_destroy(mut s: *mut xcm_socket) {
     if !s.is_null() {
-        let xpoll: *mut xpoll = (*s).xpoll;
+        let mut xpoll: *mut xpoll = (*s).xpoll;
         xcm_tp_socket_destroy(s);
         xpoll_destroy(xpoll);
     }
@@ -469,11 +476,11 @@ pub unsafe extern "C" fn xcm_connect_a(
 ) -> *mut xcm_socket {
     let mut current_block: u64;
     assure_library_version_logged();
-    let proto: *const xcm_tp_proto = xcm_tp_proto_by_addr(remote_addr);
+    let mut proto: *const xcm_tp_proto = xcm_tp_proto_by_addr(remote_addr);
     if proto.is_null() {
         return 0 as *mut xcm_socket;
     }
-    let s: *mut xcm_socket = socket_create(
+    let mut s: *mut xcm_socket = socket_create(
         proto,
         xcm_socket_type_conn,
         1 as libc::c_int != 0,
@@ -535,9 +542,9 @@ pub unsafe extern "C" fn xcm_server_a(
 ) -> *mut xcm_socket {
     let mut s: *mut xcm_socket = 0 as *mut xcm_socket;
     assure_library_version_logged();
-    let proto: *const xcm_tp_proto = xcm_tp_proto_by_addr(local_addr);
+    let mut proto: *const xcm_tp_proto = xcm_tp_proto_by_addr(local_addr);
     if !proto.is_null() {
-        let s = socket_create(proto, xcm_socket_type_server, 1 as libc::c_int != 0);
+        s = socket_create(proto, xcm_socket_type_server, 1 as libc::c_int != 0);
         if !s.is_null() {
             if !(xcm_tp_socket_init(s, 0 as *mut xcm_socket) < 0 as libc::c_int) {
                 if set_attrs(s, 0 as *mut xcm_socket, attrs) < 0 as libc::c_int {
@@ -666,12 +673,12 @@ unsafe extern "C" fn bytestream_bsend(
 ) -> libc::c_int {
     let mut sent: libc::c_int = 0 as libc::c_int;
     loop {
-        let left: libc::c_int = len.wrapping_sub(sent as libc::c_ulong)
+        let mut left: libc::c_int = len.wrapping_sub(sent as libc::c_ulong)
             as libc::c_int;
-        let rc: libc::c_int = xcm_tp_socket_send(
+        let mut rc: libc::c_int = xcm_tp_socket_send(
             conn_s,
             buf.offset(sent as isize),
-            left as libc::c_ulong,
+            left as size_t,
         );
         if rc < 0 as libc::c_int {
             if *__errno_location() != 11 as libc::c_int {
@@ -697,7 +704,7 @@ unsafe extern "C" fn msg_bsend(
     mut len: size_t,
 ) -> libc::c_int {
     loop {
-        let s_rc: libc::c_int = xcm_tp_socket_send(conn_s, buf, len);
+        let mut s_rc: libc::c_int = xcm_tp_socket_send(conn_s, buf, len);
         if s_rc < 0 as libc::c_int {
             if *__errno_location() != 11 as libc::c_int {
                 return -(1 as libc::c_int);
@@ -738,13 +745,14 @@ pub unsafe extern "C" fn xcm_send(
         return -(1 as libc::c_int);
     }
     if (*conn_s).is_blocking {
-        let rc: libc::c_int = if xcm_tp_socket_is_bytestream(conn_s) {
-            bytestream_bsend(conn_s, buf, len)
+        let mut rc: libc::c_int = 0;
+        if xcm_tp_socket_is_bytestream(conn_s) {
+            rc = bytestream_bsend(conn_s, buf, len);
         } else {
-            msg_bsend(conn_s, buf, len)
-        };
+            rc = msg_bsend(conn_s, buf, len);
+        }
         if rc >= 0 as libc::c_int && socket_finish(conn_s) < 0 as libc::c_int {
-            return -(1 as libc::c_int)
+            return -(1 as libc::c_int);
         }
         return rc;
     } else {
@@ -786,7 +794,7 @@ pub unsafe extern "C" fn xcm_receive(
             {
                 return -(1 as libc::c_int);
             }
-            let s_rc: libc::c_int = xcm_tp_socket_receive(conn_s, buf, capacity);
+            let mut s_rc: libc::c_int = xcm_tp_socket_receive(conn_s, buf, capacity);
             if s_rc >= 0 as libc::c_int || *__errno_location() != 11 as libc::c_int {
                 return s_rc;
             }
@@ -1093,8 +1101,8 @@ pub unsafe extern "C" fn xcm_attr_set(
 }
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_attr_set_bool(
-    s: *mut xcm_socket,
-    name: *const libc::c_char,
+    mut s: *mut xcm_socket,
+    mut name: *const libc::c_char,
     mut value: bool,
 ) -> libc::c_int {
     return xcm_attr_set(
@@ -1121,8 +1129,8 @@ pub unsafe extern "C" fn xcm_attr_set_int64(
 }
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn xcm_attr_set_double(
-    s: *mut xcm_socket,
-    name: *const libc::c_char,
+    mut s: *mut xcm_socket,
+    mut name: *const libc::c_char,
     mut value: libc::c_double,
 ) -> libc::c_int {
     return xcm_attr_set(
@@ -1175,7 +1183,7 @@ unsafe extern "C" fn attr_get_with_type(
     mut capacity: size_t,
 ) -> libc::c_int {
     let mut actual_type: xcm_attr_type = 0 as xcm_attr_type;
-    let rc: libc::c_int = xcm_attr_get(s, name, &mut actual_type, value, capacity);
+    let mut rc: libc::c_int = xcm_attr_get(s, name, &mut actual_type, value, capacity);
     if rc < 0 as libc::c_int {
         if *__errno_location() == 75 as libc::c_int {
             *__errno_location() = 2 as libc::c_int;
@@ -1238,7 +1246,7 @@ pub unsafe extern "C" fn xcm_attr_get_str(
     mut capacity: size_t,
 ) -> libc::c_int {
     let mut type_0: xcm_attr_type = 0 as xcm_attr_type;
-    let rc: libc::c_int = xcm_attr_get(
+    let mut rc: libc::c_int = xcm_attr_get(
         s,
         name,
         &mut type_0,
@@ -1262,7 +1270,7 @@ pub unsafe extern "C" fn xcm_attr_get_bin(
     mut capacity: size_t,
 ) -> libc::c_int {
     let mut type_0: xcm_attr_type = 0 as xcm_attr_type;
-    let rc: libc::c_int = xcm_attr_get(s, name, &mut type_0, value, capacity);
+    let mut rc: libc::c_int = xcm_attr_get(s, name, &mut type_0, value, capacity);
     if rc < 0 as libc::c_int {
         return -(1 as libc::c_int);
     }
@@ -1297,17 +1305,17 @@ pub unsafe extern "C" fn xcm_attr_getf(
 ) -> libc::c_int {
     let mut ap: ::core::ffi::VaListImpl;
     ap = args.clone();
-    let name: *mut libc::c_char = ut_vasprintf(name_fmt, ap.as_va_list());
-    let rc: libc::c_int = xcm_attr_get(s, name, type_0, value, capacity);
+    let mut name: *mut libc::c_char = ut_vasprintf(name_fmt, ap.as_va_list());
+    let mut rc: libc::c_int = xcm_attr_get(s, name, type_0, value, capacity);
     ut_free(name as *mut libc::c_void);
     return rc;
 }
 unsafe extern "C" fn attr_vgetf_with_type(
-    s: *mut xcm_socket,
-    required_type: xcm_attr_type,
-    value: *mut libc::c_void,
-    capacity: libc::c_ulong,
-    name_fmt: *const libc::c_char,
+    mut s: *mut xcm_socket,
+    mut required_type: xcm_attr_type,
+    mut value: *mut libc::c_void,
+    mut capacity: size_t,
+    mut name_fmt: *const libc::c_char,
     mut ap: ::core::ffi::VaList,
 ) -> libc::c_int {
     let mut name: *mut libc::c_char = ut_vasprintf(name_fmt, ap.as_va_list());
@@ -1330,7 +1338,7 @@ pub unsafe extern "C" fn xcm_attr_getf_bool(
 ) -> libc::c_int {
     let mut ap: ::core::ffi::VaListImpl;
     ap = args.clone();
-    let rc: libc::c_int = attr_vgetf_with_type(
+    let mut rc: libc::c_int = attr_vgetf_with_type(
         s,
         xcm_attr_type_bool,
         value as *mut libc::c_void,
@@ -1349,11 +1357,11 @@ pub unsafe extern "C" fn xcm_attr_getf_int64(
 ) -> libc::c_int {
     let mut ap: ::core::ffi::VaListImpl;
     ap = args.clone();
-    let rc: libc::c_int = attr_vgetf_with_type(
+    let mut rc: libc::c_int = attr_vgetf_with_type(
         s,
         xcm_attr_type_int64,
         value as *mut libc::c_void,
-        ::core::mem::size_of::<libc::c_long>() as libc::c_ulong,
+        ::core::mem::size_of::<int64_t>() as libc::c_ulong,
         name_fmt,
         ap.as_va_list(),
     );
@@ -1368,7 +1376,7 @@ pub unsafe extern "C" fn xcm_attr_getf_double(
 ) -> libc::c_int {
     let mut ap: ::core::ffi::VaListImpl;
     ap = args.clone();
-    let rc: libc::c_int = attr_vgetf_with_type(
+    let mut rc: libc::c_int = attr_vgetf_with_type(
         s,
         xcm_attr_type_double,
         value as *mut libc::c_void,
@@ -1388,7 +1396,7 @@ pub unsafe extern "C" fn xcm_attr_getf_str(
 ) -> libc::c_int {
     let mut ap: ::core::ffi::VaListImpl;
     ap = args.clone();
-    let rc: libc::c_int = attr_vgetf_with_type(
+    let mut rc: libc::c_int = attr_vgetf_with_type(
         s,
         xcm_attr_type_str,
         value as *mut libc::c_void,
@@ -1408,7 +1416,7 @@ pub unsafe extern "C" fn xcm_attr_getf_bin(
 ) -> libc::c_int {
     let mut ap: ::core::ffi::VaListImpl;
     ap = args.clone();
-    let rc: libc::c_int = attr_vgetf_with_type(
+    let mut rc: libc::c_int = attr_vgetf_with_type(
         s,
         xcm_attr_type_bin,
         value,

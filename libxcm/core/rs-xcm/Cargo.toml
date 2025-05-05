@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 libc = "0.2.171"
+rs-common-tp={path="../../tp/common/rs-common-tp"}
 
 [lib]
 path="src/xcm.rs"

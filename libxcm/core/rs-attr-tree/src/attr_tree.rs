@@ -9,6 +9,8 @@
 )]
 #![feature(extern_types)]
 
+use rs_attr_path::*;
+use rs_attr_node::*;
 use rs_log_attr_tree::log_attr_type_name;
 
 unsafe extern "C" {

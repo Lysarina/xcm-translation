@@ -5,6 +5,8 @@ edition = "2024"
 
 [dependencies]
 libc = "0.2.171"
+rs-xcm-addr = {path="../../../core/rs-xcm-addr"}
+rs-ctl = {path="../../../ctl/rs-ctl"}
 
 [lib]
 path="src/xcm_tp.rs"

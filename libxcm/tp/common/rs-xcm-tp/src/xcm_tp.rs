@@ -9,6 +9,10 @@
     static_mut_refs
 )]
 #![feature(extern_types)]
+
+use rs_xcm_addr::*;
+use rs_ctl::*;
+
 unsafe extern "C" {
     pub type ctl;
     pub type xpoll;

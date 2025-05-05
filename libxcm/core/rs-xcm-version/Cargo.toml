@@ -1,5 +1,5 @@
 [package]
-name = "rs-common-tp"
+name = "rs-xcm-version"
 version = "0.1.0"
 edition = "2024"
 
@@ -7,5 +7,5 @@ edition = "2024"
 libc = "0.2.171"
 
 [lib]
-path="src/common_tp.rs"
-crate-type = ["cdylib", "rlib"]
+path="src/xcm_version.rs"
+crate-type = ["cdylib"]
