@@ -6,10 +6,10 @@ from scipy import stats
 
 test_count = 165
 
-versions = ["original-c", "full-c2rust-translation-final", "rustlike"]
-# files = (10, 5)
-# versions = ["rs-1", "c-code"]
-files = [10, 10, 10]
+versions = ["original-c", "rustlike-2"]
+# versions = ["original-c", "full-c2rust-translation-final", "rustlike"]
+
+files = [10, 20]
 
 test_times = re.compile(".*<.*>") # find test times
 total_time = re.compile("165 tests run in .*") #catch whole res line
@@ -113,6 +113,7 @@ plot_all_values = True
 count = 0
 
 for t in sig_tests:
+    if (np.mean(data_test[t][0]) < np.mean(data_test[t][1])): continue
     print(t)
     plt.figure(figsize=(10, 6))
     if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
@@ -139,10 +140,11 @@ for t in sig_tests:
 
             plt.subplot(2, 2, 4)
         # Plotting the confidence interval as a shaded area
-        plt.fill_between([i - 0.1, i + 0.1], lower_bound, upper_bound, color="lightgray", alpha=0.5)
+        # plt.fill_between([i - 0.1, i + 0.1], lower_bound, upper_bound, color="lightgray", alpha=0.5)
+        plt.errorbar(i, mean, yerr=margin, fmt='o', capsize=5)
         
         # Plot the mean as a point
-        plt.plot(i, mean, marker='o', markersize=8, label=versions[i] if r == 0 else "")
+        # plt.plot(i, mean, marker='o', markersize=8, label=versions[i] if r == 0 else "")
         print(f"\t{versions[i]}\n\t\tMean: {mean}\n\t\t{confidence*100:.1f}% confidence interval: ({lower_bound:.5f}, {upper_bound:.5f})")
 
     # Add legend only for the first plot

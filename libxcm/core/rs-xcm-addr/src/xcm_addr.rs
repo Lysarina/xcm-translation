@@ -6,9 +6,11 @@
 )]
 
 use std::process::abort;
-use libc::{__errno_location, snprintf, strtol, memcpy, strcpy,
-    strncpy, strcmp, strchr, strrchr, strlen, ntohs, in6addr_any,
-    in_addr, in6_addr};
+use std::ffi::CStr;
+use std::ptr;
+use libc::{__errno_location, snprintf, strcpy,
+    strncpy, strcmp, strchr, strlen, ntohs, in6addr_any,
+    in_addr, in6_addr, EINVAL, AF_INET, AF_INET6};
 
 use rs_log::*;
 use rs_xcm_dns::*;
@@ -290,70 +292,82 @@ unsafe extern "C" fn host_parse(
     host: *mut xcm_addr_host,
 ) -> libc::c_int { unsafe {
     if host_s.is_null() || strlen(host_s) == 0 {
-        *__errno_location() = libc::EINVAL;
+        *__errno_location() = EINVAL;
         return -1;
     }
 
-    let len = strlen(host_s);
-    let first = *host_s;
-    let last = *host_s.add(len - 1);
+    let host_cstr = CStr::from_ptr(host_s);
+    let host_str = match host_cstr.to_str() {
+        Ok(s) => s,
+        Err(_) => {
+            *__errno_location() = EINVAL;
+            return -1;
+        }
+    };
 
-    // IPv6 in brackets: [::1]
-    if first == b'[' as i8 && last == b']' as i8 && len >= 2 {
-        let ip6_len = len - 2;
-        let mut ip6_s = vec![0 as libc::c_char; ip6_len + 1];
-        strncpy(ip6_s.as_mut_ptr(), host_s.add(1), ip6_len);
-        *ip6_s.as_mut_ptr().add(ip6_len) = 0;
+    if host_str.starts_with('[') {
+        if !host_str.ends_with(']') || !host_str.len() >= 2 { // invalid format
+            *__errno_location() = EINVAL;
+            return -1;
+        }
+        let inner = &host_str[1..host_str.len() - 1]; // string w/o []
 
-        if strcmp(ip6_s.as_ptr(), c"*".as_ptr() as *const libc::c_char) == 0 {
-            memcpy(
-                (*host).c2rust_unnamed.ip.addr.ip6.as_mut_ptr() as *mut libc::c_void,
-                in6addr_any.s6_addr.as_ptr() as *const libc::c_void,
+        if inner == "*" { // if string is just wildcard
+            ptr::copy_nonoverlapping( // copy address "any" into host
+                in6addr_any.s6_addr.as_ptr(), // src
+                (*host).c2rust_unnamed.ip.addr.ip6.as_mut_ptr(), // dest
                 16,
             );
         } else {
-            let mut addr = in6_addr {
-                s6_addr: [0; 16]
+            let mut addr = in6_addr { s6_addr: [0; 16] };
+            let inner_cstr = match std::ffi::CString::new(inner) {
+                Ok(s) => s,
+                Err(_) => {
+                    *__errno_location() = EINVAL;
+                    return -1;
+                }
             };
-            if inet_pton(libc::AF_INET6, ip6_s.as_ptr(), &mut addr as *mut _ as *mut libc::c_void)
-                != 1
-            {
-                *__errno_location() = libc::EINVAL;
+            if inet_pton(AF_INET6, inner_cstr.as_ptr(), &mut addr as *mut _ as *mut _) != 1 {
+                *__errno_location() = EINVAL;
                 return -1;
             }
-            memcpy(
-                (*host).c2rust_unnamed.ip.addr.ip6.as_mut_ptr() as *mut libc::c_void,
-                addr.s6_addr.as_ptr() as *const libc::c_void,
+            ptr::copy_nonoverlapping(
+                addr.s6_addr.as_ptr(),
+                (*host).c2rust_unnamed.ip.addr.ip6.as_mut_ptr(),
                 16,
             );
         }
 
         (*host).type_0 = xcm_addr_type_ip;
-        (*host).c2rust_unnamed.ip.family = libc::AF_INET6 as libc::c_ushort;
+        (*host).c2rust_unnamed.ip.family = AF_INET6 as libc::c_ushort;
         return 0;
     }
 
-    // IPv4 wildcard: "*"
-    if strcmp(host_s, c"*".as_ptr() as *const libc::c_char) == 0 {
+    if host_str == "*" {
         (*host).type_0 = xcm_addr_type_ip;
-        (*host).c2rust_unnamed.ip.family = libc::AF_INET as libc::c_ushort;
+        (*host).c2rust_unnamed.ip.family = AF_INET as libc::c_ushort;
         (*host).c2rust_unnamed.ip.addr.ip4 = 0;
         return 0;
     }
 
-    // IPv4 address
     let mut addr = in_addr { s_addr: 0 };
-    if inet_pton(libc::AF_INET, host_s, &mut addr as *mut _ as *mut libc::c_void) == 1 {
+    if inet_pton(AF_INET, host_s, &mut addr as *mut _ as *mut _) == 1 {
         (*host).type_0 = xcm_addr_type_ip;
-        (*host).c2rust_unnamed.ip.family = libc::AF_INET as libc::c_ushort;
+        (*host).c2rust_unnamed.ip.family = AF_INET as libc::c_ushort;
         (*host).c2rust_unnamed.ip.addr.ip4 = addr.s_addr;
         return 0;
     }
 
-    // DNS name
     if xcm_dns_is_valid_name(host_s) {
         (*host).type_0 = xcm_addr_type_name;
-        strcpy((*host).c2rust_unnamed.name.as_mut_ptr(), host_s);
+        let src = CStr::from_ptr(host_s);
+        let bytes = src.to_bytes_with_nul();
+        ptr::copy_nonoverlapping(
+            bytes.as_ptr(),
+            (*host).c2rust_unnamed.name.as_mut_ptr() as *mut u8,
+            bytes.len(),
+        );
+        // strcpy((*host).c2rust_unnamed.name.as_mut_ptr(), host_s);
         return 0;
     }
 
@@ -381,46 +395,56 @@ unsafe extern "C" fn host_port_parse(
         return -1;
     }
 
-    // Protocol mismatch
     if strcmp(proto, actual_proto.as_ptr()) != 0 {
         *__errno_location() = libc::EINVAL;
         return -1;
     }
 
-    // Find last colon (port separator)
-    let port_sep = strrchr(paddr.as_ptr(), ':' as i32);
-    if port_sep.is_null() {
-        *__errno_location() = libc::EINVAL;
+    let paddr_cstr = CStr::from_ptr(paddr.as_ptr());
+    let paddr_str = match paddr_cstr.to_str() {
+        Ok(s) => s,
+        Err(_) => {
+            return -1;
+        }
+    };
+
+    // Find last colon
+    let colon_idx = match paddr_str.rfind(':') {
+        Some(i) => i,
+        None => {
+            *__errno_location() = EINVAL;
+            return -1;
+        }
+    };
+
+    let (host_str, port_str) = paddr_str.split_at(colon_idx);
+    let port_str = &port_str[1..]; // Skip colon
+
+    // Transform port num CStr => actual number
+    let lport: libc::c_ushort = match port_str.parse() {
+        Ok(p) => p,
+        _ => {
+            *__errno_location() = EINVAL;
+            return -1;
+        }
+    };
+    // Don't need to check if lport is in bounds because of type limits
+
+    if host_str.is_empty() || host_str.len() > 512 {
+        *__errno_location() = EINVAL;
         return -1;
     }
 
-    // Extract port string
-    let port_start = port_sep.add(1);
-    let mut end: *mut libc::c_char = std::ptr::null_mut();
-    let lport = strtol(port_start, &mut end, 10);
+    // Copy host string into a C string buffer
+    let mut host_buf = Vec::with_capacity(host_str.len() + 1);
+    host_buf.extend_from_slice(host_str.as_bytes());
+    host_buf.push(0); // null-terminate
 
-    if *end != 0 || !(0..=65535).contains(&lport) {
-        *__errno_location() = libc::EINVAL;
+    if host_parse(host_buf.as_ptr() as *const libc::c_char, host) < 0 {
         return -1;
     }
 
-    // Null-terminate host part
-    let host_start = paddr.as_mut_ptr();
-    let host_len = port_sep.offset_from(host_start) as usize;
-
-    if host_len == 0 || host_len > 512 {
-        *__errno_location() = libc::EINVAL;
-        return -1;
-    }
-
-    *host_start.add(host_len) = 0;
-
-    // Parse host
-    if host_parse(host_start, host) < 0 {
-        return -1;
-    }
-
-    *port = ntohs(lport as libc::c_ushort);
+    *port = ntohs(lport);
     0
 }}
 #[unsafe(no_mangle)]

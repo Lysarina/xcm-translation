@@ -22,10 +22,6 @@ use rs_attr_tree::{attr_tree_destroy, attr_tree_get_all, attr_tree_get_list_len,
 use rs_xcm_version::*;
 use rs_xcm_attr_map::*;
 
-unsafe extern "C" {
-    
-}
-
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct set_attr_state {

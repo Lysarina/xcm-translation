@@ -17,6 +17,7 @@ use libc::{__errno_location, clock_gettime, pthread_mutex_init, pthread_mutex_lo
     pollfd, timeval, sockaddr, pthread_mutex_t, FILE, stat, PATH_MAX};
 
 unsafe extern "C" {
+    // Keeping this stderr because it is used for the extern C functions
     static mut stderr: *mut FILE;
     fn vfprintf(
         _: *mut FILE,
@@ -343,30 +344,25 @@ pub unsafe extern "C" fn ut_self_net_ns(name: *mut libc::c_char) -> libc::c_int 
     let ns_dir = opendir(c"/run/netns".as_ptr() as *const libc::c_char);
     if ns_dir.is_null() {
         if *__errno_location() == libc::ENOENT {
-            *name = 0; // Set to empty string
+            *name = 0;
             return 0;
         }
         return -1;
     }
 
-    *__errno_location() = 0;
     let mut rc = -1;
+    *__errno_location() = 0;    
 
     loop {
+        // While condition
         let entry = readdir(ns_dir);
         if entry.is_null() {
             break;
         }
 
         let d_name = (*entry).d_name.as_ptr();
-        if *d_name == 0 {
-            continue;
-        }
-
         let path_len = strlen(c"/run/netns".as_ptr() as *const libc::c_char)
-            + strlen(d_name)
-            + 2; // for '/' and null terminator
-
+            + strlen(d_name) + 2;
         let mut ns_file = vec![0 as libc::c_char; path_len as usize];
         snprintf(
             ns_file.as_mut_ptr(),

@@ -160,112 +160,168 @@ addr:parse_tcp: STARTED
 addr:parse_sctp: STARTED
 addr:parse_tls: STARTED
 addr:parse_utls: STARTED
+
+test/src/addr_testcases.c:190: Unexpected error code: -1 (errno 22 [Invalid argument])
 addr:parse_btcp: STARTED
 addr:parse_btls: STARTED
-addr:supported: [1;32mOK[0m <0.001979 s>
-addr:proto_parse: [1;32mOK[0m <0.001728 s>
-addr:parse_tcp: [1;32mOK[0m <0.001511 s>
+
+test/src/addr_testcases.c:205: Unexpected error code: -1 (errno 22 [Invalid argument])
+
+test/src/addr_testcases.c:200: Unexpected error code: -1 (errno 22 [Invalid argument])
+addr:supported: [1;32mOK[0m <0.005351 s>
+addr:proto_parse: [1;32mOK[0m <0.005100 s>
+addr:parse_sctp: [1;31mFAILED[0m <0.004551 s>
 addr:parse_ux: STARTED
+
+test/src/addr_testcases.c:185: Unexpected error code: -1 (errno 22 [Invalid argument])
 addr:parse_uxf: STARTED
 addr:make_tcp: STARTED
-addr:parse_sctp: [1;32mOK[0m <0.002467 s>
-addr:parse_tls: [1;32mOK[0m <0.002287 s>
-addr:parse_utls: [1;32mOK[0m <0.002108 s>
-addr:parse_btcp: [1;32mOK[0m <0.001891 s>
-addr:parse_btls: [1;32mOK[0m <0.001691 s>
+
+test/src/addr_testcases.c:210: Unexpected error code: -1 (errno 22 [Invalid argument])
+addr:parse_btcp: [1;31mFAILED[0m <0.004946 s>
+addr:parse_ux: [1;32mOK[0m <0.001790 s>
 addr:make_sctp: STARTED
 addr:make_tls: STARTED
+addr:parse_tcp: [1;31mFAILED[0m <0.007771 s>
+addr:parse_utls: [1;31mFAILED[0m <0.006020 s>
+addr:parse_uxf: [1;32mOK[0m <0.002124 s>
 addr:make_utls: STARTED
 addr:make_btcp: STARTED
 addr:make_btls: STARTED
-addr:parse_ux: [1;32mOK[0m <0.002126 s>
-addr:parse_uxf: [1;32mOK[0m <0.001921 s>
-addr:make_tcp: [1;32mOK[0m <0.001726 s>
-addr:make_sctp: [1;32mOK[0m <0.001015 s>
+addr:parse_btls: [1;31mFAILED[0m <0.006176 s>
+addr:make_sctp: [1;32mOK[0m <0.001617 s>
 addr:tcp6_parse: STARTED
 addr:sctp6_parse: STARTED
+
+test/src/addr_testcases.c:195: Unexpected error code: -1 (errno 22 [Invalid argument])
+addr:make_tls: [1;32mOK[0m <0.002364 s>
 addr:tls6_parse: STARTED
+addr:parse_tls: [1;31mFAILED[0m <0.010275 s>
+addr:make_btcp: [1;32mOK[0m <0.002913 s>
+addr:make_btls: [1;32mOK[0m <0.002673 s>
 addr:utls6_parse: STARTED
-addr:make_tls: [1;32mOK[0m <0.002078 s>
-addr:make_utls: [1;32mOK[0m <0.001910 s>
-addr:make_btcp: [1;32mOK[0m <0.001732 s>
-addr:make_btls: [1;32mOK[0m <0.001553 s>
-addr:tcp6_parse: [1;32mOK[0m <0.001101 s>
 addr:tcp_parse: STARTED
 addr:tls_parse: STARTED
+addr:make_utls: [1;32mOK[0m <0.004304 s>
 addr:utls_parse: STARTED
+
+test/src/addr_testcases.c:414: Unexpected error code: -1 (errno 22 [Invalid argument])
+addr:make_tcp: [1;32mOK[0m <0.008688 s>
+addr:sctp6_parse: [1;31mFAILED[0m <0.005271 s>
+addr:utls_parse: [1;32mOK[0m <0.002038 s>
 addr:tcp6_make: STARTED
+
+test/src/addr_testcases.c:424: Unexpected error code: -1 (errno 22 [Invalid argument])
+
+test/src/addr_testcases.c:409: Unexpected error code: -1 (errno 22 [Invalid argument])
 addr:sctp6_make: STARTED
-addr:sctp6_parse: [1;32mOK[0m <0.002236 s>
-addr:tls6_parse: [1;32mOK[0m <0.002062 s>
-addr:utls6_parse: [1;32mOK[0m <0.001894 s>
-addr:tls_parse: [1;32mOK[0m <0.000993 s>
 addr:tls6_make: STARTED
+addr:utls6_parse: [1;31mFAILED[0m <0.004808 s>
+addr:tls_parse: [1;32mOK[0m <0.004327 s>
 addr:utls6_make: STARTED
 addr:make_ux: STARTED
+addr:tcp6_parse: [1;31mFAILED[0m <0.009068 s>
+addr:tcp6_make: [1;32mOK[0m <0.003288 s>
+addr:tls6_make: [1;32mOK[0m <0.002757 s>
+addr:utls6_make: [1;32mOK[0m <0.001759 s>
 addr:make_uxf: STARTED
-addr:tcp_parse: [1;32mOK[0m <0.002240 s>
-addr:utls_parse: [1;32mOK[0m <0.001898 s>
-addr:tcp6_make: [1;32mOK[0m <0.001729 s>
-addr:sctp6_make: [1;32mOK[0m <0.001550 s>
-addr:tls6_make: [1;32mOK[0m <0.000917 s>
 addr:tcp_make: STARTED
 addr:tls_make: STARTED
 addr:utls_make: STARTED
+addr:tcp_parse: [1;32mOK[0m <0.010271 s>
+addr:make_uxf: [1;32mOK[0m <0.003405 s>
+addr:tcp_make: [1;32mOK[0m <0.002893 s>
 attr_map:access_bool: STARTED
 attr_map:access_int64: STARTED
-addr:utls6_make: [1;32mOK[0m <0.001992 s>
-addr:make_ux: [1;32mOK[0m <0.001823 s>
-addr:make_uxf: [1;32mOK[0m <0.001654 s>
-addr:tcp_make: [1;32mOK[0m <0.001114 s>
-addr:tls_make: [1;32mOK[0m <0.000934 s>
 attr_map:access_double: STARTED
+
+test/src/addr_testcases.c:419: Unexpected error code: -1 (errno 22 [Invalid argument])
+addr:make_ux: [1;32mOK[0m <0.007695 s>
 attr_map:access_str: STARTED
+attr_map:access_bool: [1;32mOK[0m <0.002450 s>
 attr_map:access_bin: STARTED
+addr:tls6_parse: [1;31mFAILED[0m <0.015429 s>
+attr_map:access_double: [1;32mOK[0m <0.002303 s>
 attr_map:equal: STARTED
 attr_map:foreach: STARTED
-addr:utls_make: [1;32mOK[0m <0.001760 s>
-attr_map:access_bool: [1;32mOK[0m <0.001590 s>
-attr_map:access_int64: [1;32mOK[0m <0.001419 s>
-attr_map:access_double: [1;32mOK[0m <0.000849 s>
+addr:utls_make: [1;32mOK[0m <0.006254 s>
+attr_map:access_str: [1;32mOK[0m <0.001912 s>
 attr_map:exists: STARTED
 attr_map:add_all: STARTED
+addr:sctp6_make: [1;32mOK[0m <0.012306 s>
+attr_map:equal: [1;32mOK[0m <0.001585 s>
 attr_map:clone: STARTED
 attr_path:parse: STARTED
-attr_map:access_str: [1;32mOK[0m <0.001450 s>
-attr_map:equal: [1;32mOK[0m <0.001115 s>
+attr_map:access_int64: [1;32mOK[0m <0.005435 s>
+attr_map:foreach: [1;32mOK[0m <0.002120 s>
 attr_path:parse_unparse: STARTED
 attr_path:parse_error: STARTED
-attr_map:foreach: [1;32mOK[0m <0.001458 s>
-attr_map:exists: [1;32mOK[0m <0.001162 s>
+addr:tls_make: [1;32mOK[0m <0.009458 s>
+attr_map:exists: [1;32mOK[0m <0.002177 s>
+attr_map:add_all: [1;32mOK[0m <0.001927 s>
+attr_map:clone: [1;32mOK[0m <0.001355 s>
 attr_path:equal: STARTED
 attr_tree:basic: STARTED
-attr_map:clone: [1;32mOK[0m <0.001325 s>
 attr_tree:list: STARTED
-attr_path:parse_unparse: [1;32mOK[0m <0.001223 s>
 slist:join: STARTED
-attr_map:add_all: [1;32mOK[0m <0.003642 s>
-attr_path:parse: [1;32mOK[0m <0.003333 s>
-attr_path:equal: [1;32mOK[0m <0.002483 s>
-attr_tree:basic: [1;32mOK[0m <0.002277 s>
+attr_path:parse: [1;32mOK[0m <0.002694 s>
+attr_path:parse_unparse: [1;32mOK[0m <0.002239 s>
+attr_path:equal: [1;32mOK[0m <0.001426 s>
 slist:split: STARTED
 xcm:basic: STARTED
 xcm:bulk_transfer: STARTED
+attr_path:parse_error: [1;32mOK[0m <0.003022 s>
+attr_tree:basic: [1;32mOK[0m <0.002231 s>
+slist:join: [1;32mOK[0m <0.001739 s>
 xcm:async_server: STARTED
-slist:split: [1;32mOK[0m <0.001773 s>
 xcm:forking_server: STARTED
-attr_path:parse_error: [1;32mOK[0m <0.006368 s>
-attr_tree:list: [1;32mOK[0m <0.005484 s>
-slist:join: [1;32mOK[0m <0.005897 s>
-attr_map:access_bin: [1;32mOK[0m <0.010522 s>
-xcm:basic: [1;32mOK[0m <1.004855 s>
-xcm:bulk_transfer: [1;32mOK[0m <2.769515 s>
-xcm:forking_server: [1;32mOK[0m <3.983835 s>
-xcm:async_server: [1;32mOK[0m <7.213158 s>
+attr_tree:list: [1;32mOK[0m <0.003186 s>
+slist:split: [1;32mOK[0m <0.002358 s>
+attr_map:access_bin: [1;32mOK[0m <0.015193 s>
+
+test/src/xcm_testcases.c:957: testcase_xcm_basic "client_conn != ((void *)0)" not true.
+xcm:basic: [1;31mFAILED[0m <0.622272 s>
+
+test/src/xcm_testcases.c:1091: testcase_xcm_bulk_transfer "server_sock != ((void *)0)" not true.
+xcm:bulk_transfer: [1;31mFAILED[0m <1.114389 s>
+FATAL: Unable to create server socket: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: FATAL: Error connecting to serverError connecting to server: Invalid argument.
+: Invalid argument.
+
+test/src/xcm_testcases.c:1208: Unexpected error code: -1 (errno 0 [Success])
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+xcm:forking_server: [1;31mFAILED[0m <1.909956 s>
+FATAL: Unable to create server socket: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+
+test/src/xcm_testcases.c:1208: Unexpected error code: -1 (errno 0 [Success])
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+FATAL: Error connecting to server: Invalid argument.
+xcm:async_server: [1;31mFAILED[0m <2.668966 s>
 xcm:dns: SERIALIZED STARTED
-xcm:dns: [1;32mOK[0m <3.557432 s>
+xcm:dns: [1;32mOK[0m <3.528565 s>
 xcm:dns_algorithm_smoke_test: SERIALIZED STARTED
-xcm:dns_algorithm_smoke_test: [1;32mOK[0m <7.162666 s>
+xcm:dns_algorithm_smoke_test: [1;32mOK[0m <7.140226 s>
 xcm:dns_multiple_address_probing: STARTED
 xcm:tcp_dns_timeout: STARTED
 xcm:btcp_dns_timeout: STARTED
@@ -274,106 +330,143 @@ xcm:btls_dns_timeout: STARTED
 xcm:utls_dns_timeout: STARTED
 xcm:tcp_connect_timeout: STARTED
 xcm:net_ns_switch: STARTED
-xcm:net_ns_switch: [1;32mOK[0m <0.452264 s>
+xcm:net_ns_switch: [1;32mOK[0m <0.562455 s>
 xcm:nonexistent_attr: STARTED
-xcm:nonexistent_attr: [1;32mOK[0m <0.158186 s>
+
+test/src/xcm_testcases.c:1469: run_multiple_address_probe_test "server_socket != ((void *)0)" not true.
+xcm:dns_multiple_address_probing: [1;31mFAILED[0m <0.617590 s>
 xcm:invalid_attr: STARTED
-xcm:invalid_attr: [1;32mOK[0m <0.155387 s>
+xcm:nonexistent_attr: [1;32mOK[0m <0.232351 s>
 xcm:invalid_generic_attr_type: STARTED
-xcm:invalid_generic_attr_type: [1;32mOK[0m <0.141394 s>
+xcm:invalid_attr: [1;32mOK[0m <0.212075 s>
 xcm:invalid_tp_attr_type: STARTED
-xcm:invalid_tp_attr_type: [1;32mOK[0m <0.151607 s>
+xcm:invalid_generic_attr_type: [1;32mOK[0m <0.234958 s>
 xcm:backpressure_with_slow_server: STARTED
-
-test/src/xcm_testcases.c:1530: run_multiple_address_probe_test "server_rc == 0 && accept_rc == 0 && connect_rc == 0" not true.
-
-test/src/xcm_testcases.c:869: teardown_xcm: 5 != 15.
-xcm:dns_multiple_address_probing: [1;31mFAILED[0m <1.294737 s>
+xcm:invalid_tp_attr_type: [1;32mOK[0m <0.227896 s>
 xcm:full_listen_queue_doesnt_block_connect: STARTED
-xcm:full_listen_queue_doesnt_block_connect: [1;32mOK[0m <4.369793 s>
+
+test/src/xcm_testcases.c:2149: testcase_xcm_full_listen_queue_doesnt_block_connect "server_socket != ((void *)0)" not true.
+xcm:full_listen_queue_doesnt_block_connect: [1;31mFAILED[0m <0.752394 s>
 xcm:non_blocking_non_orderly_tls_close: STARTED
-xcm:non_blocking_non_orderly_tls_close: [1;32mOK[0m <0.162502 s>
+xcm:non_blocking_non_orderly_tls_close: [1;32mOK[0m <0.214483 s>
 xcm:ops_on_closed_connections: STARTED
-xcm:ops_on_closed_connections: [1;32mOK[0m <4.638794 s>
+
+test/src/xcm_testcases.c:2433: run_ops_on_closed_connections "client_conn != ((void *)0)" not true.
+xcm:ops_on_closed_connections: [1;31mFAILED[0m <0.932213 s>
 xcm:relay: STARTED
-xcm:relay: [1;32mOK[0m <0.894216 s>
+xcm:relay: [1;32mOK[0m <1.017491 s>
 xcm:server_socket_address_immediate_reuse: STARTED
-xcm:server_socket_address_immediate_reuse: [1;32mOK[0m <0.154446 s>
+
+test/src/xcm_testcases.c:2550: testcase_xcm_server_socket_address_immediate_reuse "server_socket != ((void *)0)" not true.
+xcm:server_socket_address_immediate_reuse: [1;31mFAILED[0m <0.202097 s>
 xcm:multiple_server_sockets_on_the_same_address: STARTED
-xcm:multiple_server_sockets_on_the_same_address: [1;32mOK[0m <0.151561 s>
+
+test/src/xcm_testcases.c:2563: testcase_xcm_multiple_server_sockets_on_the_same_address "s" not true.
+xcm:multiple_server_sockets_on_the_same_address: [1;31mFAILED[0m <0.199516 s>
 xcm:non_blocking_connect_with_finish: STARTED
-xcm:btls_dns_timeout: [1;32mOK[0m <12.326716 s>
+
+test/src/xcm_testcases.c:2586: testcase_xcm_non_blocking_connect_with_finish "(conn_socket = xcm_connect(test_m_addrs[i], (1<<0))) != ((void *)0)" not true.
+xcm:non_blocking_connect_with_finish: [1;31mFAILED[0m <4.202791 s>
 xcm:unresponsive_server_doesnt_block_nonblocking_connect: STARTED
-xcm:btcp_dns_timeout: [1;32mOK[0m <12.329837 s>
+
+test/src/xcm_testcases.c:2610: testcase_xcm_unresponsive_server_doesnt_block_nonblocking_connect "server_socket != ((void *)0)" not true.
+xcm:unresponsive_server_doesnt_block_nonblocking_connect: [1;31mFAILED[0m <0.196068 s>
 xcm:non_blocking_connect_lazy: STARTED
-xcm:utls_dns_timeout: [1;32mOK[0m <12.341689 s>
+xcm:btcp_dns_timeout: [1;32mOK[0m <12.298012 s>
 xcm:invalid_service: STARTED
-xcm:tcp_dns_timeout: [1;32mOK[0m <12.351167 s>
+xcm:tls_dns_timeout: [1;32mOK[0m <12.326114 s>
 xcm:unknown_proto: STARTED
-xcm:tls_dns_timeout: [1;32mOK[0m <12.375518 s>
+xcm:utls_dns_timeout: [1;32mOK[0m <12.359557 s>
 xcm:invalid_await_and_fd_argument: STARTED
-xcm:invalid_service: [1;32mOK[0m <0.233502 s>
-xcm:unknown_proto: [1;32mOK[0m <0.225755 s>
+xcm:tcp_dns_timeout: [1;32mOK[0m <12.393444 s>
 xcm:invalid_address: STARTED
+xcm:btls_dns_timeout: [1;32mOK[0m <12.426315 s>
 xcm:connection_refused: STARTED
-xcm:invalid_await_and_fd_argument: [1;32mOK[0m <0.285644 s>
+xcm:invalid_service: [1;32mOK[0m <0.256943 s>
 xcm:undersized_receive_buffer: STARTED
-xcm:unresponsive_server_doesnt_block_nonblocking_connect: [1;32mOK[0m <0.395104 s>
+xcm:unknown_proto: [1;32mOK[0m <0.260370 s>
 xcm:oversized_send: STARTED
-xcm:connection_refused: [1;32mOK[0m <0.224076 s>
+xcm:invalid_address: [1;32mOK[0m <0.266086 s>
 xcm:zerosized_send: STARTED
-xcm:invalid_address: [1;32mOK[0m <0.233259 s>
+xcm:connection_refused: [1;32mOK[0m <0.335468 s>
 xcm:non_established_non_blocking_connect: STARTED
-xcm:undersized_receive_buffer: [1;32mOK[0m <0.310272 s>
+
+test/src/xcm_testcases.c:2871: testcase_xcm_undersized_receive_buffer "client_conn != ((void *)0)" not true.
+xcm:undersized_receive_buffer: [1;31mFAILED[0m <0.328384 s>
 xcm:tcp_dead_peer_detection: STARTED
-xcm:oversized_send: [1;32mOK[0m <0.302488 s>
+
+test/src/xcm_testcases.c:2902: testcase_xcm_oversized_send "client_conn" not true.
+xcm:oversized_send: [1;31mFAILED[0m <0.406072 s>
 xcm:tls_dead_peer_detection: STARTED
-xcm:zerosized_send: [1;32mOK[0m <2.797063 s>
+
+test/src/xcm_testcases.c:2648: testcase_xcm_non_blocking_connect_lazy "(conn_socket = xcm_connect(test_m_addrs[i], (1<<0))) != ((void *)0)" not true.
+xcm:non_blocking_connect_lazy: [1;31mFAILED[0m <4.250434 s>
 xcm:tcp_keepalive_attr: STARTED
-xcm:non_established_non_blocking_connect: [1;32mOK[0m <4.347059 s>
+xcm:invalid_await_and_fd_argument: [1;31mCRASHED[0m <0.823653 s>
 xcm:tls_keepalive_attr: STARTED
-xcm:non_blocking_connect_with_finish: [1;32mOK[0m <8.189082 s>
+
+test/src/xcm_testcases.c:2941: testcase_xcm_zerosized_send "client_conn" not true.
+xcm:zerosized_send: [1;31mFAILED[0m <1.049821 s>
 xcm:tcp_net_hiccup: STARTED
-xcm:non_blocking_connect_lazy: [1;32mOK[0m <8.356386 s>
+FATAL: 
+test/src/xcm_testcases.c:2066: testcase_xcm_backpressure_with_slow_server "conn != ((void *)0)" not true.
+Unable to create server socket: Invalid argument.
+xcm:backpressure_with_slow_server: [1;31mFAILED[0m <15.334376 s>
 xcm:tls_net_hiccup: STARTED
+xcm:non_established_non_blocking_connect: [1;32mOK[0m <4.394768 s>
+xcm:dscp_marking: STARTED
+
+test/src/xcm_testcases.c:3487: run_dscp_marking "conn_socket" not true.
+xcm:dscp_marking: [1;31mFAILED[0m <0.277790 s>
+xcm:bind_to_source_addr: STARTED
+xcm:bind_to_source_addr: [1;31mCRASHED[0m <0.477999 s>
+xcm:ipv6_link_local: STARTED
+
+test/src/xcm_testcases.c:3952: Unexpected error code: -1 (errno 22 [Invalid argument])
+
+test/src/xcm_testcases.c:869: teardown_xcm: 5 != 6.
+xcm:ipv6_link_local: [1;31mFAILED[0m <0.392515 s>
+xcm:disallow_link_local_on_ipv4: STARTED
 
 test/src/xcm_testcases.c:1898: testcase_xcm_tcp_connect_timeout "outtimer->as_expected" not true.
-
-test/src/xcm_testcases.c:869: teardown_xcm: 5 != 151.
-xcm:tcp_connect_timeout: [1;31mFAILED[0m <23.553500 s>
-xcm:dscp_marking: STARTED
-xcm:dscp_marking: [1;32mOK[0m <0.273296 s>
-xcm:bind_to_source_addr: STARTED
-xcm:bind_to_source_addr: [1;32mOK[0m <0.226512 s>
-xcm:ipv6_link_local: STARTED
-xcm:ipv6_link_local: [1;32mOK[0m <0.837902 s>
-xcm:disallow_link_local_on_ipv4: STARTED
-xcm:disallow_link_local_on_ipv4: [1;32mOK[0m <0.248409 s>
+xcm:tcp_connect_timeout: [1;31mFAILED[0m <18.534644 s>
 xcm:disallow_bind_on_accept: STARTED
-xcm:disallow_bind_on_accept: [1;32mOK[0m <0.214355 s>
+xcm:disallow_link_local_on_ipv4: [1;32mOK[0m <0.250089 s>
 xcm:tcp_dynamic_port_allocation: STARTED
-xcm:tcp_dynamic_port_allocation: [1;32mOK[0m <0.188149 s>
+xcm:disallow_bind_on_accept: [1;32mOK[0m <0.283448 s>
 xcm:tls_dynamic_port_allocation: STARTED
-xcm:tls_dynamic_port_allocation: [1;32mOK[0m <0.515043 s>
+xcm:tcp_dynamic_port_allocation: [1;32mOK[0m <0.492702 s>
 xcm:utls_dynamic_port_allocation: STARTED
-xcm:utls_dynamic_port_allocation: [1;32mOK[0m <0.379301 s>
+xcm:utls_dynamic_port_allocation: [1;32mOK[0m <0.249025 s>
 xcm:utls_dynamic_local_is_unix: STARTED
-xcm:utls_dynamic_local_is_unix: [1;32mOK[0m <0.563661 s>
+xcm:tls_dynamic_port_allocation: [1;32mOK[0m <0.702632 s>
 xcm:utls_tls_fallback: STARTED
-xcm:utls_tls_fallback: [1;32mOK[0m <0.438238 s>
+
+test/src/xcm_testcases.c:3188: run_keepalive_attr_family "server_sock" not true.
+xcm:tcp_keepalive_attr: [1;31mFAILED[0m <6.717896 s>
 xcm:tls_wrong_cert_directory: STARTED
-xcm:tls_wrong_cert_directory: [1;32mOK[0m <0.221453 s>
+
+test/src/xcm_testcases.c:3188: run_keepalive_attr_family "server_sock" not true.
+xcm:tls_keepalive_attr: [1;31mFAILED[0m <6.713190 s>
 xcm:tls_missing_certificate: STARTED
-xcm:tls_missing_certificate: [1;32mOK[0m <0.184768 s>
-xcm:backpressure_with_slow_server: [1;32mOK[0m <40.609254 s>
-xcm:tcp_keepalive_attr: [1;32mOK[0m <26.226946 s>
-xcm:tls_keepalive_attr: [1;32mOK[0m <26.432618 s>
-xcm:tcp_net_hiccup: [1;32mOK[0m <24.132193 s>
-xcm:tls_net_hiccup: [1;32mOK[0m <24.055292 s>
-xcm:tcp_dead_peer_detection: [1;32mOK[0m <39.259962 s>
-xcm:tls_dead_peer_detection: [1;32mOK[0m <39.304740 s>
+xcm:tls_wrong_cert_directory: [1;32mOK[0m <0.164748 s>
+xcm:utls_dynamic_local_is_unix: [1;32mOK[0m <0.636646 s>
+xcm:utls_tls_fallback: [1;32mOK[0m <0.428083 s>
+xcm:tls_missing_certificate: [1;32mOK[0m <0.308529 s>
+
+test/src/xcm_testcases.c:3071: run_dead_peer_detection_op "conn_socket" not true.
+xcm:tcp_dead_peer_detection: [1;31mFAILED[0m <9.750092 s>
+
+test/src/xcm_testcases.c:3071: run_dead_peer_detection_op "conn_socket" not true.
+xcm:tls_dead_peer_detection: [1;31mFAILED[0m <10.628597 s>
+
+test/src/xcm_testcases.c:3351: run_net_hiccup_op "conn_socket" not true.
+xcm:tcp_net_hiccup: [1;31mFAILED[0m <11.560034 s>
+
+test/src/xcm_testcases.c:3351: run_net_hiccup_op "conn_socket" not true.
+xcm:tls_net_hiccup: [1;31mFAILED[0m <11.743673 s>
 xcm:utls_remote_addr: SERIALIZED STARTED
-xcm:utls_remote_addr: [1;32mOK[0m <0.178874 s>
+xcm:utls_remote_addr: [1;32mOK[0m <0.213937 s>
 xcm:tls_shared_leaf: STARTED
 xcm:tls_shared_root_ca: STARTED
 xcm:tls_shared_root_ca_with_attrs: STARTED
@@ -382,68 +475,68 @@ xcm:tls_key_and_certificates_mixed_up: STARTED
 xcm:tls_partial_env_var_fallback: STARTED
 xcm:tls_different_root_ca: STARTED
 xcm:tls_one_way_mistrust: STARTED
-xcm:tls_key_and_certificates_mixed_up: [1;32mOK[0m <0.383396 s>
+xcm:tls_key_and_certificates_mixed_up: [1;32mOK[0m <0.448772 s>
 xcm:tls_leaf_not_yet_valid: STARTED
-xcm:tls_accept_attrs_override_server_attrs: [1;32mOK[0m <0.677994 s>
+xcm:tls_accept_attrs_override_server_attrs: [1;32mOK[0m <0.689608 s>
 xcm:tls_leaf_expired: STARTED
-xcm:tls_different_root_ca: [1;32mOK[0m <0.732425 s>
+xcm:tls_partial_env_var_fallback: [1;32mOK[0m <0.744782 s>
 xcm:tls_ca_not_yet_valid: STARTED
-xcm:tls_shared_root_ca: [1;32mOK[0m <0.759698 s>
+xcm:tls_shared_leaf: [1;32mOK[0m <0.795629 s>
 xcm:tls_ca_expired: STARTED
-xcm:tls_partial_env_var_fallback: [1;32mOK[0m <0.914175 s>
+xcm:tls_different_root_ca: [1;32mOK[0m <0.993326 s>
 xcm:tls_local_leaf_validity_ignored: STARTED
-xcm:tls_shared_root_ca_with_attrs: [1;32mOK[0m <1.000055 s>
+xcm:tls_one_way_mistrust: [1;32mOK[0m <1.054060 s>
 xcm:tls_disable_expiration_doesnt_disable_auth: STARTED
-xcm:tls_one_way_mistrust: [1;32mOK[0m <1.028673 s>
+xcm:tls_shared_root_ca: [1;32mOK[0m <1.068971 s>
 xcm:tls_auth_conf: STARTED
-xcm:tls_shared_leaf: [1;32mOK[0m <1.041270 s>
+xcm:tls_shared_root_ca_with_attrs: [1;32mOK[0m <1.125046 s>
 xcm:tls_auth_disabled_no_longer_requires_tc: STARTED
-xcm:tls_leaf_not_yet_valid: [1;32mOK[0m <1.041647 s>
+xcm:tls_leaf_not_yet_valid: [1;32mOK[0m <1.372443 s>
 xcm:tls_sub_ca: STARTED
-xcm:tls_leaf_expired: [1;32mOK[0m <0.953294 s>
+xcm:tls_disable_expiration_doesnt_disable_auth: [1;32mOK[0m <0.820836 s>
 xcm:tls_no_root_but_trusted_sub_ca: STARTED
-xcm:tls_auth_disabled_no_longer_requires_tc: [1;32mOK[0m <0.683571 s>
+xcm:tls_ca_not_yet_valid: [1;32mOK[0m <1.389586 s>
 xcm:tls_certificate_and_key_mismatch: STARTED
-xcm:tls_disable_expiration_doesnt_disable_auth: [1;32mOK[0m <0.741934 s>
+xcm:tls_leaf_expired: [1;32mOK[0m <1.499299 s>
 xcm:tls_big_bundle: STARTED
-xcm:tls_ca_expired: [1;32mOK[0m <1.056012 s>
+xcm:tls_auth_disabled_no_longer_requires_tc: [1;32mOK[0m <1.139869 s>
 xcm:tls_multiple_ca_same_subject: STARTED
-xcm:tls_ca_not_yet_valid: [1;32mOK[0m <1.133325 s>
+xcm:tls_local_leaf_validity_ignored: [1;32mOK[0m <1.433611 s>
 xcm:tls_crl_reject_revoked_leaf_and_intermediate: STARTED
-xcm:tls_local_leaf_validity_ignored: [1;32mOK[0m <1.114563 s>
+xcm:tls_ca_expired: [1;32mOK[0m <1.652452 s>
 xcm:tls_missing_empty_invalid_crl: STARTED
-xcm:tls_no_root_but_trusted_sub_ca: [1;32mOK[0m <0.735412 s>
+xcm:tls_auth_conf: [1;32mOK[0m <1.858996 s>
 xcm:tls_zero_revocations_crl: STARTED
-xcm:tls_missing_empty_invalid_crl: [1;32mOK[0m <0.436836 s>
+xcm:tls_no_root_but_trusted_sub_ca: [1;32mOK[0m <1.205350 s>
 xcm:tls_detect_crl_changes: STARTED
-xcm:tls_auth_conf: [1;32mOK[0m <1.567998 s>
-xcm:tls_multiple_ca_same_subject: [1;32mOK[0m <0.851237 s>
-xcm:tls_sub_ca: [1;32mOK[0m <1.290867 s>
-xcm:tls_crl_reject_revoked_leaf_and_intermediate: [1;32mOK[0m <0.890133 s>
-xcm:tls_certificate_and_key_mismatch: [1;32mOK[0m <1.062886 s>
-xcm:tls_detect_crl_changes: [1;32mOK[0m <0.606121 s>
-xcm:tls_zero_revocations_crl: [1;32mOK[0m <0.798437 s>
-xcm:tls_big_bundle: [1;32mOK[0m <1.766850 s>
+xcm:tls_certificate_and_key_mismatch: [1;32mOK[0m <1.159268 s>
+xcm:tls_sub_ca: [1;32mOK[0m <1.480140 s>
+xcm:tls_missing_empty_invalid_crl: [1;32mOK[0m <0.928964 s>
+xcm:tls_multiple_ca_same_subject: [1;32mOK[0m <1.219373 s>
+xcm:tls_crl_reject_revoked_leaf_and_intermediate: [1;32mOK[0m <1.161405 s>
+xcm:tls_zero_revocations_crl: [1;32mOK[0m <0.923216 s>
+xcm:tls_detect_crl_changes: [1;32mOK[0m <0.789366 s>
+xcm:tls_big_bundle: [1;32mOK[0m <2.244836 s>
 xcm:tls_name_verification: SERIALIZED STARTED
-xcm:tls_name_verification: [1;32mOK[0m <0.622036 s>
+xcm:tls_name_verification: [1;32mOK[0m <0.661091 s>
 xcm:tls_invalid_name_verification_conf: STARTED
 xcm:tls_role_reversal: STARTED
 xcm:tls_extended_key_usage: STARTED
-xcm:tls_invalid_name_verification_conf: [1;32mOK[0m <0.218816 s>
-xcm:tls_extended_key_usage: [1;32mOK[0m <0.627822 s>
-xcm:tls_role_reversal: [1;32mOK[0m <4.352239 s>
+xcm:tls_invalid_name_verification_conf: [1;32mOK[0m <0.278465 s>
+xcm:tls_extended_key_usage: [1;32mOK[0m <0.847088 s>
+xcm:tls_role_reversal: [1;32mOK[0m <4.268237 s>
 xcm:serialized_utls_unique_ux_names_with_ns: SERIALIZED STARTED
-xcm:serialized_utls_unique_ux_names_with_ns: [1;32mOK[0m <0.706936 s>
+xcm:serialized_utls_unique_ux_names_with_ns: [1;32mOK[0m <0.689045 s>
 xcm:tls_per_namespace_cert: SERIALIZED STARTED
-xcm:tls_per_namespace_cert: [1;32mOK[0m <0.572885 s>
+xcm:tls_per_namespace_cert: [1;32mOK[0m <0.629875 s>
 xcm:tls_per_namespace_cert_thread: SERIALIZED STARTED
-xcm:tls_per_namespace_cert_thread: [1;32mOK[0m <0.926060 s>
+xcm:tls_per_namespace_cert_thread: [1;32mOK[0m <0.837894 s>
 xcm:tls_detect_cert_dir_env_var_changes: STARTED
-xcm:tls_detect_cert_dir_env_var_changes: [1;32mOK[0m <0.183870 s>
+xcm:tls_detect_cert_dir_env_var_changes: [1;32mOK[0m <0.193041 s>
 xcm:tls_detect_changes_to_cert_files: SERIALIZED STARTED
-xcm:tls_detect_changes_to_cert_files: [1;32mOK[0m <0.529591 s>
+xcm:tls_detect_changes_to_cert_files: [1;32mOK[0m <0.652063 s>
 xcm:tls_change_cert_files_like_crazy: SERIALIZED STARTED
-xcm:tls_change_cert_files_like_crazy: [1;32mOK[0m <3.579925 s>
+xcm:tls_change_cert_files_like_crazy: [1;32mOK[0m <4.085322 s>
 xcm:tls_get_peer_names: STARTED
 xcm:tls_get_peer_subject_key_id: STARTED
 xcm:tls_get_subject_alternative_names: STARTED
@@ -452,50 +545,53 @@ xcm:tls_invalid_credential_values: STARTED
 xcm:garbled_tcp_input: STARTED
 xcm:garbled_tls_input: STARTED
 xcm:tls_multi_record_message: STARTED
-xcm:tls_multi_record_message: [1;32mOK[0m <0.393615 s>
+xcm:tls_credentials_by_value: [1;32mOK[0m <0.563533 s>
 xcm:long_ux_names: STARTED
-xcm:tls_invalid_credential_values: [1;32mOK[0m <0.666602 s>
+xcm:tls_multi_record_message: [1;32mOK[0m <0.745617 s>
 xcm:long_uxf_names: STARTED
-xcm:tls_credentials_by_value: [1;32mOK[0m <0.746634 s>
+xcm:tls_get_peer_names: [1;32mOK[0m <1.096353 s>
 xcm:uxf_empty_addrs: STARTED
-xcm:tls_get_subject_alternative_names: [1;32mOK[0m <0.799790 s>
+xcm:tls_invalid_credential_values: [1;32mOK[0m <1.134016 s>
 xcm:ux_autobound_addrs: STARTED
-xcm:tls_get_peer_names: [1;32mOK[0m <0.935096 s>
+xcm:tls_get_subject_alternative_names: [1;32mOK[0m <1.187631 s>
 xcm:ux_credless_connect: STARTED
-xcm:long_ux_names: [1;32mOK[0m <0.661536 s>
+xcm:tls_get_peer_subject_key_id: [1;32mOK[0m <1.189630 s>
 xcm:uxf_credless_connect: STARTED
-xcm:ux_autobound_addrs: [1;32mOK[0m <0.328191 s>
+xcm:long_ux_names: [1;32mOK[0m <0.842822 s>
 xcm:uxf_existing_socket_file: STARTED
-xcm:uxf_empty_addrs: [1;32mOK[0m <0.383150 s>
+xcm:ux_autobound_addrs: [1;32mOK[0m <0.371190 s>
 xcm:uxf_existing_non_socket_file: STARTED
-xcm:tls_get_peer_subject_key_id: [1;32mOK[0m <1.244521 s>
+xcm:long_uxf_names: [1;32mOK[0m <0.850745 s>
 xcm:lossy_network: STARTED
-xcm:long_uxf_names: [1;32mOK[0m <0.580624 s>
+xcm:ux_credless_connect: [1;32mOK[0m <0.470833 s>
 xcm:null_close: STARTED
-xcm:uxf_credless_connect: [1;32mOK[0m <0.389186 s>
+xcm:uxf_empty_addrs: [1;32mOK[0m <0.583432 s>
 xcm:basic_with_incorrect_ctl_dir: STARTED
-xcm:uxf_existing_socket_file: [1;32mOK[0m <0.400236 s>
+xcm:uxf_credless_connect: [1;32mOK[0m <0.626008 s>
 xcm:ctl_iter: STARTED
-xcm:uxf_existing_non_socket_file: [1;32mOK[0m <0.425709 s>
+xcm:uxf_existing_non_socket_file: [1;32mOK[0m <0.380692 s>
 xcm:ctl_open_nonexisting: STARTED
-xcm:ux_credless_connect: [1;32mOK[0m <0.624420 s>
+xcm:uxf_existing_socket_file: [1;32mOK[0m <0.513694 s>
 xcm:ctl_concurrent_clients_idle_socket: STARTED
-xcm:null_close: [1;32mOK[0m <0.536957 s>
+
+test/src/xcm_testcases.c:957: testcase_xcm_basic "client_conn != ((void *)0)" not true.
+xcm:null_close: [1;32mOK[0m <0.572876 s>
 xcm:ctl_concurrent_clients_active_socket: STARTED
-xcm:ctl_open_nonexisting: [1;32mOK[0m <0.386704 s>
+xcm:basic_with_incorrect_ctl_dir: [1;31mFAILED[0m <0.559412 s>
 xcm:version: STARTED
-xcm:garbled_tcp_input: [1;32mOK[0m <2.018557 s>
+xcm:ctl_open_nonexisting: [1;32mOK[0m <0.525488 s>
+xcm:version: [1;32mOK[0m <0.268728 s>
+xcm:garbled_tcp_input: [1;32mOK[0m <2.550150 s>
+xcm:ctl_concurrent_clients_idle_socket: [1;32mOK[0m <1.092175 s>
+FATAL: Unable to create server socket: Invalid argument.
+xcm:ctl_concurrent_clients_active_socket: [1;32mOK[0m <0.906655 s>
 
-test/src/xcm_testcases.c:8002: ctl_concurrent_clients "sessions[i] != ((void *)0)" not true.
-xcm:ctl_concurrent_clients_active_socket: [1;31mFAILED[0m <0.311200 s>
-xcm:version: [1;32mOK[0m <0.225590 s>
-xcm:basic_with_incorrect_ctl_dir: [1;32mOK[0m <1.126770 s>
-xcm:ctl_concurrent_clients_idle_socket: [1;32mOK[0m <1.091382 s>
-xcm:garbled_tls_input: [1;32mOK[0m <4.558355 s>
-xcm:ctl_iter: [1;32mOK[0m <3.388785 s>
-xcm:lossy_network: [1;32mOK[0m <3.918356 s>
+test/src/xcm_testcases.c:7914: testcase_xcm_ctl_iter: 0 != 1.
+xcm:ctl_iter: [1;31mFAILED[0m <1.575425 s>
+xcm:garbled_tls_input: [1;32mOK[0m <5.351320 s>
+xcm:lossy_network: [1;32mOK[0m <4.990139 s>
 
-165 tests run in 90.6 s; 162 successes, 3 failures, 0 timed out, and 0 not run.
+165 tests run in 64.7 s; 126 successes, 39 failures, 0 timed out, and 0 not run.
 make[1]: *** [Makefile:2512: xcmtest-run] Error 1
 make[1]: Leaving directory '/home/lysarina/skool/exjobb/xcm-translation'
 make: *** [Makefile:2214: check-am] Error 2
