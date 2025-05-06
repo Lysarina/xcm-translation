@@ -1,0 +1,356 @@
+make  xcmtest
+make[1]: Entering directory '/home/lysarina/skool/exjobb/xcm-translation'
+make[1]: Leaving directory '/home/lysarina/skool/exjobb/xcm-translation'
+make  check-local
+make[1]: Entering directory '/home/lysarina/skool/exjobb/xcm-translation'
+if [ "`id -u`" = 0 ]; then \
+	./xcmtest -c -v -p 8 ; \
+else \
+	./xcmtest -c -v ; \
+fi
+addr:supported: STARTED
+addr:proto_parse: STARTED
+addr:parse_tcp: STARTED
+addr:parse_sctp: STARTED
+addr:parse_tls: STARTED
+addr:parse_utls: STARTED
+addr:parse_btcp: STARTED
+addr:parse_btls: STARTED
+addr:supported: [1;32mOK[0m <0.001697 s>
+addr:proto_parse: [1;32mOK[0m <0.001548 s>
+addr:parse_tcp: [1;32mOK[0m <0.001416 s>
+addr:parse_ux: STARTED
+addr:parse_uxf: STARTED
+addr:make_tcp: STARTED
+addr:parse_sctp: [1;32mOK[0m <0.002094 s>
+addr:parse_tls: [1;32mOK[0m <0.001910 s>
+addr:parse_utls: [1;32mOK[0m <0.001735 s>
+addr:parse_btcp: [1;32mOK[0m <0.001556 s>
+addr:parse_btls: [1;32mOK[0m <0.001332 s>
+addr:make_sctp: STARTED
+addr:make_tls: STARTED
+addr:make_utls: STARTED
+addr:make_btcp: STARTED
+addr:make_btls: STARTED
+addr:parse_ux: [1;32mOK[0m <0.001725 s>
+addr:parse_uxf: [1;32mOK[0m <0.001534 s>
+addr:make_tcp: [1;32mOK[0m <0.001323 s>
+addr:make_sctp: [1;32mOK[0m <0.000873 s>
+addr:tcp6_parse: STARTED
+addr:sctp6_parse: STARTED
+addr:tls6_parse: STARTED
+addr:utls6_parse: STARTED
+addr:make_tls: [1;32mOK[0m <0.001547 s>
+addr:make_utls: [1;32mOK[0m <0.001357 s>
+addr:make_btcp: [1;32mOK[0m <0.001160 s>
+addr:tcp_parse: STARTED
+addr:tls_parse: STARTED
+addr:utls_parse: STARTED
+addr:make_btls: [1;32mOK[0m <0.001677 s>
+addr:tcp6_parse: [1;32mOK[0m <0.001400 s>
+addr:sctp6_parse: [1;32mOK[0m <0.001226 s>
+addr:tcp6_make: STARTED
+addr:sctp6_make: STARTED
+addr:tls6_make: STARTED
+addr:tls6_parse: [1;32mOK[0m <0.001772 s>
+addr:utls6_parse: [1;32mOK[0m <0.001570 s>
+addr:tcp_parse: [1;32mOK[0m <0.001281 s>
+addr:utls6_make: STARTED
+addr:make_ux: STARTED
+addr:make_uxf: STARTED
+addr:tls_parse: [1;32mOK[0m <0.001710 s>
+addr:utls_parse: [1;32mOK[0m <0.001534 s>
+addr:tcp6_make: [1;32mOK[0m <0.001257 s>
+addr:sctp6_make: [1;32mOK[0m <0.001055 s>
+addr:tcp_make: STARTED
+addr:tls_make: STARTED
+addr:utls_make: STARTED
+attr_map:access_bool: STARTED
+addr:tls6_make: [1;32mOK[0m <0.001693 s>
+addr:utls6_make: [1;32mOK[0m <0.001316 s>
+addr:make_ux: [1;32mOK[0m <0.001140 s>
+attr_map:access_int64: STARTED
+attr_map:access_double: STARTED
+attr_map:access_str: STARTED
+addr:make_uxf: [1;32mOK[0m <0.001590 s>
+addr:tcp_make: [1;32mOK[0m <0.001276 s>
+addr:tls_make: [1;32mOK[0m <0.001076 s>
+attr_map:access_bin: STARTED
+attr_map:equal: STARTED
+attr_map:foreach: STARTED
+addr:utls_make: [1;32mOK[0m <0.001515 s>
+attr_map:access_bool: [1;32mOK[0m <0.001342 s>
+attr_map:access_int64: [1;32mOK[0m <0.001107 s>
+attr_map:exists: STARTED
+attr_map:add_all: STARTED
+attr_map:clone: STARTED
+attr_map:access_double: [1;32mOK[0m <0.001711 s>
+attr_map:access_str: [1;32mOK[0m <0.001511 s>
+attr_map:equal: [1;32mOK[0m <0.001068 s>
+attr_path:parse: STARTED
+attr_path:parse_unparse: STARTED
+attr_path:parse_error: STARTED
+attr_map:foreach: [1;32mOK[0m <0.001518 s>
+attr_map:exists: [1;32mOK[0m <0.001335 s>
+attr_map:add_all: [1;32mOK[0m <0.001144 s>
+attr_map:clone: [1;32mOK[0m <0.000940 s>
+attr_path:equal: STARTED
+attr_tree:basic: STARTED
+attr_tree:list: STARTED
+slist:join: STARTED
+attr_path:parse: [1;32mOK[0m <0.001319 s>
+attr_path:parse_unparse: [1;32mOK[0m <0.001156 s>
+slist:split: STARTED
+xcm:basic: STARTED
+attr_path:equal: [1;32mOK[0m <0.001244 s>
+xcm:bulk_transfer: STARTED
+attr_path:parse_error: [1;32mOK[0m <0.001848 s>
+attr_tree:basic: [1;32mOK[0m <0.001355 s>
+attr_tree:list: [1;32mOK[0m <0.001166 s>
+xcm:async_server: STARTED
+xcm:forking_server: STARTED
+slist:join: [1;32mOK[0m <0.001604 s>
+slist:split: [1;32mOK[0m <0.001787 s>
+attr_map:access_bin: [1;32mOK[0m <0.008242 s>
+xcm:basic: [1;32mOK[0m <1.216650 s>
+xcm:bulk_transfer: [1;32mOK[0m <2.826358 s>
+xcm:forking_server: [1;32mOK[0m <4.074815 s>
+xcm:async_server: [1;32mOK[0m <7.270320 s>
+xcm:dns: SERIALIZED STARTED
+xcm:dns: [1;32mOK[0m <3.321161 s>
+xcm:dns_algorithm_smoke_test: SERIALIZED STARTED
+xcm:dns_algorithm_smoke_test: [1;32mOK[0m <7.177677 s>
+xcm:dns_multiple_address_probing: STARTED
+xcm:tcp_dns_timeout: STARTED
+xcm:btcp_dns_timeout: STARTED
+xcm:tls_dns_timeout: STARTED
+xcm:btls_dns_timeout: STARTED
+xcm:utls_dns_timeout: STARTED
+xcm:tcp_connect_timeout: STARTED
+xcm:net_ns_switch: STARTED
+xcm:net_ns_switch: [1;32mOK[0m <0.342862 s>
+xcm:nonexistent_attr: STARTED
+xcm:nonexistent_attr: [1;32mOK[0m <0.151714 s>
+xcm:invalid_attr: STARTED
+xcm:dns_multiple_address_probing: [1;32mOK[0m <0.632281 s>
+xcm:invalid_generic_attr_type: STARTED
+xcm:invalid_attr: [1;32mOK[0m <0.154298 s>
+xcm:invalid_tp_attr_type: STARTED
+xcm:invalid_tp_attr_type: [1;32mOK[0m <0.135613 s>
+xcm:backpressure_with_slow_server: STARTED
+xcm:invalid_generic_attr_type: [1;32mOK[0m <0.162304 s>
+xcm:full_listen_queue_doesnt_block_connect: STARTED
+xcm:full_listen_queue_doesnt_block_connect: [1;32mOK[0m <4.326883 s>
+xcm:non_blocking_non_orderly_tls_close: STARTED
+xcm:non_blocking_non_orderly_tls_close: [1;32mOK[0m <0.163276 s>
+xcm:ops_on_closed_connections: STARTED
+xcm:ops_on_closed_connections: [1;32mOK[0m <4.743408 s>
+xcm:relay: STARTED
+xcm:relay: [1;32mOK[0m <0.883169 s>
+xcm:server_socket_address_immediate_reuse: STARTED
+xcm:server_socket_address_immediate_reuse: [1;32mOK[0m <0.146492 s>
+xcm:multiple_server_sockets_on_the_same_address: STARTED
+xcm:multiple_server_sockets_on_the_same_address: [1;32mOK[0m <0.129437 s>
+xcm:non_blocking_connect_with_finish: STARTED
+xcm:tcp_dns_timeout: [1;32mOK[0m <12.222348 s>
+xcm:unresponsive_server_doesnt_block_nonblocking_connect: STARTED
+xcm:utls_dns_timeout: [1;32mOK[0m <12.260626 s>
+xcm:non_blocking_connect_lazy: STARTED
+xcm:btls_dns_timeout: [1;32mOK[0m <12.289130 s>
+xcm:invalid_service: STARTED
+xcm:btcp_dns_timeout: [1;32mOK[0m <12.291650 s>
+xcm:unknown_proto: STARTED
+xcm:tls_dns_timeout: [1;32mOK[0m <12.360280 s>
+xcm:invalid_await_and_fd_argument: STARTED
+xcm:invalid_service: [1;32mOK[0m <0.182402 s>
+xcm:invalid_address: STARTED
+xcm:unknown_proto: [1;32mOK[0m <0.230890 s>
+xcm:connection_refused: STARTED
+xcm:unresponsive_server_doesnt_block_nonblocking_connect: [1;32mOK[0m <0.303161 s>
+xcm:undersized_receive_buffer: STARTED
+xcm:invalid_await_and_fd_argument: [1;32mOK[0m <0.238797 s>
+xcm:oversized_send: STARTED
+xcm:invalid_address: [1;32mOK[0m <0.306069 s>
+xcm:zerosized_send: STARTED
+xcm:connection_refused: [1;32mOK[0m <0.274597 s>
+xcm:non_established_non_blocking_connect: STARTED
+xcm:undersized_receive_buffer: [1;32mOK[0m <0.306917 s>
+xcm:tcp_dead_peer_detection: STARTED
+xcm:oversized_send: [1;32mOK[0m <0.256912 s>
+xcm:tls_dead_peer_detection: STARTED
+xcm:zerosized_send: [1;32mOK[0m <2.814357 s>
+xcm:tcp_keepalive_attr: STARTED
+xcm:non_established_non_blocking_connect: [1;32mOK[0m <4.309965 s>
+xcm:tls_keepalive_attr: STARTED
+xcm:tcp_connect_timeout: [1;32mOK[0m <18.405139 s>
+xcm:tcp_net_hiccup: STARTED
+xcm:non_blocking_connect_with_finish: [1;32mOK[0m <8.160864 s>
+xcm:tls_net_hiccup: STARTED
+xcm:non_blocking_connect_lazy: [1;32mOK[0m <8.208587 s>
+xcm:dscp_marking: STARTED
+xcm:dscp_marking: [1;32mOK[0m <0.306551 s>
+xcm:bind_to_source_addr: STARTED
+xcm:bind_to_source_addr: [1;32mOK[0m <0.282957 s>
+xcm:ipv6_link_local: STARTED
+xcm:ipv6_link_local: [1;32mOK[0m <0.686413 s>
+xcm:disallow_link_local_on_ipv4: STARTED
+xcm:disallow_link_local_on_ipv4: [1;32mOK[0m <0.138674 s>
+xcm:disallow_bind_on_accept: STARTED
+xcm:disallow_bind_on_accept: [1;32mOK[0m <0.232692 s>
+xcm:tcp_dynamic_port_allocation: STARTED
+xcm:tcp_dynamic_port_allocation: [1;32mOK[0m <0.156334 s>
+xcm:tls_dynamic_port_allocation: STARTED
+xcm:tls_dynamic_port_allocation: [1;32mOK[0m <0.168764 s>
+xcm:utls_dynamic_port_allocation: STARTED
+xcm:utls_dynamic_port_allocation: [1;32mOK[0m <0.128528 s>
+xcm:utls_dynamic_local_is_unix: STARTED
+xcm:utls_dynamic_local_is_unix: [1;32mOK[0m <0.484619 s>
+xcm:utls_tls_fallback: STARTED
+xcm:utls_tls_fallback: [1;32mOK[0m <0.378682 s>
+xcm:tls_wrong_cert_directory: STARTED
+xcm:tls_wrong_cert_directory: [1;32mOK[0m <0.170749 s>
+xcm:tls_missing_certificate: STARTED
+xcm:tls_missing_certificate: [1;32mOK[0m <0.165141 s>
+xcm:backpressure_with_slow_server: [1;32mOK[0m <40.496626 s>
+xcm:tcp_keepalive_attr: [1;32mOK[0m <26.196895 s>
+xcm:tcp_net_hiccup: [1;32mOK[0m <23.780883 s>
+xcm:tls_keepalive_attr: [1;32mOK[0m <26.202655 s>
+xcm:tls_net_hiccup: [1;32mOK[0m <24.019917 s>
+xcm:tcp_dead_peer_detection: [1;32mOK[0m <38.226968 s>
+xcm:tls_dead_peer_detection: [1;32mOK[0m <38.304304 s>
+xcm:utls_remote_addr: SERIALIZED STARTED
+xcm:utls_remote_addr: [1;32mOK[0m <0.195656 s>
+xcm:tls_shared_leaf: STARTED
+xcm:tls_shared_root_ca: STARTED
+xcm:tls_shared_root_ca_with_attrs: STARTED
+xcm:tls_accept_attrs_override_server_attrs: STARTED
+xcm:tls_key_and_certificates_mixed_up: STARTED
+xcm:tls_partial_env_var_fallback: STARTED
+xcm:tls_different_root_ca: STARTED
+xcm:tls_one_way_mistrust: STARTED
+xcm:tls_key_and_certificates_mixed_up: [1;32mOK[0m <0.296482 s>
+xcm:tls_leaf_not_yet_valid: STARTED
+xcm:tls_partial_env_var_fallback: [1;32mOK[0m <0.535131 s>
+xcm:tls_leaf_expired: STARTED
+xcm:tls_shared_leaf: [1;32mOK[0m <0.577059 s>
+xcm:tls_ca_not_yet_valid: STARTED
+xcm:tls_accept_attrs_override_server_attrs: [1;32mOK[0m <0.653477 s>
+xcm:tls_ca_expired: STARTED
+xcm:tls_shared_root_ca_with_attrs: [1;32mOK[0m <0.713624 s>
+xcm:tls_local_leaf_validity_ignored: STARTED
+xcm:tls_shared_root_ca: [1;32mOK[0m <0.857284 s>
+xcm:tls_disable_expiration_doesnt_disable_auth: STARTED
+xcm:tls_different_root_ca: [1;32mOK[0m <0.887495 s>
+xcm:tls_auth_conf: STARTED
+xcm:tls_one_way_mistrust: [1;32mOK[0m <0.924223 s>
+xcm:tls_auth_disabled_no_longer_requires_tc: STARTED
+xcm:tls_leaf_not_yet_valid: [1;32mOK[0m <1.009685 s>
+xcm:tls_sub_ca: STARTED
+xcm:tls_leaf_expired: [1;32mOK[0m <0.825767 s>
+xcm:tls_no_root_but_trusted_sub_ca: STARTED
+xcm:tls_ca_not_yet_valid: [1;32mOK[0m <0.936916 s>
+xcm:tls_certificate_and_key_mismatch: STARTED
+xcm:tls_disable_expiration_doesnt_disable_auth: [1;32mOK[0m <0.666622 s>
+xcm:tls_auth_disabled_no_longer_requires_tc: [1;32mOK[0m <0.598686 s>
+xcm:tls_big_bundle: STARTED
+xcm:tls_multiple_ca_same_subject: STARTED
+xcm:tls_local_leaf_validity_ignored: [1;32mOK[0m <0.826220 s>
+xcm:tls_crl_reject_revoked_leaf_and_intermediate: STARTED
+xcm:tls_ca_expired: [1;32mOK[0m <0.913926 s>
+xcm:tls_missing_empty_invalid_crl: STARTED
+xcm:tls_missing_empty_invalid_crl: [1;32mOK[0m <0.295598 s>
+xcm:tls_zero_revocations_crl: STARTED
+xcm:tls_no_root_but_trusted_sub_ca: [1;32mOK[0m <0.714502 s>
+xcm:tls_detect_crl_changes: STARTED
+xcm:tls_auth_conf: [1;32mOK[0m <1.419731 s>
+xcm:tls_multiple_ca_same_subject: [1;32mOK[0m <0.825999 s>
+xcm:tls_sub_ca: [1;32mOK[0m <1.099939 s>
+xcm:tls_zero_revocations_crl: [1;32mOK[0m <0.558404 s>
+xcm:tls_crl_reject_revoked_leaf_and_intermediate: [1;32mOK[0m <0.893550 s>
+xcm:tls_certificate_and_key_mismatch: [1;32mOK[0m <1.012636 s>
+xcm:tls_detect_crl_changes: [1;32mOK[0m <0.650308 s>
+xcm:tls_big_bundle: [1;32mOK[0m <1.398358 s>
+xcm:tls_name_verification: SERIALIZED STARTED
+xcm:tls_name_verification: [1;32mOK[0m <0.545053 s>
+xcm:tls_invalid_name_verification_conf: STARTED
+xcm:tls_role_reversal: STARTED
+xcm:tls_extended_key_usage: STARTED
+xcm:tls_invalid_name_verification_conf: [1;32mOK[0m <0.185492 s>
+xcm:tls_extended_key_usage: [1;32mOK[0m <0.621957 s>
+xcm:tls_role_reversal: [1;32mOK[0m <4.282899 s>
+xcm:serialized_utls_unique_ux_names_with_ns: SERIALIZED STARTED
+xcm:serialized_utls_unique_ux_names_with_ns: [1;32mOK[0m <0.643006 s>
+xcm:tls_per_namespace_cert: SERIALIZED STARTED
+xcm:tls_per_namespace_cert: [1;32mOK[0m <0.496292 s>
+xcm:tls_per_namespace_cert_thread: SERIALIZED STARTED
+xcm:tls_per_namespace_cert_thread: [1;32mOK[0m <0.787299 s>
+xcm:tls_detect_cert_dir_env_var_changes: STARTED
+xcm:tls_detect_cert_dir_env_var_changes: [1;32mOK[0m <0.288403 s>
+xcm:tls_detect_changes_to_cert_files: SERIALIZED STARTED
+xcm:tls_detect_changes_to_cert_files: [1;32mOK[0m <0.544359 s>
+xcm:tls_change_cert_files_like_crazy: SERIALIZED STARTED
+xcm:tls_change_cert_files_like_crazy: [1;32mOK[0m <3.414851 s>
+xcm:tls_get_peer_names: STARTED
+xcm:tls_get_peer_subject_key_id: STARTED
+xcm:tls_get_subject_alternative_names: STARTED
+xcm:tls_credentials_by_value: STARTED
+xcm:tls_invalid_credential_values: STARTED
+xcm:garbled_tcp_input: STARTED
+xcm:garbled_tls_input: STARTED
+xcm:tls_multi_record_message: STARTED
+xcm:tls_multi_record_message: [1;32mOK[0m <0.388617 s>
+xcm:long_ux_names: STARTED
+xcm:tls_credentials_by_value: [1;32mOK[0m <0.526147 s>
+xcm:long_uxf_names: STARTED
+xcm:tls_invalid_credential_values: [1;32mOK[0m <0.904178 s>
+xcm:uxf_empty_addrs: STARTED
+xcm:tls_get_peer_names: [1;32mOK[0m <0.905620 s>
+xcm:ux_autobound_addrs: STARTED
+xcm:tls_get_peer_subject_key_id: [1;32mOK[0m <0.998878 s>
+xcm:ux_credless_connect: STARTED
+xcm:tls_get_subject_alternative_names: [1;32mOK[0m <1.143200 s>
+xcm:uxf_credless_connect: STARTED
+xcm:long_ux_names: [1;32mOK[0m <0.761196 s>
+xcm:uxf_existing_socket_file: STARTED
+xcm:uxf_empty_addrs: [1;32mOK[0m <0.328322 s>
+xcm:uxf_existing_non_socket_file: STARTED
+xcm:long_uxf_names: [1;32mOK[0m <0.717934 s>
+xcm:lossy_network: STARTED
+xcm:ux_credless_connect: [1;32mOK[0m <0.429669 s>
+xcm:null_close: STARTED
+xcm:ux_autobound_addrs: [1;32mOK[0m <0.624253 s>
+xcm:basic_with_incorrect_ctl_dir: STARTED
+xcm:uxf_existing_non_socket_file: [1;32mOK[0m <0.322348 s>
+xcm:ctl_iter: STARTED
+xcm:uxf_existing_socket_file: [1;32mOK[0m <0.416498 s>
+xcm:ctl_open_nonexisting: STARTED
+xcm:uxf_credless_connect: [1;32mOK[0m <0.554388 s>
+xcm:ctl_concurrent_clients_idle_socket: STARTED
+xcm:null_close: [1;32mOK[0m <0.423146 s>
+xcm:ctl_concurrent_clients_active_socket: STARTED
+xcm:ctl_open_nonexisting: [1;32mOK[0m <0.344029 s>
+xcm:version: STARTED
+xcm:garbled_tcp_input: [1;32mOK[0m <1.912625 s>
+xcm:version: [1;32mOK[0m <0.238619 s>
+xcm:basic_with_incorrect_ctl_dir: [1;32mOK[0m <1.102213 s>
+xcm:ctl_concurrent_clients_idle_socket: [1;32mOK[0m <0.981975 s>
+xcm:ctl_concurrent_clients_active_socket: [1;32mOK[0m <0.921871 s>
+xcm:garbled_tls_input: [1;32mOK[0m <4.391029 s>
+xcm:ctl_iter: [1;32mOK[0m <3.190617 s>
+xcm:lossy_network: [1;32mOK[0m <4.430358 s>
+
+165 tests run in 88.7 s; 165 successes, 0 failures, 0 timed out, and 0 not run.
+./test/tools/verify_versioning.py ./include/xcm.h \
+	./README.md . \
+	0 26 \
+	1 11 \
+	1
+ABI version: 0.26.
+Implementation version: 1.11.1
+Header file: ./include/xcm.h
+Pathfinder ABI documented to be version 0.26.
+Pathfinder library implementation documented to be version 1.11.1.
+README documentation link points towards version 0.26.
+Shared library file is at "./.libs/libxcm.so.0.26.0", as expected.
+All good.
+make[1]: Leaving directory '/home/lysarina/skool/exjobb/xcm-translation'
