@@ -6,10 +6,10 @@ from scipy import stats
 
 test_count = 165
 
-#versions = ["original-c", "rustlike-2"]
-versions = ["original-c-2", "full-c2rust-translation-final-2", "rustlike"]
-
-files = [20, 20, 10]
+versions = ["original-c-2", "rustlike-2"]
+files = [20, 20]
+# versions = ["original-c-2", "full-c2rust-translation-final-2", "rustlike-2"]
+# files = [20, 20, 20]
 
 test_times = re.compile(".*<.*>") # find test times
 total_time = re.compile("165 tests run in .*") #catch whole res line
@@ -17,6 +17,8 @@ total_time = re.compile("165 tests run in .*") #catch whole res line
 data = {} # versions own tests
 data_test = {} # tests own versions
 data_test["total"] = []
+
+fail = False
 
 for v in range(len(versions)):
     data[v] = {}
@@ -27,6 +29,7 @@ for v in range(len(versions)):
             content = f.read()
             # Find all tests and their respective times
             count = 0
+            fails = 0
             for test_match in test_times.findall(content):
                 time = re.sub(r"[\" s>\"]", "", test_match.split("<")[1])
                 test_name = ":".join(test_match.split(":")[:2])
@@ -34,12 +37,15 @@ for v in range(len(versions)):
                     data[v][test_name] = []
                     if (v == 0): data_test[test_name] = []
                     data_test[test_name].append([])
+                if "FAILED" in test_match:
+                    fails += 1
+                    fail = True
+                    continue
                 data[v][test_name].append(float(time))
                 data_test[test_name][v].append(float(time))
                 count += 1
-            if count < test_count:
-                print(f"File {versions[v]}-res-{i}.txt FAILED {test_count-count} tests")
-                exit(0)
+            if fails > 0 or count < test_count:
+                print(f"File {versions[v]}-res-{i}.txt FAILED {fails} tests")
             # print(f"Number of matches: {(len(data[v]))}")
             # Find total time
             for res_match in total_time.findall(content):
@@ -47,6 +53,9 @@ for v in range(len(versions)):
                 data[v]["total"].append(float(time))
                 data_test["total"][v].append(float(time))
         f.close()
+
+# if fail:
+#     exit(0)
 
 # variance = {}
 # std = {}
@@ -113,7 +122,7 @@ plot_all_values = True
 count = 0
 
 for t in sig_tests:
-    if (np.mean(data_test[t][0]) < np.mean(data_test[t][2])): continue
+    if (np.mean(data_test[t][0]) < np.mean(data_test[t][1])): continue
     print(t)
     plt.figure(figsize=(10, 6))
     if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
