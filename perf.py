@@ -6,10 +6,10 @@ from scipy import stats
 
 test_count = 165
 
-versions = ["original-c", "rustlike-2"]
-# versions = ["original-c", "full-c2rust-translation-final", "rustlike"]
+#versions = ["original-c", "rustlike-2"]
+versions = ["original-c-2", "full-c2rust-translation-final-2", "rustlike"]
 
-files = [10, 20]
+files = [20, 20, 10]
 
 test_times = re.compile(".*<.*>") # find test times
 total_time = re.compile("165 tests run in .*") #catch whole res line
@@ -113,7 +113,7 @@ plot_all_values = True
 count = 0
 
 for t in sig_tests:
-    if (np.mean(data_test[t][0]) < np.mean(data_test[t][1])): continue
+    if (np.mean(data_test[t][0]) < np.mean(data_test[t][2])): continue
     print(t)
     plt.figure(figsize=(10, 6))
     if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
