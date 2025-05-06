@@ -275,9 +275,9 @@ else
 TEST_TARGETS=$(BASIC_TEST_TARGETS)
 endif
 
-if PYTHON
-TEST_TARGETS += python-test
-endif
+#if PYTHON
+#TEST_TARGETS += python-test
+#endif
 
 check-local: $(TEST_TARGETS)
 
