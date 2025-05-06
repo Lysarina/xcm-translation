@@ -125,7 +125,7 @@ static void human_report_tc_end(struct utest_report *report,
 	break;
     }
     if (report->verbose)
-	fprintf(report->output, " <%5.3f s>", exec_time);
+	fprintf(report->output, " <%5.6f s>", exec_time);
     fprintf(report->output, "\n");
     fflush(report->output);
 }
