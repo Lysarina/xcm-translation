@@ -1,0 +1,452 @@
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/xcmpong-util.o -MD -MP -MF common/.deps/xcmpong-util.Tpo -c -o common/xcmpong-util.o `test -f 'common/util.c' || echo './'`common/util.c
+mv -f common/.deps/xcmpong-util.Tpo common/.deps/xcmpong-util.Po
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/libxcm_la-util.lo -MD -MP -MF common/.deps/libxcm_la-util.Tpo -c -o common/libxcm_la-util.lo `test -f 'common/util.c' || echo './'`common/util.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/libxcm_la-util.lo -MD -MP -MF common/.deps/libxcm_la-util.Tpo -c common/util.c  -fPIC -DPIC -o common/.libs/libxcm_la-util.o
+mv -f common/.deps/libxcm_la-util.Tpo common/.deps/libxcm_la-util.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-attr_node.lo -MD -MP -MF libxcm/core/.deps/la-attr_node.Tpo -c -o libxcm/core/la-attr_node.lo `test -f 'libxcm/core/attr_node.c' || echo './'`libxcm/core/attr_node.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-attr_node.lo -MD -MP -MF libxcm/core/.deps/la-attr_node.Tpo -c libxcm/core/attr_node.c  -fPIC -DPIC -o libxcm/core/.libs/la-attr_node.o
+mv -f libxcm/core/.deps/la-attr_node.Tpo libxcm/core/.deps/la-attr_node.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-attr_path.lo -MD -MP -MF libxcm/core/.deps/la-attr_path.Tpo -c -o libxcm/core/la-attr_path.lo `test -f 'libxcm/core/attr_path.c' || echo './'`libxcm/core/attr_path.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-attr_path.lo -MD -MP -MF libxcm/core/.deps/la-attr_path.Tpo -c libxcm/core/attr_path.c  -fPIC -DPIC -o libxcm/core/.libs/la-attr_path.o
+mv -f libxcm/core/.deps/la-attr_path.Tpo libxcm/core/.deps/la-attr_path.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-attr_tree.lo -MD -MP -MF libxcm/core/.deps/la-attr_tree.Tpo -c -o libxcm/core/la-attr_tree.lo `test -f 'libxcm/core/attr_tree.c' || echo './'`libxcm/core/attr_tree.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-attr_tree.lo -MD -MP -MF libxcm/core/.deps/la-attr_tree.Tpo -c libxcm/core/attr_tree.c  -fPIC -DPIC -o libxcm/core/.libs/la-attr_tree.o
+mv -f libxcm/core/.deps/la-attr_tree.Tpo libxcm/core/.deps/la-attr_tree.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-log.lo -MD -MP -MF libxcm/core/.deps/la-log.Tpo -c -o libxcm/core/la-log.lo `test -f 'libxcm/core/log.c' || echo './'`libxcm/core/log.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-log.lo -MD -MP -MF libxcm/core/.deps/la-log.Tpo -c libxcm/core/log.c  -fPIC -DPIC -o libxcm/core/.libs/la-log.o
+mv -f libxcm/core/.deps/la-log.Tpo libxcm/core/.deps/la-log.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-log_attr_tree.lo -MD -MP -MF libxcm/core/.deps/la-log_attr_tree.Tpo -c -o libxcm/core/la-log_attr_tree.lo `test -f 'libxcm/core/log_attr_tree.c' || echo './'`libxcm/core/log_attr_tree.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-log_attr_tree.lo -MD -MP -MF libxcm/core/.deps/la-log_attr_tree.Tpo -c libxcm/core/log_attr_tree.c  -fPIC -DPIC -o libxcm/core/.libs/la-log_attr_tree.o
+mv -f libxcm/core/.deps/la-log_attr_tree.Tpo libxcm/core/.deps/la-log_attr_tree.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xcm.lo -MD -MP -MF libxcm/core/.deps/la-xcm.Tpo -c -o libxcm/core/la-xcm.lo `test -f 'libxcm/core/xcm.c' || echo './'`libxcm/core/xcm.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xcm.lo -MD -MP -MF libxcm/core/.deps/la-xcm.Tpo -c libxcm/core/xcm.c  -fPIC -DPIC -o libxcm/core/.libs/la-xcm.o
+mv -f libxcm/core/.deps/la-xcm.Tpo libxcm/core/.deps/la-xcm.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xcm_addr.lo -MD -MP -MF libxcm/core/.deps/la-xcm_addr.Tpo -c -o libxcm/core/la-xcm_addr.lo `test -f 'libxcm/core/xcm_addr.c' || echo './'`libxcm/core/xcm_addr.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xcm_addr.lo -MD -MP -MF libxcm/core/.deps/la-xcm_addr.Tpo -c libxcm/core/xcm_addr.c  -fPIC -DPIC -o libxcm/core/.libs/la-xcm_addr.o
+mv -f libxcm/core/.deps/la-xcm_addr.Tpo libxcm/core/.deps/la-xcm_addr.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xcm_attr_map.lo -MD -MP -MF libxcm/core/.deps/la-xcm_attr_map.Tpo -c -o libxcm/core/la-xcm_attr_map.lo `test -f 'libxcm/core/xcm_attr_map.c' || echo './'`libxcm/core/xcm_attr_map.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xcm_attr_map.lo -MD -MP -MF libxcm/core/.deps/la-xcm_attr_map.Tpo -c libxcm/core/xcm_attr_map.c  -fPIC -DPIC -o libxcm/core/.libs/la-xcm_attr_map.o
+mv -f libxcm/core/.deps/la-xcm_attr_map.Tpo libxcm/core/.deps/la-xcm_attr_map.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xcm_version.lo -MD -MP -MF libxcm/core/.deps/la-xcm_version.Tpo -c -o libxcm/core/la-xcm_version.lo `test -f 'libxcm/core/xcm_version.c' || echo './'`libxcm/core/xcm_version.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xcm_version.lo -MD -MP -MF libxcm/core/.deps/la-xcm_version.Tpo -c libxcm/core/xcm_version.c  -fPIC -DPIC -o libxcm/core/.libs/la-xcm_version.o
+mv -f libxcm/core/.deps/la-xcm_version.Tpo libxcm/core/.deps/la-xcm_version.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xpoll.lo -MD -MP -MF libxcm/core/.deps/la-xpoll.Tpo -c -o libxcm/core/la-xpoll.lo `test -f 'libxcm/core/xpoll.c' || echo './'`libxcm/core/xpoll.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/la-xpoll.lo -MD -MP -MF libxcm/core/.deps/la-xpoll.Tpo -c libxcm/core/xpoll.c  -fPIC -DPIC -o libxcm/core/.libs/la-xpoll.o
+mv -f libxcm/core/.deps/la-xpoll.Tpo libxcm/core/.deps/la-xpoll.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/tp/common/la-active_fd.lo -MD -MP -MF libxcm/tp/common/.deps/la-active_fd.Tpo -c -o libxcm/tp/common/la-active_fd.lo `test -f 'libxcm/tp/common/active_fd.c' || echo './'`libxcm/tp/common/active_fd.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/tp/common/la-active_fd.lo -MD -MP -MF libxcm/tp/common/.deps/la-active_fd.Tpo -c libxcm/tp/common/active_fd.c  -fPIC -DPIC -o libxcm/tp/common/.libs/la-active_fd.o
+mv -f libxcm/tp/common/.deps/la-active_fd.Tpo libxcm/tp/common/.deps/la-active_fd.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/tp/common/la-common_tp.lo -MD -MP -MF libxcm/tp/common/.deps/la-common_tp.Tpo -c -o libxcm/tp/common/la-common_tp.lo `test -f 'libxcm/tp/common/common_tp.c' || echo './'`libxcm/tp/common/common_tp.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/tp/common/la-common_tp.lo -MD -MP -MF libxcm/tp/common/.deps/la-common_tp.Tpo -c libxcm/tp/common/common_tp.c  -fPIC -DPIC -o libxcm/tp/common/.libs/la-common_tp.o
+mv -f libxcm/tp/common/.deps/la-common_tp.Tpo libxcm/tp/common/.deps/la-common_tp.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/tp/common/la-xcm_tp.lo -MD -MP -MF libxcm/tp/common/.deps/la-xcm_tp.Tpo -c -o libxcm/tp/common/la-xcm_tp.lo `test -f 'libxcm/tp/common/xcm_tp.c' || echo './'`libxcm/tp/common/xcm_tp.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/tp/common/la-xcm_tp.lo -MD -MP -MF libxcm/tp/common/.deps/la-xcm_tp.Tpo -c libxcm/tp/common/xcm_tp.c  -fPIC -DPIC -o libxcm/tp/common/.libs/la-xcm_tp.o
+mv -f libxcm/tp/common/.deps/la-xcm_tp.Tpo libxcm/tp/common/.deps/la-xcm_tp.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/tp/dns/la-xcm_dns.lo -MD -MP -MF libxcm/tp/dns/.deps/la-xcm_dns.Tpo -c -o libxcm/tp/dns/la-xcm_dns.lo `test -f 'libxcm/tp/dns/xcm_dns.c' || echo './'`libxcm/tp/dns/xcm_dns.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/tp/dns/la-xcm_dns.lo -MD -MP -MF libxcm/tp/dns/.deps/la-xcm_dns.Tpo -c libxcm/tp/dns/xcm_dns.c  -fPIC -DPIC -o libxcm/tp/dns/.libs/la-xcm_dns.o
+mv -f libxcm/tp/dns/.deps/la-xcm_dns.Tpo libxcm/tp/dns/.deps/la-xcm_dns.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/ctl/la-ctl.lo -MD -MP -MF libxcm/ctl/.deps/la-ctl.Tpo -c -o libxcm/ctl/la-ctl.lo `test -f 'libxcm/ctl/ctl.c' || echo './'`libxcm/ctl/ctl.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/ctl/la-ctl.lo -MD -MP -MF libxcm/ctl/.deps/la-ctl.Tpo -c libxcm/ctl/ctl.c  -fPIC -DPIC -o libxcm/ctl/.libs/la-ctl.o
+mv -f libxcm/ctl/.deps/la-ctl.Tpo libxcm/ctl/.deps/la-ctl.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/libxcm_la-common_ctl.lo -MD -MP -MF common/.deps/libxcm_la-common_ctl.Tpo -c -o common/libxcm_la-common_ctl.lo `test -f 'common/common_ctl.c' || echo './'`common/common_ctl.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -I./libxcm/core -I./libxcm/tp/common -I./libxcm/tp/ux -I./libxcm/tp/tcp -I./libxcm/tp/dns -I./libxcm/tp/tls -I./libxcm/ctl -DXCM_LTTNG -I./lttng -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/libxcm_la-common_ctl.lo -MD -MP -MF common/.deps/libxcm_la-common_ctl.Tpo -c common/common_ctl.c  -fPIC -DPIC -o common/.libs/libxcm_la-common_ctl.o
+mv -f common/.deps/libxcm_la-common_ctl.Tpo common/.deps/libxcm_la-common_ctl.Plo
+/bin/bash ./libtool  --tag=CC   --mode=link gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -lcares -lssl -Wl,--version-script=./libxcm/libxcm.vs -version-info 26:0:26 -llttng-ust -L/usr/local/lib -o libxcm.la -rpath /usr/local/lib common/libxcm_la-slist.lo common/libxcm_la-util.lo libxcm/core/la-attr_node.lo libxcm/core/la-attr_path.lo libxcm/core/la-attr_tree.lo libxcm/core/la-log.lo libxcm/core/la-log_attr_tree.lo libxcm/core/la-timer_mgr.lo libxcm/core/la-xcm.lo libxcm/core/la-xcm_addr.lo libxcm/core/la-xcm_addr_compat.lo libxcm/core/la-xcm_attr_map.lo libxcm/core/la-xcm_compat.lo libxcm/core/la-xcm_version.lo libxcm/core/la-xpoll.lo libxcm/tp/common/la-active_fd.lo libxcm/tp/common/la-common_tp.lo libxcm/tp/common/la-dns_attr.lo libxcm/tp/common/la-log_tp.lo libxcm/tp/common/la-xcm_tp.lo libxcm/tp/dns/la-xcm_dns.lo libxcm/tp/tcp/la-tconnect.lo libxcm/tp/tcp/la-tcp_attr.lo libxcm/tp/tcp/la-xcm_tp_btcp.lo libxcm/tp/tcp/la-xcm_tp_tcp.lo libxcm/tp/ux/la-xcm_tp_ux.lo libxcm/tp/dns/la-xcm_dns_cares.lo  libxcm/tp/tls/la-cert.lo libxcm/tp/tls/la-ctx_store.lo libxcm/tp/tls/la-item.lo libxcm/tp/tls/la-log_tls.lo libxcm/tp/tls/la-xcm_tp_btls.lo libxcm/tp/tls/la-xcm_tp_tls.lo libxcm/tp/tls/la-xcm_tp_utls.lo  libxcm/ctl/la-ctl.lo common/libxcm_la-common_ctl.lo lttng/libxcm_la-xcm_lttng.lo  
+libtool: link: rm -fr  .libs/libxcm.la .libs/libxcm.lai .libs/libxcm.so .libs/libxcm.so.0 .libs/libxcm.so.0.26.0
+libtool: link: gcc -shared  -fPIC -DPIC  common/.libs/libxcm_la-slist.o common/.libs/libxcm_la-util.o libxcm/core/.libs/la-attr_node.o libxcm/core/.libs/la-attr_path.o libxcm/core/.libs/la-attr_tree.o libxcm/core/.libs/la-log.o libxcm/core/.libs/la-log_attr_tree.o libxcm/core/.libs/la-timer_mgr.o libxcm/core/.libs/la-xcm.o libxcm/core/.libs/la-xcm_addr.o libxcm/core/.libs/la-xcm_addr_compat.o libxcm/core/.libs/la-xcm_attr_map.o libxcm/core/.libs/la-xcm_compat.o libxcm/core/.libs/la-xcm_version.o libxcm/core/.libs/la-xpoll.o libxcm/tp/common/.libs/la-active_fd.o libxcm/tp/common/.libs/la-common_tp.o libxcm/tp/common/.libs/la-dns_attr.o libxcm/tp/common/.libs/la-log_tp.o libxcm/tp/common/.libs/la-xcm_tp.o libxcm/tp/dns/.libs/la-xcm_dns.o libxcm/tp/tcp/.libs/la-tconnect.o libxcm/tp/tcp/.libs/la-tcp_attr.o libxcm/tp/tcp/.libs/la-xcm_tp_btcp.o libxcm/tp/tcp/.libs/la-xcm_tp_tcp.o libxcm/tp/ux/.libs/la-xcm_tp_ux.o libxcm/tp/dns/.libs/la-xcm_dns_cares.o libxcm/tp/tls/.libs/la-cert.o libxcm/tp/tls/.libs/la-ctx_store.o libxcm/tp/tls/.libs/la-item.o libxcm/tp/tls/.libs/la-log_tls.o libxcm/tp/tls/.libs/la-xcm_tp_btls.o libxcm/tp/tls/.libs/la-xcm_tp_tls.o libxcm/tp/tls/.libs/la-xcm_tp_utls.o libxcm/ctl/.libs/la-ctl.o common/.libs/libxcm_la-common_ctl.o lttng/.libs/libxcm_la-xcm_lttng.o   /usr/local/lib/libcares.so -lssl -llttng-ust -L/usr/local/lib  -g -O2 -Wl,--version-script=./libxcm/libxcm.vs   -Wl,-soname -Wl,libxcm.so.0 -o .libs/libxcm.so.0.26.0
+libtool: link: (cd ".libs" && rm -f "libxcm.so.0" && ln -s "libxcm.so.0.26.0" "libxcm.so.0")
+libtool: link: (cd ".libs" && rm -f "libxcm.so" && ln -s "libxcm.so.0.26.0" "libxcm.so")
+libtool: link: ( cd ".libs" && rm -f "libxcm.la" && ln -s "../libxcm.la" "libxcm.la" )
+/bin/bash ./libtool  --tag=CC   --mode=link gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -lrt -L/usr/local/lib -o xcmpong tools/xcmpong/xcmpong-main.o common/xcmpong-util.o libxcm.la 
+libtool: link: gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -o .libs/xcmpong tools/xcmpong/xcmpong-main.o common/xcmpong-util.o  -lrt -L/usr/local/lib ./.libs/libxcm.so
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./tools/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT tools/xcm/xcm-main.o -MD -MP -MF tools/xcm/.deps/xcm-main.Tpo -c -o tools/xcm/xcm-main.o `test -f 'tools/xcm/main.c' || echo './'`tools/xcm/main.c
+mv -f tools/xcm/.deps/xcm-main.Tpo tools/xcm/.deps/xcm-main.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./tools/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/xcm-util.o -MD -MP -MF common/.deps/xcm-util.Tpo -c -o common/xcm-util.o `test -f 'common/util.c' || echo './'`common/util.c
+mv -f common/.deps/xcm-util.Tpo common/.deps/xcm-util.Po
+/bin/bash ./libtool  --tag=CC   --mode=link gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -levent -L/usr/local/lib -o xcm tools/xcm/xcm-main.o tools/xcm/xcm-fdfwd.o tools/common/xcm-attr.o common/xcm-util.o libxcm.la 
+libtool: link: gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -o .libs/xcm tools/xcm/xcm-main.o tools/xcm/xcm-fdfwd.o tools/common/xcm-attr.o common/xcm-util.o  -levent -L/usr/local/lib ./.libs/libxcm.so
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./tools/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/xcmrelay-util.o -MD -MP -MF common/.deps/xcmrelay-util.Tpo -c -o common/xcmrelay-util.o `test -f 'common/util.c' || echo './'`common/util.c
+mv -f common/.deps/xcmrelay-util.Tpo common/.deps/xcmrelay-util.Po
+/bin/bash ./libtool  --tag=CC   --mode=link gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -levent -L/usr/local/lib -o xcmrelay tools/xcmrelay/xcmrelay-main.o tools/xcmrelay/xcmrelay-rserver.o tools/xcmrelay/xcmrelay-xrelay.o tools/common/xcmrelay-attr.o common/xcmrelay-util.o libxcm.la 
+libtool: link: gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -o .libs/xcmrelay tools/xcmrelay/xcmrelay-main.o tools/xcmrelay/xcmrelay-rserver.o tools/xcmrelay/xcmrelay-xrelay.o tools/common/xcmrelay-attr.o common/xcmrelay-util.o  -levent -L/usr/local/lib ./.libs/libxcm.so
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/xcmctl-util.o -MD -MP -MF common/.deps/xcmctl-util.Tpo -c -o common/xcmctl-util.o `test -f 'common/util.c' || echo './'`common/util.c
+mv -f common/.deps/xcmctl-util.Tpo common/.deps/xcmctl-util.Po
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -DUT_STD_ASSERT -I./libxcmctl  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/libxcmctl_la-common_ctl.lo -MD -MP -MF common/.deps/libxcmctl_la-common_ctl.Tpo -c -o common/libxcmctl_la-common_ctl.lo `test -f 'common/common_ctl.c' || echo './'`common/common_ctl.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -DUT_STD_ASSERT -I./libxcmctl -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/libxcmctl_la-common_ctl.lo -MD -MP -MF common/.deps/libxcmctl_la-common_ctl.Tpo -c common/common_ctl.c  -fPIC -DPIC -o common/.libs/libxcmctl_la-common_ctl.o
+mv -f common/.deps/libxcmctl_la-common_ctl.Tpo common/.deps/libxcmctl_la-common_ctl.Plo
+/bin/bash ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -DUT_STD_ASSERT -I./libxcmctl  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/libxcmctl_la-util.lo -MD -MP -MF common/.deps/libxcmctl_la-util.Tpo -c -o common/libxcmctl_la-util.lo `test -f 'common/util.c' || echo './'`common/util.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I./common -I./include -I./common -I./include -DSYSCONFDIR=\"/usr/local/etc\" -DUT_STD_ASSERT -I./libxcmctl -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/libxcmctl_la-util.lo -MD -MP -MF common/.deps/libxcmctl_la-util.Tpo -c common/util.c  -fPIC -DPIC -o common/.libs/libxcmctl_la-util.o
+mv -f common/.deps/libxcmctl_la-util.Tpo common/.deps/libxcmctl_la-util.Plo
+/bin/bash ./libtool  --tag=CC   --mode=link gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -Wl,--version-script=./libxcmctl/libxcmctl.vs -version-info 1:0:1 -L/usr/local/lib -o libxcmctl.la -rpath /usr/local/lib libxcmctl/la-xcmc.lo common/libxcmctl_la-common_ctl.lo common/libxcmctl_la-util.lo  
+libtool: link: rm -fr  .libs/libxcmctl.la .libs/libxcmctl.lai .libs/libxcmctl.so .libs/libxcmctl.so.0 .libs/libxcmctl.so.0.1.0
+libtool: link: gcc -shared  -fPIC -DPIC  libxcmctl/.libs/la-xcmc.o common/.libs/libxcmctl_la-common_ctl.o common/.libs/libxcmctl_la-util.o   -L/usr/local/lib  -g -O2 -Wl,--version-script=./libxcmctl/libxcmctl.vs   -Wl,-soname -Wl,libxcmctl.so.0 -o .libs/libxcmctl.so.0.1.0
+libtool: link: (cd ".libs" && rm -f "libxcmctl.so.0" && ln -s "libxcmctl.so.0.1.0" "libxcmctl.so.0")
+libtool: link: (cd ".libs" && rm -f "libxcmctl.so" && ln -s "libxcmctl.so.0.1.0" "libxcmctl.so")
+libtool: link: ( cd ".libs" && rm -f "libxcmctl.la" && ln -s "../libxcmctl.la" "libxcmctl.la" )
+/bin/bash ./libtool  --tag=CC   --mode=link gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2  -L/usr/local/lib -o xcmctl tools/xcmctl/xcmctl-main.o common/xcmctl-util.o libxcmctl.la 
+libtool: link: gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -o .libs/xcmctl tools/xcmctl/xcmctl-main.o common/xcmctl-util.o  -L/usr/local/lib ./.libs/libxcmctl.so
+make  xcmtest
+make[1]: Entering directory '/home/lysarina/skool/exjobb/xcm-translation'
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/xcmtest-xcm_testcases.o -MD -MP -MF test/src/.deps/xcmtest-xcm_testcases.Tpo -c -o test/src/xcmtest-xcm_testcases.o `test -f 'test/src/xcm_testcases.c' || echo './'`test/src/xcm_testcases.c
+mv -f test/src/.deps/xcmtest-xcm_testcases.Tpo test/src/.deps/xcmtest-xcm_testcases.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT test/src/utest/xcmtest-utesthumanreport.o -MD -MP -MF test/src/utest/.deps/xcmtest-utesthumanreport.Tpo -c -o test/src/utest/xcmtest-utesthumanreport.o `test -f 'test/src/utest/utesthumanreport.c' || echo './'`test/src/utest/utesthumanreport.c
+mv -f test/src/utest/.deps/xcmtest-utesthumanreport.Tpo test/src/utest/.deps/xcmtest-utesthumanreport.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/xcmtest-log.o -MD -MP -MF libxcm/core/.deps/xcmtest-log.Tpo -c -o libxcm/core/xcmtest-log.o `test -f 'libxcm/core/log.c' || echo './'`libxcm/core/log.c
+mv -f libxcm/core/.deps/xcmtest-log.Tpo libxcm/core/.deps/xcmtest-log.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/xcmtest-attr_node.o -MD -MP -MF libxcm/core/.deps/xcmtest-attr_node.Tpo -c -o libxcm/core/xcmtest-attr_node.o `test -f 'libxcm/core/attr_node.c' || echo './'`libxcm/core/attr_node.c
+mv -f libxcm/core/.deps/xcmtest-attr_node.Tpo libxcm/core/.deps/xcmtest-attr_node.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/xcmtest-attr_path.o -MD -MP -MF libxcm/core/.deps/xcmtest-attr_path.Tpo -c -o libxcm/core/xcmtest-attr_path.o `test -f 'libxcm/core/attr_path.c' || echo './'`libxcm/core/attr_path.c
+mv -f libxcm/core/.deps/xcmtest-attr_path.Tpo libxcm/core/.deps/xcmtest-attr_path.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/xcmtest-attr_tree.o -MD -MP -MF libxcm/core/.deps/xcmtest-attr_tree.Tpo -c -o libxcm/core/xcmtest-attr_tree.o `test -f 'libxcm/core/attr_tree.c' || echo './'`libxcm/core/attr_tree.c
+mv -f libxcm/core/.deps/xcmtest-attr_tree.Tpo libxcm/core/.deps/xcmtest-attr_tree.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT libxcm/core/xcmtest-log_attr_tree.o -MD -MP -MF libxcm/core/.deps/xcmtest-log_attr_tree.Tpo -c -o libxcm/core/xcmtest-log_attr_tree.o `test -f 'libxcm/core/log_attr_tree.c' || echo './'`libxcm/core/log_attr_tree.c
+mv -f libxcm/core/.deps/xcmtest-log_attr_tree.Tpo libxcm/core/.deps/xcmtest-log_attr_tree.Po
+gcc -DHAVE_CONFIG_H -I. -I./common  -I./include -I./common -I./include -DSYSCONFDIR='"/usr/local/etc"' -I./test -I./test/src/utest -I./libxcm/core -I./libxcm/tp/common -DUT_STD_ASSERT  -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -MT common/xcmtest-util.o -MD -MP -MF common/.deps/xcmtest-util.Tpo -c -o common/xcmtest-util.o `test -f 'common/util.c' || echo './'`common/util.c
+mv -f common/.deps/xcmtest-util.Tpo common/.deps/xcmtest-util.Po
+/bin/bash ./libtool  --tag=CC   --mode=link gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -lrt -lpthread -ldl -no-install -L/usr/local/lib -o xcmtest test/src/xcmtest-addr_testcases.o test/src/xcmtest-attr_map_testcases.o test/src/xcmtest-attr_path_testcases.o test/src/xcmtest-attr_tree_testcases.o test/src/xcmtest-slist_testcases.o test/src/xcmtest-xcm_testcases.o test/src/utest/xcmtest-utest.o test/src/utest/xcmtest-utestreport.o test/src/utest/xcmtest-utesthumanreport.o libxcm/core/xcmtest-log.o libxcm/core/xcmtest-attr_node.o libxcm/core/xcmtest-attr_path.o libxcm/core/xcmtest-attr_tree.o libxcm/core/xcmtest-log_attr_tree.o common/xcmtest-slist.o common/xcmtest-util.o test/src/xcmtest-iowrap.o test/src/xcmtest-pingpong.o test/src/xcmtest-testutil.o test/src/xcmtest-tnet.o libxcm.la libxcmctl.la 
+libtool: link: gcc -std=gnu99 -Wall -Wmissing-prototypes -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_GNU_SOURCE -g -O2 -o xcmtest test/src/xcmtest-addr_testcases.o test/src/xcmtest-attr_map_testcases.o test/src/xcmtest-attr_path_testcases.o test/src/xcmtest-attr_tree_testcases.o test/src/xcmtest-slist_testcases.o test/src/xcmtest-xcm_testcases.o test/src/utest/xcmtest-utest.o test/src/utest/xcmtest-utestreport.o test/src/utest/xcmtest-utesthumanreport.o libxcm/core/xcmtest-log.o libxcm/core/xcmtest-attr_node.o libxcm/core/xcmtest-attr_path.o libxcm/core/xcmtest-attr_tree.o libxcm/core/xcmtest-log_attr_tree.o common/xcmtest-slist.o common/xcmtest-util.o test/src/xcmtest-iowrap.o test/src/xcmtest-pingpong.o test/src/xcmtest-testutil.o test/src/xcmtest-tnet.o  -lrt -lpthread -ldl -L/usr/local/lib ./.libs/libxcm.so ./.libs/libxcmctl.so -Wl,-rpath -Wl,/home/lysarina/skool/exjobb/xcm-translation/.libs
+make[1]: Leaving directory '/home/lysarina/skool/exjobb/xcm-translation'
+make  check-local
+make[1]: Entering directory '/home/lysarina/skool/exjobb/xcm-translation'
+if [ "`id -u`" = 0 ]; then \
+	./xcmtest -c -v -p 8 ; \
+else \
+	./xcmtest -c -v ; \
+fi
+addr:supported: STARTED
+addr:proto_parse: STARTED
+addr:parse_tcp: STARTED
+addr:parse_sctp: STARTED
+addr:parse_tls: STARTED
+addr:parse_utls: STARTED
+addr:parse_btcp: STARTED
+addr:parse_btls: STARTED
+addr:supported: [1;32mOK[0m <0.001588 s>
+addr:proto_parse: [1;32mOK[0m <0.001466 s>
+addr:parse_tcp: [1;32mOK[0m <0.001331 s>
+addr:parse_ux: STARTED
+addr:parse_uxf: STARTED
+addr:make_tcp: STARTED
+addr:parse_sctp: [1;32mOK[0m <0.001803 s>
+addr:parse_tls: [1;32mOK[0m <0.001688 s>
+addr:parse_utls: [1;32mOK[0m <0.001565 s>
+addr:parse_btcp: [1;32mOK[0m <0.001406 s>
+addr:parse_btls: [1;32mOK[0m <0.001269 s>
+addr:make_sctp: STARTED
+addr:make_tls: STARTED
+addr:make_utls: STARTED
+addr:make_btcp: STARTED
+addr:make_btls: STARTED
+addr:parse_ux: [1;32mOK[0m <0.001252 s>
+addr:parse_uxf: [1;32mOK[0m <0.001119 s>
+addr:make_tcp: [1;32mOK[0m <0.000964 s>
+addr:tcp6_parse: STARTED
+addr:sctp6_parse: STARTED
+addr:tls6_parse: STARTED
+addr:make_sctp: [1;32mOK[0m <0.001321 s>
+addr:make_tls: [1;32mOK[0m <0.001174 s>
+addr:make_utls: [1;32mOK[0m <0.001022 s>
+addr:make_btcp: [1;32mOK[0m <0.000902 s>
+addr:utls6_parse: STARTED
+addr:tcp_parse: STARTED
+addr:tls_parse: STARTED
+addr:utls_parse: STARTED
+addr:make_btls: [1;32mOK[0m <0.001429 s>
+addr:tcp6_parse: [1;32mOK[0m <0.001162 s>
+addr:sctp6_parse: [1;32mOK[0m <0.001014 s>
+addr:tcp6_make: STARTED
+addr:sctp6_make: STARTED
+addr:tls6_make: STARTED
+addr:tls6_parse: [1;32mOK[0m <0.001380 s>
+addr:utls6_parse: [1;32mOK[0m <0.001069 s>
+addr:utls6_make: STARTED
+addr:make_ux: STARTED
+addr:utls_parse: [1;32mOK[0m <0.001001 s>
+addr:make_uxf: STARTED
+addr:tcp_parse: [1;32mOK[0m <0.001532 s>
+addr:tcp_make: STARTED
+addr:tcp6_make: [1;32mOK[0m <0.001418 s>
+addr:sctp6_make: [1;32mOK[0m <0.001286 s>
+addr:utls6_make: [1;32mOK[0m <0.000919 s>
+addr:tls_make: STARTED
+addr:utls_make: STARTED
+attr_map:access_bool: STARTED
+addr:tls6_make: [1;32mOK[0m <0.001597 s>
+addr:make_ux: [1;32mOK[0m <0.001227 s>
+addr:make_uxf: [1;32mOK[0m <0.001050 s>
+attr_map:access_int64: STARTED
+attr_map:access_double: STARTED
+attr_map:access_str: STARTED
+addr:tls_parse: [1;32mOK[0m <0.003060 s>
+addr:tcp_make: [1;32mOK[0m <0.001536 s>
+addr:utls_make: [1;32mOK[0m <0.000953 s>
+attr_map:access_bin: STARTED
+attr_map:equal: STARTED
+attr_map:foreach: STARTED
+addr:tls_make: [1;32mOK[0m <0.001877 s>
+attr_map:access_bool: [1;32mOK[0m <0.001614 s>
+attr_map:access_int64: [1;32mOK[0m <0.001400 s>
+attr_map:access_str: [1;32mOK[0m <0.001103 s>
+attr_map:exists: STARTED
+attr_map:add_all: STARTED
+attr_map:clone: STARTED
+attr_path:parse: STARTED
+attr_map:access_double: [1;32mOK[0m <0.002091 s>
+attr_map:equal: [1;32mOK[0m <0.001336 s>
+attr_map:foreach: [1;32mOK[0m <0.001194 s>
+attr_map:exists: [1;32mOK[0m <0.000743 s>
+attr_path:parse_unparse: STARTED
+attr_path:parse_error: STARTED
+attr_path:equal: STARTED
+attr_tree:basic: STARTED
+attr_map:add_all: [1;32mOK[0m <0.001568 s>
+attr_map:clone: [1;32mOK[0m <0.001452 s>
+attr_path:parse: [1;32mOK[0m <0.001324 s>
+attr_path:parse_unparse: [1;32mOK[0m <0.000935 s>
+attr_tree:list: STARTED
+slist:join: STARTED
+slist:split: STARTED
+xcm:basic: STARTED
+attr_path:equal: [1;32mOK[0m <0.001402 s>
+attr_tree:basic: [1;32mOK[0m <0.001293 s>
+xcm:bulk_transfer: STARTED
+xcm:async_server: STARTED
+attr_tree:list: [1;32mOK[0m <0.000998 s>
+slist:join: [1;32mOK[0m <0.000860 s>
+xcm:forking_server: STARTED
+attr_path:parse_error: [1;32mOK[0m <0.002455 s>
+slist:split: [1;32mOK[0m <0.001243 s>
+attr_map:access_bin: [1;32mOK[0m <0.009211 s>
+xcm:basic: [1;32mOK[0m <1.184503 s>
+xcm:bulk_transfer: [1;32mOK[0m <3.724203 s>
+xcm:forking_server: [1;32mOK[0m <4.302158 s>
+xcm:async_server: [1;32mOK[0m <7.269905 s>
+xcm:dns: SERIALIZED STARTED
+xcm:dns: [1;32mOK[0m <3.364559 s>
+xcm:dns_algorithm_smoke_test: SERIALIZED STARTED
+xcm:dns_algorithm_smoke_test: [1;32mOK[0m <7.162007 s>
+xcm:dns_multiple_address_probing: STARTED
+xcm:tcp_dns_timeout: STARTED
+xcm:btcp_dns_timeout: STARTED
+xcm:tls_dns_timeout: STARTED
+xcm:btls_dns_timeout: STARTED
+xcm:utls_dns_timeout: STARTED
+xcm:tcp_connect_timeout: STARTED
+xcm:net_ns_switch: STARTED
+xcm:net_ns_switch: [1;32mOK[0m <0.407897 s>
+xcm:nonexistent_attr: STARTED
+xcm:nonexistent_attr: [1;32mOK[0m <0.225378 s>
+xcm:invalid_attr: STARTED
+xcm:invalid_attr: [1;32mOK[0m <0.155712 s>
+xcm:invalid_generic_attr_type: STARTED
+xcm:invalid_generic_attr_type: [1;32mOK[0m <0.226108 s>
+xcm:invalid_tp_attr_type: STARTED
+xcm:dns_multiple_address_probing: [1;32mOK[0m <1.037167 s>
+xcm:backpressure_with_slow_server: STARTED
+xcm:invalid_tp_attr_type: [1;32mOK[0m <0.185355 s>
+xcm:full_listen_queue_doesnt_block_connect: STARTED
+xcm:full_listen_queue_doesnt_block_connect: [1;32mOK[0m <4.442128 s>
+xcm:non_blocking_non_orderly_tls_close: STARTED
+xcm:non_blocking_non_orderly_tls_close: [1;32mOK[0m <0.144122 s>
+xcm:ops_on_closed_connections: STARTED
+xcm:ops_on_closed_connections: [1;32mOK[0m <4.694511 s>
+xcm:relay: STARTED
+xcm:relay: [1;32mOK[0m <0.964331 s>
+xcm:server_socket_address_immediate_reuse: STARTED
+xcm:server_socket_address_immediate_reuse: [1;32mOK[0m <0.137489 s>
+xcm:multiple_server_sockets_on_the_same_address: STARTED
+xcm:multiple_server_sockets_on_the_same_address: [1;32mOK[0m <0.199300 s>
+xcm:non_blocking_connect_with_finish: STARTED
+xcm:tcp_dns_timeout: [1;32mOK[0m <12.281014 s>
+xcm:unresponsive_server_doesnt_block_nonblocking_connect: STARTED
+xcm:utls_dns_timeout: [1;32mOK[0m <12.341993 s>
+xcm:non_blocking_connect_lazy: STARTED
+xcm:btls_dns_timeout: [1;32mOK[0m <12.345899 s>
+xcm:invalid_service: STARTED
+xcm:btcp_dns_timeout: [1;32mOK[0m <12.350898 s>
+xcm:unknown_proto: STARTED
+xcm:tls_dns_timeout: [1;32mOK[0m <12.429457 s>
+xcm:invalid_await_and_fd_argument: STARTED
+xcm:unknown_proto: [1;32mOK[0m <0.185907 s>
+xcm:invalid_address: STARTED
+xcm:invalid_service: [1;32mOK[0m <0.205343 s>
+xcm:connection_refused: STARTED
+xcm:unresponsive_server_doesnt_block_nonblocking_connect: [1;32mOK[0m <0.384143 s>
+xcm:undersized_receive_buffer: STARTED
+xcm:invalid_await_and_fd_argument: [1;32mOK[0m <0.282615 s>
+xcm:oversized_send: STARTED
+xcm:invalid_address: [1;32mOK[0m <0.458704 s>
+xcm:zerosized_send: STARTED
+xcm:undersized_receive_buffer: [1;32mOK[0m <0.358616 s>
+xcm:non_established_non_blocking_connect: STARTED
+xcm:connection_refused: [1;32mOK[0m <0.473690 s>
+xcm:tcp_dead_peer_detection: STARTED
+xcm:oversized_send: [1;32mOK[0m <0.321503 s>
+xcm:tls_dead_peer_detection: STARTED
+xcm:zerosized_send: [1;32mOK[0m <2.791111 s>
+xcm:tcp_keepalive_attr: STARTED
+xcm:non_established_non_blocking_connect: [1;32mOK[0m <4.344601 s>
+xcm:tls_keepalive_attr: STARTED
+xcm:tcp_connect_timeout: [1;32mOK[0m <18.441281 s>
+xcm:tcp_net_hiccup: STARTED
+xcm:non_blocking_connect_with_finish: [1;32mOK[0m <8.167492 s>
+xcm:tls_net_hiccup: STARTED
+xcm:non_blocking_connect_lazy: [1;32mOK[0m <8.207671 s>
+xcm:dscp_marking: STARTED
+xcm:dscp_marking: [1;32mOK[0m <0.233979 s>
+xcm:bind_to_source_addr: STARTED
+xcm:bind_to_source_addr: [1;32mOK[0m <0.242267 s>
+xcm:ipv6_link_local: STARTED
+xcm:ipv6_link_local: [1;32mOK[0m <0.857063 s>
+xcm:disallow_link_local_on_ipv4: STARTED
+xcm:disallow_link_local_on_ipv4: [1;32mOK[0m <0.229236 s>
+xcm:disallow_bind_on_accept: STARTED
+xcm:disallow_bind_on_accept: [1;32mOK[0m <0.308873 s>
+xcm:tcp_dynamic_port_allocation: STARTED
+xcm:tcp_dynamic_port_allocation: [1;32mOK[0m <0.215380 s>
+xcm:tls_dynamic_port_allocation: STARTED
+xcm:tls_dynamic_port_allocation: [1;32mOK[0m <0.254761 s>
+xcm:utls_dynamic_port_allocation: STARTED
+xcm:utls_dynamic_port_allocation: [1;32mOK[0m <0.257972 s>
+xcm:utls_dynamic_local_is_unix: STARTED
+xcm:utls_dynamic_local_is_unix: [1;32mOK[0m <0.751232 s>
+xcm:utls_tls_fallback: STARTED
+xcm:utls_tls_fallback: [1;32mOK[0m <0.415667 s>
+xcm:tls_wrong_cert_directory: STARTED
+xcm:tls_wrong_cert_directory: [1;32mOK[0m <0.238978 s>
+xcm:tls_missing_certificate: STARTED
+xcm:tls_missing_certificate: [1;32mOK[0m <0.199992 s>
+xcm:backpressure_with_slow_server: [1;32mOK[0m <40.584017 s>
+xcm:tcp_keepalive_attr: [1;32mOK[0m <26.167893 s>
+xcm:tcp_net_hiccup: [1;32mOK[0m <23.817342 s>
+xcm:tls_keepalive_attr: [1;32mOK[0m <26.257708 s>
+xcm:tls_net_hiccup: [1;32mOK[0m <24.034487 s>
+xcm:tls_dead_peer_detection: [1;32mOK[0m <38.271351 s>
+xcm:tcp_dead_peer_detection: [1;32mOK[0m <38.298837 s>
+xcm:utls_remote_addr: SERIALIZED STARTED
+xcm:utls_remote_addr: [1;32mOK[0m <0.186960 s>
+xcm:tls_shared_leaf: STARTED
+xcm:tls_shared_root_ca: STARTED
+xcm:tls_shared_root_ca_with_attrs: STARTED
+xcm:tls_accept_attrs_override_server_attrs: STARTED
+xcm:tls_key_and_certificates_mixed_up: STARTED
+xcm:tls_partial_env_var_fallback: STARTED
+xcm:tls_different_root_ca: STARTED
+xcm:tls_one_way_mistrust: STARTED
+xcm:tls_key_and_certificates_mixed_up: [1;32mOK[0m <0.344738 s>
+xcm:tls_leaf_not_yet_valid: STARTED
+xcm:tls_shared_leaf: [1;32mOK[0m <0.638950 s>
+xcm:tls_leaf_expired: STARTED
+xcm:tls_partial_env_var_fallback: [1;32mOK[0m <0.659428 s>
+xcm:tls_ca_not_yet_valid: STARTED
+xcm:tls_shared_root_ca: [1;32mOK[0m <0.807251 s>
+xcm:tls_ca_expired: STARTED
+xcm:tls_one_way_mistrust: [1;32mOK[0m <0.856697 s>
+xcm:tls_local_leaf_validity_ignored: STARTED
+xcm:tls_shared_root_ca_with_attrs: [1;32mOK[0m <0.936528 s>
+xcm:tls_disable_expiration_doesnt_disable_auth: STARTED
+xcm:tls_accept_attrs_override_server_attrs: [1;32mOK[0m <0.996112 s>
+xcm:tls_auth_conf: STARTED
+xcm:tls_different_root_ca: [1;32mOK[0m <1.003459 s>
+xcm:tls_auth_disabled_no_longer_requires_tc: STARTED
+xcm:tls_leaf_not_yet_valid: [1;32mOK[0m <1.216956 s>
+xcm:tls_sub_ca: STARTED
+xcm:tls_disable_expiration_doesnt_disable_auth: [1;32mOK[0m <0.661968 s>
+xcm:tls_no_root_but_trusted_sub_ca: STARTED
+xcm:tls_ca_not_yet_valid: [1;32mOK[0m <1.098720 s>
+xcm:tls_certificate_and_key_mismatch: STARTED
+xcm:tls_auth_disabled_no_longer_requires_tc: [1;32mOK[0m <0.788450 s>
+xcm:tls_big_bundle: STARTED
+xcm:tls_local_leaf_validity_ignored: [1;32mOK[0m <0.935658 s>
+xcm:tls_multiple_ca_same_subject: STARTED
+xcm:tls_leaf_expired: [1;32mOK[0m <1.321426 s>
+xcm:tls_crl_reject_revoked_leaf_and_intermediate: STARTED
+xcm:tls_ca_expired: [1;32mOK[0m <1.206686 s>
+xcm:tls_missing_empty_invalid_crl: STARTED
+xcm:tls_missing_empty_invalid_crl: [1;32mOK[0m <0.360564 s>
+xcm:tls_zero_revocations_crl: STARTED
+xcm:tls_auth_conf: [1;32mOK[0m <1.437644 s>
+xcm:tls_detect_crl_changes: STARTED
+xcm:tls_no_root_but_trusted_sub_ca: [1;32mOK[0m <1.066207 s>
+xcm:tls_multiple_ca_same_subject: [1;32mOK[0m <0.921293 s>
+xcm:tls_sub_ca: [1;32mOK[0m <1.170352 s>
+xcm:tls_crl_reject_revoked_leaf_and_intermediate: [1;32mOK[0m <0.805541 s>
+xcm:tls_certificate_and_key_mismatch: [1;32mOK[0m <1.241981 s>
+xcm:tls_zero_revocations_crl: [1;32mOK[0m <0.650166 s>
+xcm:tls_detect_crl_changes: [1;32mOK[0m <0.753968 s>
+xcm:tls_big_bundle: [1;32mOK[0m <1.714595 s>
+xcm:tls_name_verification: SERIALIZED STARTED
+xcm:tls_name_verification: [1;32mOK[0m <0.529703 s>
+xcm:tls_invalid_name_verification_conf: STARTED
+xcm:tls_role_reversal: STARTED
+xcm:tls_extended_key_usage: STARTED
+xcm:tls_invalid_name_verification_conf: [1;32mOK[0m <0.209647 s>
+xcm:tls_extended_key_usage: [1;32mOK[0m <0.654997 s>
+xcm:tls_role_reversal: [1;32mOK[0m <4.259362 s>
+xcm:serialized_utls_unique_ux_names_with_ns: SERIALIZED STARTED
+xcm:serialized_utls_unique_ux_names_with_ns: [1;32mOK[0m <0.684945 s>
+xcm:tls_per_namespace_cert: SERIALIZED STARTED
+xcm:tls_per_namespace_cert: [1;32mOK[0m <0.588625 s>
+xcm:tls_per_namespace_cert_thread: SERIALIZED STARTED
+xcm:tls_per_namespace_cert_thread: [1;32mOK[0m <0.751921 s>
+xcm:tls_detect_cert_dir_env_var_changes: STARTED
+xcm:tls_detect_cert_dir_env_var_changes: [1;32mOK[0m <0.204060 s>
+xcm:tls_detect_changes_to_cert_files: SERIALIZED STARTED
+xcm:tls_detect_changes_to_cert_files: [1;32mOK[0m <0.552105 s>
+xcm:tls_change_cert_files_like_crazy: SERIALIZED STARTED
+xcm:tls_change_cert_files_like_crazy: [1;32mOK[0m <3.776528 s>
+xcm:tls_get_peer_names: STARTED
+xcm:tls_get_peer_subject_key_id: STARTED
+xcm:tls_get_subject_alternative_names: STARTED
+xcm:tls_credentials_by_value: STARTED
+xcm:tls_invalid_credential_values: STARTED
+xcm:garbled_tcp_input: STARTED
+xcm:garbled_tls_input: STARTED
+xcm:tls_multi_record_message: STARTED
+xcm:tls_multi_record_message: [1;32mOK[0m <0.558859 s>
+xcm:long_ux_names: STARTED
+xcm:tls_credentials_by_value: [1;32mOK[0m <0.640134 s>
+xcm:long_uxf_names: STARTED
+xcm:tls_invalid_credential_values: [1;32mOK[0m <0.876041 s>
+xcm:uxf_empty_addrs: STARTED
+xcm:tls_get_peer_names: [1;32mOK[0m <0.927435 s>
+xcm:ux_autobound_addrs: STARTED
+xcm:tls_get_subject_alternative_names: [1;32mOK[0m <0.990878 s>
+xcm:ux_credless_connect: STARTED
+xcm:tls_get_peer_subject_key_id: [1;32mOK[0m <1.183375 s>
+xcm:uxf_credless_connect: STARTED
+xcm:long_ux_names: [1;32mOK[0m <0.660715 s>
+xcm:uxf_existing_socket_file: STARTED
+xcm:uxf_empty_addrs: [1;32mOK[0m <0.351188 s>
+xcm:uxf_existing_non_socket_file: STARTED
+xcm:ux_credless_connect: [1;32mOK[0m <0.293418 s>
+xcm:lossy_network: STARTED
+xcm:ux_autobound_addrs: [1;32mOK[0m <0.416076 s>
+xcm:null_close: STARTED
+xcm:long_uxf_names: [1;32mOK[0m <0.707535 s>
+xcm:basic_with_incorrect_ctl_dir: STARTED
+xcm:uxf_credless_connect: [1;32mOK[0m <0.372912 s>
+xcm:ctl_iter: STARTED
+xcm:uxf_existing_non_socket_file: [1;32mOK[0m <0.332723 s>
+xcm:ctl_open_nonexisting: STARTED
+xcm:uxf_existing_socket_file: [1;32mOK[0m <0.355591 s>
+xcm:ctl_concurrent_clients_idle_socket: STARTED
+xcm:null_close: [1;32mOK[0m <0.361329 s>
+xcm:ctl_concurrent_clients_active_socket: STARTED
+xcm:ctl_open_nonexisting: [1;32mOK[0m <0.335150 s>
+xcm:version: STARTED
+
+test/src/xcm_testcases.c:8002: ctl_concurrent_clients "sessions[i] != ((void *)0)" not true.
+xcm:ctl_concurrent_clients_idle_socket: [1;31mFAILED[0m <0.540109 s>
+xcm:garbled_tcp_input: [1;32mOK[0m <2.129293 s>
+xcm:version: [1;32mOK[0m <0.337210 s>
+xcm:basic_with_incorrect_ctl_dir: [1;32mOK[0m <1.282554 s>
+xcm:ctl_concurrent_clients_active_socket: [1;32mOK[0m <0.932373 s>
+xcm:garbled_tls_input: [1;32mOK[0m <4.679331 s>
+xcm:ctl_iter: [1;32mOK[0m <4.117892 s>
+xcm:lossy_network: [1;32mOK[0m <4.574694 s>
+
+165 tests run in 90.0 s; 164 successes, 1 failures, 0 timed out, and 0 not run.
+make[1]: *** [Makefile:2861: xcmtest-run] Error 1
+make[1]: Leaving directory '/home/lysarina/skool/exjobb/xcm-translation'
+make: *** [Makefile:2503: check-am] Error 2
