@@ -306,7 +306,7 @@ unsafe extern "C" fn host_parse(
     };
 
     if host_str.starts_with('[') {
-        if !host_str.ends_with(']') || !host_str.len() >= 2 { // invalid format
+        if !host_str.ends_with(']') || host_str.len() < 2 { // invalid format
             *__errno_location() = EINVAL;
             return -1;
         }
