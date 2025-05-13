@@ -6,6 +6,7 @@ import math
 from scipy import stats
 from matplotlib.colors import ListedColormap
 import matplotlib.patches as mpatches
+from collections import defaultdict
 
 test_count = 165
 
@@ -123,6 +124,7 @@ for t in sig_tests:
         break
 
 print(f"Total significantly different tests: {len(sig_tests)}")
+
 data_test_means = {}
 for t in data_test.keys():
     data_test_means[t] = []
@@ -130,53 +132,147 @@ for t in data_test.keys():
         mean = np.mean(data_test[t][i])
         data_test_means[t].append(mean)
 
-colors = ['red', 'green', 'blue', 'gold', 'lightgray']
+# colors = ['red', 'green', 'blue', 'gold', 'lightgray']
+# cmap = ListedColormap(colors)
+
+# # Extract labels and values
+# labels = list(data_test_means.keys())
+# print(len(labels))
+# values = np.array(list(data_test_means.values()))  # shape: (n, 3)
+
+# # Determine which set has min value per label
+# min_indices = np.argmin(values, axis=1)
+
+# # Override indices with highlight color (index 3) if in highlight_dict
+# for i, label in enumerate(labels):
+#     if label not in sig_tests:
+#         min_indices[i] = 3  # Highlight
+
+# # Reshape into grid of 33 values per row
+# values_per_row = 30
+# n = len(min_indices)
+# num_rows = math.ceil(n / values_per_row)
+# padding = num_rows * values_per_row - n
+
+# # Add padding
+# if padding > 0:
+#     min_indices = np.append(min_indices, [4] * padding)  # 4 = padding color
+#     labels += [""] * padding
+
+# # Reshape
+# grid = min_indices.reshape((num_rows, values_per_row))
+
+# # Plot
+# fig, ax = plt.subplots(figsize=(values_per_row * 0.3, num_rows * 0.5))
+# im = ax.imshow(grid, aspect='auto', cmap=cmap)
+
+# # Draw borders
+# for i in range(num_rows):
+#     for j in range(values_per_row):
+#         rect = mpatches.Rectangle((j - 0.5, i - 0.5), 1, 1,
+#                                   edgecolor='black', facecolor='none', linewidth=0.5)
+#         ax.add_patch(rect)
+
+# # Remove ticks
+# ax.set_xticks([])
+# ax.set_yticks([])
+
+# # Title
+# # ax.set_title("Minimum Value Set per Key (highlighted values in gold)")
+
+# # Legend
+# legend_patches = [
+#     mpatches.Patch(color=colors[0], label=versions[0]),
+#     mpatches.Patch(color=colors[1], label=versions[1]),
+#     mpatches.Patch(color=colors[2], label=versions[2]),
+#     mpatches.Patch(color=colors[3], label="Not stat. sig.")
+#     # mpatches.Patch(color=colors[4], label="Padding")
+# ]
+# ax.legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.05),
+#           ncol=len(legend_patches), frameon=False)
+
+
+# plt.tight_layout()
+# plt.savefig("../all-tests.png")
+
+# if count < 30:
+#     plt.show()
+
+# Group by prefix before colon
+grouped_labels = defaultdict(list)
+grouped_values = defaultdict(list)
+
+for label in data_test_means:
+    prefix = label.split(':')[0]
+    grouped_labels[prefix].append(label)
+    grouped_values[prefix].append(data_test_means[label])
+
+colors = ['red', 'green', 'blue', 'lightgray', 'white']
 cmap = ListedColormap(colors)
 
-# Extract labels and values
-labels = list(data_test_means.keys())
-print(len(labels))
-values = np.array(list(data_test_means.values()))  # shape: (n, 3)
+grid_data = []
+row_labels = []
+group_row_end_indices = []  # To track where to draw separators
+current_row = 0
 
-# Determine which set has min value per label
-min_indices = np.argmin(values, axis=1)
-
-# Override indices with highlight color (index 3) if in highlight_dict
-for i, label in enumerate(labels):
-    if label not in sig_tests:
-        min_indices[i] = 3  # Highlight
-
-# Reshape into grid of 33 values per row
 values_per_row = 30
-n = len(min_indices)
-num_rows = math.ceil(n / values_per_row)
-padding = num_rows * values_per_row - n
 
-# Add padding
-if padding > 0:
-    min_indices = np.append(min_indices, [4] * padding)  # 4 = padding color
-    labels += [""] * padding
+# Sort groups by size descending
+sorted_prefixes = sorted(grouped_labels.keys(), key=lambda k: -len(grouped_labels[k]))
 
-# Reshape
-grid = min_indices.reshape((num_rows, values_per_row))
+for prefix in sorted_prefixes:
+    labels = grouped_labels[prefix]
+    values = np.array(grouped_values[prefix])  # shape: (n_items_in_group, 3)
+
+    # Determine min indices
+    min_indices = np.argmin(values, axis=1)
+    for i, label in enumerate(labels):
+        if label not in sig_tests:
+            min_indices[i] = 3  # Highlight
+
+    # Pad to full rows of 30
+    n = len(min_indices)
+    num_rows = math.ceil(n / values_per_row)
+    padding = num_rows * values_per_row - n
+
+    if padding > 0:
+        min_indices = np.append(min_indices, [4] * padding)  # Padding
+
+    # Reshape and add to grid
+    grid_rows = min_indices.reshape((num_rows, values_per_row))
+    grid_data.extend(grid_rows)
+
+    # Label only the first row
+    row_labels.append(prefix)
+    row_labels.extend([""] * (num_rows - 1))
+
+    # Track end of this group for separators
+    current_row += num_rows
+    group_row_end_indices.append(current_row)
 
 # Plot
-fig, ax = plt.subplots(figsize=(values_per_row * 0.3, num_rows * 0.5))
-im = ax.imshow(grid, aspect='auto', cmap=cmap)
+fig, ax = plt.subplots(figsize=(values_per_row * 0.3, len(grid_data) * 0.5))
+im = ax.imshow(grid_data, aspect='auto', cmap=cmap)
 
-# Draw borders
-for i in range(num_rows):
-    for j in range(values_per_row):
+# Draw cell borders (skip padding)
+for i, row in enumerate(grid_data):
+    for j, val in enumerate(row):
+        if val == 4:
+            continue
         rect = mpatches.Rectangle((j - 0.5, i - 0.5), 1, 1,
                                   edgecolor='black', facecolor='none', linewidth=0.5)
         ax.add_patch(rect)
 
-# Remove ticks
-ax.set_xticks([])
-ax.set_yticks([])
+# Draw faint horizontal separators between groups
+for row in group_row_end_indices[:-1]:  # Exclude final row
+    ax.axhline(row - 0.5, color='black', linestyle='--', linewidth=0.5, alpha=0.3)
 
-# Title
-# ax.set_title("Minimum Value Set per Key (highlighted values in gold)")
+# Y-axis labels
+ax.set_yticks(np.arange(len(row_labels)))
+ax.set_yticklabels(row_labels, fontsize=8)
+
+# Remove x ticks
+ax.set_xticks([])
 
 # Legend
 legend_patches = [
@@ -189,9 +285,6 @@ legend_patches = [
 ax.legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.05),
           ncol=len(legend_patches), frameon=False)
 
-
 plt.tight_layout()
 plt.savefig("../all-tests.png")
-
-if count < 30:
-    plt.show()
+plt.show()
