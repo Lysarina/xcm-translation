@@ -7,13 +7,19 @@ from scipy import stats
 from matplotlib.colors import ListedColormap
 import matplotlib.patches as mpatches
 from collections import defaultdict
-# import pandas as pd
-# import scikit_posthocs as sp
+import pandas as pd
+import scikit_posthocs as sp
+import seaborn as sns
 # from sklearn.datasets import load_iris
 
 print_details = False
+plot_all_values = True # plot all test times in same fig as respective conf interval
+plot_sigtest_conf_intervals = False # plot confidence intervals of sig tests (leads to lots of plots)
 
 test_count = 165
+
+confidence = 0.95
+alpha = 0.05 # max p-value for significance
 
 # versions = ["original-c-3", "rustlike-3"]
 # files = [20, 20]
@@ -73,29 +79,88 @@ for v in range(len(versions)):
 
 versions = ["Original C", "C2Rust Translation", "Rustlike"]
 
-confidence = 0.95
-
 sig_tests = [] # statistically significant tests
 data_test_sig = {}
+dunn_results = {}  # store Dunn test results here
+significant_pairs = {}  # stores significant group pairs per test
+performance_comparison = {}  # Store which version was faster per significant pair
 
 # t = test name
 # v = array of arrays of test results
 for t, v in data_test.items():
     r = stats.kruskal(*v)
-    if (r.pvalue < 0.05):
+    if (r.pvalue < alpha):
         sig_tests.append(t)
         data_test_sig[t] = v
         if print_details: print(f"{t}: F = {r.statistic}, p = {r.pvalue}")
 
+        # Flatten and prepare for Dunn test
+        data = np.concatenate(v)
+        groups = [i for i, arr in enumerate(v) for _ in arr]
+        df = pd.DataFrame({'score': data, 'group': groups})
+
+        # Run Dunn's test with long-form input
+        dunn = sp.posthoc_dunn(df, val_col='score', group_col='group', p_adjust='bonferroni')
+        dunn_results[t] = dunn
+
+        # Extract significant pairs
+        sig_pairs = []
+        pairwise_faster = []  # (v_low, v_high, pval)
+        for i in dunn.index:
+            for j in dunn.columns:
+                if i < j and dunn.loc[i, j] < alpha:
+                    sig_pairs.append((i, j, dunn.loc[i, j]))  # optionally include p-value
+                    # idx_i = int(i[1]) - 1  # convert 'v1' to 0
+                    # idx_j = int(j[1]) - 1
+
+                    median_i = np.median(v[i])
+                    median_j = np.median(v[j])
+
+                    if median_i < median_j:
+                        faster = (i, j, dunn.loc[i, j])  # i faster than j
+                    else:
+                        faster = (j, i, dunn.loc[i, j])  # j faster than i
+
+                    pairwise_faster.append(faster)
+        significant_pairs[t] = sig_pairs
+        performance_comparison[t] = pairwise_faster
+
+        if print_details:
+            print(f"{t}: Dunn")
+            # print("Significant pairwise differences (p < 0.05):")
+            # for pair in sig_pairs:
+            #     print(f"\t{versions[pair[0]]} vs {versions[pair[1]]}: p = {pair[2]:.8f}")
+            for a, b, p in pairwise_faster:
+                    print(f"\t{versions[a]} faster than {versions[b]}, p = {p:.8f}")
+
 # for t, v in data_test_sig.items():
 
+win_matrix = np.zeros((3, 3), dtype=int)
 
-plot_all_values = True # plot all test times in same fig as respective conf interval
+# Count wins
+for results in performance_comparison.values():
+    for faster, slower, _ in results:
+        win_matrix[faster, slower] += 1
+
+print(win_matrix)
+
+# Plot heatmap
+plt.figure(figsize=(6, 5))
+sns.heatmap(win_matrix, annot=True, fmt="d", cmap="Blues",
+            xticklabels=versions, yticklabels=versions)
+
+# plt.title("Number of Tests Where Version A Was Faster Than B")
+plt.xlabel("Slower Version")
+plt.ylabel("Faster Version")
+plt.tight_layout()
+plt.savefig("../xcm-perf-comparison.png")
+# plt.show()
+
 
 count = 0
 
 for t in sig_tests:
-    # break
+    if not plot_sigtest_conf_intervals: break
     if (np.mean(data_test[t][0]) < np.mean(data_test[t][2])): continue
     print(t)
     plt.figure(figsize=(10, 6))
@@ -124,7 +189,7 @@ for t in sig_tests:
             plt.subplot(2, 2, 4)
         
         plt.errorbar(i, mean, yerr=margin, fmt='o', capsize=5)
-        print(f"\t{versions[i]}\n\t\tMean: {mean}\n\t\t{confidence*100:.1f}% confidence interval: ({lower_bound:.5f}, {upper_bound:.5f})")
+        if print_details: print(f"\t{versions[i]}\n\t\tMean: {mean}\n\t\t{confidence*100:.1f}% confidence interval: ({lower_bound:.5f}, {upper_bound:.5f})")
 
     
     if (plot_all_values):
@@ -236,6 +301,6 @@ ax.legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.05
           ncol=len(legend_patches), frameon=False)
 
 plt.tight_layout()
-plt.savefig("../all-tests.png")
+plt.savefig("../xcm-all-tests.png")
 if count < 30:
     plt.show()
