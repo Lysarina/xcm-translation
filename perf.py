@@ -142,7 +142,7 @@ for results in performance_comparison.values():
     for faster, slower, _ in results:
         win_matrix[faster, slower] += 1
 
-print(win_matrix)
+if print_details: print(win_matrix)
 
 # Plot heatmap
 plt.figure(figsize=(6, 5))
