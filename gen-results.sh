@@ -1,4 +1,4 @@
-for i in $(seq 1 10);
+for i in $(seq 1 20);
 do
-    sudo make check &> perf_results/full-c2rust-translation-final-res-$i.txt
+    sudo make check &> perf_results/full-c2rust-translation-redo-2-res-$i.txt
 done
