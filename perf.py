@@ -12,9 +12,18 @@ import scikit_posthocs as sp
 import seaborn as sns
 # from sklearn.datasets import load_iris
 
-print_details = False
+def tolerant_mean(arrs):
+    lens = [len(i) for i in arrs]
+    arr = np.ma.empty((np.max(lens),len(arrs)))
+    arr.mask = True
+    for idx, l in enumerate(arrs):
+        arr[:len(l),idx] = l
+    return arr.mean(axis = -1), arr.std(axis=-1)
+
+print_details = True
 plot_all_values = True # plot all test times in same fig as respective conf interval
 plot_sigtest_conf_intervals = False # plot confidence intervals of sig tests (leads to lots of plots)
+max_plots = 20 # max conf interval plots (recommmended to not bust the computer)
 
 test_count = 165
 
@@ -25,27 +34,31 @@ custom_colors = ["#004777","#a30000","#ff7700","#efd28d","#00afb5"]
 
 # versions = ["original-c-3", "rustlike-3"]
 # files = [20, 20]
-# versions = ["original-c-3", "full-c2rust-translation-final-2", "rustlike-2"] # good res lol
 versions = ["original-c", "full-c2rust-translation", "rustlike"]
-# subversions = [["3"], ["final-2"], ["2"]]
-subversions = [["redo"], ["redo"], ["redo"]]
+# subversions = [["3"], ["final-2"], ["2"]] # good res lol
+subversions = [["redo", "redo-2", "2", "3"], ["redo", "redo-2", "final-2"], ["redo", "redo-2", "2", "3"]]
 files = [20, 20, 20]
 
 test_times = re.compile(".*<.*>") # find test times
 total_time = re.compile("165 tests run in .*") #catch whole res line
 
 data = {} # versions own tests
+data_sv = {}
 data_test = {} # tests own versions
 data_test["total"] = []
 
 fail = False
 
+# Read all data
 for v in range(len(versions)):
-    data[v] = {}
-    data[v]["total"] = []
-    data_test["total"].append([])
+    # data[v] = {}
+    # data[v]["total"] = []
+    data_sv[v] = {}
+    data_sv[v]["total"] = []
+    # data_test["total"].append([])
     sv = subversions[v]
     for k in range(len(sv)):
+        data_sv[v]["total"].append([])
         for i in range(1, files[v]+1):
             with open(f"perf_results/{versions[v]}-{sv[k]}-res-{i}.txt") as f:
                 content = f.read()
@@ -55,16 +68,21 @@ for v in range(len(versions)):
                 for test_match in test_times.findall(content):
                     time = re.sub(r"[\" s>\"]", "", test_match.split("<")[1])
                     test_name = ":".join(test_match.split(":")[:2])
-                    if (i == 1): 
-                        data[v][test_name] = []
-                        if (v == 0): data_test[test_name] = []
-                        data_test[test_name].append([])
+                    if (i == 1 and k == 0): 
+                        # data[v][test_name] = []
+                        data_sv[v][test_name] = []
+                        data_sv[v][test_name].append([])
+                        # if (v == 0): data_test[test_name] = []
+                        # data_test[test_name].append([])
+                    elif (i == 1):
+                        data_sv[v][test_name].append([])
                     if "FAILED" in test_match:
                         fails += 1
                         fail = True
                         continue
-                    data[v][test_name].append(float(time))
-                    data_test[test_name][v].append(float(time))
+                    # data[v][test_name].append(float(time))
+                    # data_test[test_name][v].append(float(time))
+                    data_sv[v][test_name][k].append(float(time))
                     count += 1
                 if fails > 0 or count < test_count:
                     print(f"File {versions[v]}-{sv[k]}-res-{i}.txt FAILED {fails} tests")
@@ -72,10 +90,25 @@ for v in range(len(versions)):
                 # Find total time
                 for res_match in total_time.findall(content):
                     time = re.sub(r"165 tests run in ", "", res_match.split("s;")[0])
-                    data[v]["total"].append(float(time))
-                    data_test["total"][v].append(float(time))
+                    # data[v]["total"].append(float(time))
+                    # data_test["total"][v].append(float(time))
+                    data_sv[v]["total"][k].append(float(time))
             f.close()
 
+# Take average of runs
+for v in range(len(versions)):
+    data[v] = {}
+    for test_name, res in data_sv[v].items():
+        if (v == 0):
+            data_test[test_name] = []
+        data_test[test_name].append([])
+        if len(subversions[v]) == 1:
+            avg = res
+        else:
+            y, error = tolerant_mean(res)
+            avg = y.data
+        data[v][test_name] = avg
+        data_test[test_name][v] = avg
 
 # if fail:
 #     exit(0)
@@ -134,7 +167,8 @@ for t, v in data_test.items():
             # for pair in sig_pairs:
             #     print(f"\t{versions[pair[0]]} vs {versions[pair[1]]}: p = {pair[2]:.8f}")
             for a, b, p in pairwise_faster:
-                    print(f"\t{versions[a]} faster than {versions[b]}, p = {p:.8f}")
+                    if (versions[b] == "Original C"):
+                        print(f"\t{versions[a]} faster than {versions[b]}, p = {p:.8f}")
 
 # for t, v in data_test_sig.items():
 
@@ -154,7 +188,7 @@ plt.figure(figsize=(6, 5))
 # sns.heatmap(win_matrix, annot=True, fmt="d", cmap="Blues",
 #             xticklabels=versions, yticklabels=versions)
 sns.heatmap(win_matrix_percent, annot=True, fmt=".1f", cmap="Blues",
-            xticklabels=versions, yticklabels=versions)
+            xticklabels=versions, yticklabels=versions, cbar_kws={'label': '% of tests'})
 
 # plt.title("Number of Tests Where Version A Was Faster Than B")
 plt.xlabel("Slower Version")
@@ -208,7 +242,7 @@ for t in sig_tests:
     plt.xticks(range(len(versions)), versions)
     plt.tight_layout()
     count += 1
-    if count > 10:
+    if count > max_plots:
         break
 
 print(f"Total significantly different tests: {len(sig_tests)}")
@@ -301,7 +335,7 @@ legend_patches = [
     mpatches.Patch(color=colors[0], label=versions[0]),
     mpatches.Patch(color=colors[1], label=versions[1]),
     mpatches.Patch(color=colors[2], label=versions[2]),
-    mpatches.Patch(color=colors[3], label="Not stat. sig.")
+    mpatches.Patch(color=colors[3], label="No stat. sig.")
     # mpatches.Patch(color=colors[4], label="Padding")
 ]
 ax.legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.05),
@@ -309,5 +343,5 @@ ax.legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.05
 
 plt.tight_layout()
 plt.savefig("../xcm-all-tests.png")
-if count < 30:
-    plt.show()
+# if count < 30:
+plt.show()
