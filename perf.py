@@ -21,11 +21,14 @@ test_count = 165
 confidence = 0.95
 alpha = 0.05 # max p-value for significance
 
+custom_colors = ["#004777","#a30000","#ff7700","#efd28d","#00afb5"]
+
 # versions = ["original-c-3", "rustlike-3"]
 # files = [20, 20]
 # versions = ["original-c-3", "full-c2rust-translation-final-2", "rustlike-2"] # good res lol
 versions = ["original-c", "full-c2rust-translation", "rustlike"]
-subversions = [["3"], ["final-2"], ["2"]]
+# subversions = [["3"], ["final-2"], ["2"]]
+subversions = [["redo"], ["redo"], ["redo"]]
 files = [20, 20, 20]
 
 test_times = re.compile(".*<.*>") # find test times
@@ -144,9 +147,13 @@ for results in performance_comparison.values():
 
 if print_details: print(win_matrix)
 
+win_matrix_percent = (win_matrix / 166) * 100
+
 # Plot heatmap
 plt.figure(figsize=(6, 5))
-sns.heatmap(win_matrix, annot=True, fmt="d", cmap="Blues",
+# sns.heatmap(win_matrix, annot=True, fmt="d", cmap="Blues",
+#             xticklabels=versions, yticklabels=versions)
+sns.heatmap(win_matrix_percent, annot=True, fmt=".1f", cmap="Blues",
             xticklabels=versions, yticklabels=versions)
 
 # plt.title("Number of Tests Where Version A Was Faster Than B")
@@ -222,7 +229,7 @@ for label in data_test_means:
     grouped_labels[prefix].append(label)
     grouped_values[prefix].append(data_test_means[label])
 
-colors = ['red', 'green', 'blue', 'lightgray', 'white']
+colors = ["#004777","#a30000","#ff7700", 'lightgray', 'white']
 cmap = ListedColormap(colors)
 
 grid_data = []
