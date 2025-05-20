@@ -20,10 +20,12 @@ def tolerant_mean(arrs):
         arr[:len(l),idx] = l
     return arr.mean(axis = -1), arr.std(axis=-1)
 
-print_details = True
+fig_save_name = "avg"
+
+print_details = False
 plot_all_values = True # plot all test times in same fig as respective conf interval
 plot_sigtest_conf_intervals = False # plot confidence intervals of sig tests (leads to lots of plots)
-max_plots = 20 # max conf interval plots (recommmended to not bust the computer)
+max_plots = 30 # max conf interval plots (recommmended to not bust the computer)
 
 test_count = 165
 
@@ -36,7 +38,8 @@ custom_colors = ["#004777","#a30000","#ff7700","#efd28d","#00afb5"]
 # files = [20, 20]
 versions = ["original-c", "full-c2rust-translation", "rustlike"]
 # subversions = [["3"], ["final-2"], ["2"]] # good res lol
-subversions = [["redo", "redo-2", "2", "3"], ["redo", "redo-2", "final-2"], ["redo", "redo-2", "2", "3"]]
+subversions = [["redo", "redo-2", "2", "3"], ["redo", "redo-2", "redo-3","final-2"], ["redo", "redo-2", "2", "3"]] # all
+# subversions = [["redo-2"], ["redo-2"], ["redo-2"]]
 files = [20, 20, 20]
 
 test_times = re.compile(".*<.*>") # find test times
@@ -103,7 +106,7 @@ for v in range(len(versions)):
             data_test[test_name] = []
         data_test[test_name].append([])
         if len(subversions[v]) == 1:
-            avg = res
+            avg = res[0]
         else:
             y, error = tolerant_mean(res)
             avg = y.data
@@ -163,12 +166,13 @@ for t, v in data_test.items():
 
         if print_details:
             print(f"{t}: Dunn")
+            # print(t)
             # print("Significant pairwise differences (p < 0.05):")
             # for pair in sig_pairs:
             #     print(f"\t{versions[pair[0]]} vs {versions[pair[1]]}: p = {pair[2]:.8f}")
             for a, b, p in pairwise_faster:
-                    if (versions[b] == "Original C"):
-                        print(f"\t{versions[a]} faster than {versions[b]}, p = {p:.8f}")
+                # if (versions[b] == "Original C"):
+                    print(f"\t{versions[a]} faster than {versions[b]}, p = {p:.8f}")
 
 # for t, v in data_test_sig.items():
 
@@ -194,7 +198,7 @@ sns.heatmap(win_matrix_percent, annot=True, fmt=".1f", cmap="Blues",
 plt.xlabel("Slower Version")
 plt.ylabel("Faster Version")
 plt.tight_layout()
-plt.savefig("../xcm-perf-comparison.png")
+plt.savefig(f"../xcm-perf-comparison-{fig_save_name}.png")
 # plt.show()
 
 
@@ -202,8 +206,8 @@ count = 0
 
 for t in sig_tests:
     if not plot_sigtest_conf_intervals: break
-    if (np.mean(data_test[t][0]) < np.mean(data_test[t][2])): continue
-    print(t)
+    if (np.mean(data_test[t][0]) < np.mean(data_test[t][1])): continue
+    if print_details: print(t)
     plt.figure(figsize=(10, 6))
     if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
     else: 
@@ -216,7 +220,7 @@ for t in sig_tests:
     for i in range(len(versions)):
         mean = np.mean(data_test[t][i])
         sem = stats.sem(data_test[t][i])  # Standard error of the mean
-        margin = sem * stats.t.ppf((1 + confidence) / 2.0, (files[i]*len(subversions[i])) - 1)
+        margin = sem * stats.t.ppf((1 + confidence) / 2.0, files[i] - 1)
         lower_bound = mean - margin
         upper_bound = mean + margin
         
@@ -342,6 +346,6 @@ ax.legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.05
           ncol=len(legend_patches), frameon=False)
 
 plt.tight_layout()
-plt.savefig("../xcm-all-tests.png")
-# if count < 30:
-plt.show()
+plt.savefig(f"../xcm-all-tests-{fig_save_name}.png")
+if count < 30:
+    plt.show()

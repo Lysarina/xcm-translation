@@ -1,0 +1,322 @@
+total
+        C2Rust Translation faster than Original C, p = 0.00017776
+        Rustlike faster than Original C, p = 0.01725115
+addr:supported
+        Original C faster than C2Rust Translation, p = 0.00014406
+        Original C faster than Rustlike, p = 0.00000000
+        C2Rust Translation faster than Rustlike, p = 0.04808749
+addr:proto_parse
+        Original C faster than C2Rust Translation, p = 0.00250640
+        Original C faster than Rustlike, p = 0.00000001
+        C2Rust Translation faster than Rustlike, p = 0.02527167
+addr:parse_tcp
+        Original C faster than C2Rust Translation, p = 0.01679458
+        Original C faster than Rustlike, p = 0.00000002
+        C2Rust Translation faster than Rustlike, p = 0.00643889
+addr:parse_sctp
+        Original C faster than C2Rust Translation, p = 0.00003679
+        Rustlike faster than C2Rust Translation, p = 0.03461604
+addr:parse_tls
+        Original C faster than C2Rust Translation, p = 0.00012818
+        Original C faster than Rustlike, p = 0.00000333
+addr:parse_utls
+        Original C faster than C2Rust Translation, p = 0.00022825
+        Original C faster than Rustlike, p = 0.00001116
+addr:parse_btcp
+        Original C faster than C2Rust Translation, p = 0.00250598
+        Original C faster than Rustlike, p = 0.00042964
+addr:parse_btls
+        Original C faster than C2Rust Translation, p = 0.00205818
+        Original C faster than Rustlike, p = 0.00101040
+addr:parse_ux
+        Original C faster than C2Rust Translation, p = 0.00000549
+        Original C faster than Rustlike, p = 0.00079105
+addr:parse_uxf
+        Original C faster than C2Rust Translation, p = 0.00000001
+        Original C faster than Rustlike, p = 0.00057416
+addr:make_tcp
+        Original C faster than C2Rust Translation, p = 0.00238615
+        Original C faster than Rustlike, p = 0.00000092
+addr:make_sctp
+        Original C faster than Rustlike, p = 0.00007977
+addr:make_tls
+        Original C faster than C2Rust Translation, p = 0.00000191
+        Original C faster than Rustlike, p = 0.00000210
+addr:make_utls
+        Original C faster than C2Rust Translation, p = 0.00001329
+        Original C faster than Rustlike, p = 0.00000031
+addr:make_btcp
+        Original C faster than C2Rust Translation, p = 0.00029699
+        Original C faster than Rustlike, p = 0.00055398
+addr:make_btls
+        Original C faster than C2Rust Translation, p = 0.00519908
+        Original C faster than Rustlike, p = 0.00001579
+addr:tcp6_parse
+        Original C faster than C2Rust Translation, p = 0.00034461
+        Original C faster than Rustlike, p = 0.00000000
+addr:sctp6_parse
+        Original C faster than C2Rust Translation, p = 0.00921364
+        Original C faster than Rustlike, p = 0.00000002
+        C2Rust Translation faster than Rustlike, p = 0.01303862
+addr:tls6_parse
+        Original C faster than C2Rust Translation, p = 0.00000979
+        Original C faster than Rustlike, p = 0.00000003
+addr:utls6_parse
+        Original C faster than C2Rust Translation, p = 0.00010534
+        Original C faster than Rustlike, p = 0.00000000
+        C2Rust Translation faster than Rustlike, p = 0.04575365
+addr:tcp_parse
+        Original C faster than Rustlike, p = 0.00000000
+        C2Rust Translation faster than Rustlike, p = 0.00010534
+addr:tls_parse
+        Original C faster than C2Rust Translation, p = 0.00005112
+        Original C faster than Rustlike, p = 0.00000001
+addr:utls_parse
+        Original C faster than C2Rust Translation, p = 0.00057427
+        Original C faster than Rustlike, p = 0.00000000
+        C2Rust Translation faster than Rustlike, p = 0.00357108
+addr:tcp6_make
+        Original C faster than C2Rust Translation, p = 0.00033207
+        Original C faster than Rustlike, p = 0.00000549
+addr:sctp6_make
+        Original C faster than C2Rust Translation, p = 0.00112062
+        Original C faster than Rustlike, p = 0.00002223
+addr:tls6_make
+        Original C faster than Rustlike, p = 0.00488733
+addr:utls6_make
+        Original C faster than C2Rust Translation, p = 0.00000549
+        Original C faster than Rustlike, p = 0.00008302
+addr:make_ux
+        Original C faster than C2Rust Translation, p = 0.00000525
+        Original C faster than Rustlike, p = 0.00006018
+addr:make_uxf
+        Original C faster than C2Rust Translation, p = 0.00002746
+        Original C faster than Rustlike, p = 0.00001069
+addr:tcp_make
+        Original C faster than C2Rust Translation, p = 0.00021976
+        Original C faster than Rustlike, p = 0.00000687
+addr:tls_make
+        Original C faster than C2Rust Translation, p = 0.00001218
+        Original C faster than Rustlike, p = 0.00003995
+addr:utls_make
+        Original C faster than C2Rust Translation, p = 0.00000081
+        Original C faster than Rustlike, p = 0.00000210
+attr_map:access_bool
+        Original C faster than C2Rust Translation, p = 0.00000480
+        Original C faster than Rustlike, p = 0.00007363
+attr_map:access_int64
+        Original C faster than C2Rust Translation, p = 0.00001875
+        Original C faster than Rustlike, p = 0.00001218
+attr_map:access_double
+        Original C faster than C2Rust Translation, p = 0.00314310
+        Original C faster than Rustlike, p = 0.00003996
+attr_map:access_str
+        Original C faster than C2Rust Translation, p = 0.00035759
+        Original C faster than Rustlike, p = 0.00003114
+attr_map:equal
+        Original C faster than C2Rust Translation, p = 0.00025552
+        Original C faster than Rustlike, p = 0.00113987
+attr_map:foreach
+        Original C faster than C2Rust Translation, p = 0.00192583
+        Original C faster than Rustlike, p = 0.00000253
+attr_map:exists
+        Original C faster than C2Rust Translation, p = 0.00152360
+        Original C faster than Rustlike, p = 0.00047937
+attr_map:add_all
+        Original C faster than C2Rust Translation, p = 0.00605839
+        Original C faster than Rustlike, p = 0.00033193
+attr_map:clone
+        Original C faster than C2Rust Translation, p = 0.00053437
+        Original C faster than Rustlike, p = 0.00053437
+attr_path:parse
+        Original C faster than C2Rust Translation, p = 0.00020357
+        Original C faster than Rustlike, p = 0.00006928
+attr_path:parse_unparse
+        Original C faster than C2Rust Translation, p = 0.00035759
+        Original C faster than Rustlike, p = 0.00033207
+attr_path:equal
+        Original C faster than C2Rust Translation, p = 0.00976871
+        Original C faster than Rustlike, p = 0.00223465
+attr_tree:list
+        Original C faster than Rustlike, p = 0.02809977
+xcm:forking_server
+        C2Rust Translation faster than Original C, p = 0.00038496
+        Rustlike faster than Original C, p = 0.02150562
+xcm:async_server
+        C2Rust Translation faster than Original C, p = 0.00180206
+        Rustlike faster than Original C, p = 0.00128569
+xcm:net_ns_switch
+        C2Rust Translation faster than Original C, p = 0.00137635
+        C2Rust Translation faster than Rustlike, p = 0.04352013
+xcm:full_listen_queue_doesnt_block_connect
+        Original C faster than Rustlike, p = 0.02527167
+xcm:server_socket_address_immediate_reuse
+        C2Rust Translation faster than Original C, p = 0.01267203
+xcm:multiple_server_sockets_on_the_same_address
+        C2Rust Translation faster than Original C, p = 0.00519908
+        C2Rust Translation faster than Rustlike, p = 0.03835173
+xcm:btls_dns_timeout
+        C2Rust Translation faster than Original C, p = 0.04035006
+xcm:btcp_dns_timeout
+        C2Rust Translation faster than Original C, p = 0.02809977
+xcm:invalid_address
+        C2Rust Translation faster than Original C, p = 0.00868632
+        Rustlike faster than Original C, p = 0.02270091
+xcm:connection_refused
+        C2Rust Translation faster than Original C, p = 0.00285382
+xcm:non_blocking_connect_with_finish
+        C2Rust Translation faster than Original C, p = 0.03461604
+xcm:bind_to_source_addr
+        C2Rust Translation faster than Original C, p = 0.00519908
+        Rustlike faster than Original C, p = 0.02209601
+xcm:ipv6_link_local
+        C2Rust Translation faster than Original C, p = 0.00006266
+        Rustlike faster than Original C, p = 0.00001649
+xcm:disallow_link_local_on_ipv4
+        C2Rust Translation faster than Original C, p = 0.00459286
+        Rustlike faster than Original C, p = 0.00037104
+xcm:disallow_bind_on_accept
+        C2Rust Translation faster than Original C, p = 0.00587811
+        Rustlike faster than Original C, p = 0.03202991
+xcm:tcp_dynamic_port_allocation
+        C2Rust Translation faster than Original C, p = 0.00142389
+        Rustlike faster than Original C, p = 0.00087894
+xcm:tls_dynamic_port_allocation
+        C2Rust Translation faster than Original C, p = 0.00192616
+        Rustlike faster than Original C, p = 0.00219856
+xcm:utls_dynamic_port_allocation
+        C2Rust Translation faster than Original C, p = 0.00324540
+xcm:utls_dynamic_local_is_unix
+        C2Rust Translation faster than Original C, p = 0.00019604
+        Rustlike faster than Original C, p = 0.01005950
+xcm:utls_tls_fallback
+        C2Rust Translation faster than Original C, p = 0.02527167
+        Rustlike faster than Original C, p = 0.00405236
+xcm:tls_wrong_cert_directory
+        C2Rust Translation faster than Original C, p = 0.02595375
+        Rustlike faster than Original C, p = 0.02884951
+xcm:tls_missing_certificate
+        C2Rust Translation faster than Original C, p = 0.03373411
+        Rustlike faster than Original C, p = 0.04138331
+xcm:backpressure_with_slow_server
+        C2Rust Translation faster than Original C, p = 0.00004909
+        Rustlike faster than Original C, p = 0.00002746
+xcm:tcp_keepalive_attr
+        C2Rust Translation faster than Original C, p = 0.00116009
+xcm:tcp_net_hiccup
+        Rustlike faster than Original C, p = 0.02665223
+xcm:tls_keepalive_attr
+        C2Rust Translation faster than Original C, p = 0.00039937
+        Rustlike faster than Original C, p = 0.00748632
+xcm:tls_net_hiccup
+        Rustlike faster than Original C, p = 0.01726940
+xcm:tls_dead_peer_detection
+xcm:tls_shared_leaf
+        C2Rust Translation faster than Original C, p = 0.01825124
+xcm:tls_shared_root_ca_with_attrs
+        C2Rust Translation faster than Original C, p = 0.04352013
+xcm:tls_leaf_expired
+xcm:tls_ca_not_yet_valid
+        C2Rust Translation faster than Original C, p = 0.00124247
+xcm:tls_disable_expiration_doesnt_disable_auth
+        C2Rust Translation faster than Original C, p = 0.00007977
+        C2Rust Translation faster than Rustlike, p = 0.00684117
+xcm:tls_local_leaf_validity_ignored
+        C2Rust Translation faster than Original C, p = 0.00418169
+xcm:tls_auth_disabled_no_longer_requires_tc
+        C2Rust Translation faster than Original C, p = 0.02270091
+xcm:tls_auth_conf
+        C2Rust Translation faster than Original C, p = 0.00643981
+        Rustlike faster than Original C, p = 0.04035006
+xcm:tls_no_root_but_trusted_sub_ca
+        C2Rust Translation faster than Original C, p = 0.00035759
+        Rustlike faster than Original C, p = 0.03933967
+xcm:tls_missing_empty_invalid_crl
+        C2Rust Translation faster than Original C, p = 0.00039937
+        Rustlike faster than Original C, p = 0.00063942
+xcm:tls_certificate_and_key_mismatch
+        C2Rust Translation faster than Original C, p = 0.00418169
+xcm:tls_crl_reject_revoked_leaf_and_intermediate
+        C2Rust Translation faster than Original C, p = 0.00726533
+xcm:tls_multiple_ca_same_subject
+        C2Rust Translation faster than Original C, p = 0.00057427
+        Rustlike faster than Original C, p = 0.00663771
+xcm:tls_sub_ca
+        C2Rust Translation faster than Original C, p = 0.00038496
+xcm:tls_zero_revocations_crl
+        C2Rust Translation faster than Original C, p = 0.00116009
+        Rustlike faster than Original C, p = 0.01066208
+xcm:tls_detect_crl_changes
+        C2Rust Translation faster than Original C, p = 0.00587811
+xcm:tls_big_bundle
+        C2Rust Translation faster than Original C, p = 0.00000419
+        Rustlike faster than Original C, p = 0.02460568
+xcm:tls_name_verification
+        C2Rust Translation faster than Original C, p = 0.00552903
+        Rustlike faster than Original C, p = 0.00267489
+xcm:tls_invalid_name_verification_conf
+        C2Rust Translation faster than Original C, p = 0.00536172
+xcm:tls_extended_key_usage
+        C2Rust Translation faster than Original C, p = 0.01267203
+xcm:tls_role_reversal
+        C2Rust Translation faster than Original C, p = 0.01544732
+xcm:tls_per_namespace_cert
+        C2Rust Translation faster than Original C, p = 0.02809977
+xcm:tls_per_namespace_cert_thread
+        C2Rust Translation faster than Original C, p = 0.00162979
+        Rustlike faster than Original C, p = 0.00212730
+xcm:tls_detect_changes_to_cert_files
+        C2Rust Translation faster than Original C, p = 0.00818668
+        Rustlike faster than Original C, p = 0.00552903
+xcm:tls_change_cert_files_like_crazy
+        C2Rust Translation faster than Original C, p = 0.00000896
+        Rustlike faster than Original C, p = 0.00445184
+xcm:tls_credentials_by_value
+        C2Rust Translation faster than Original C, p = 0.01876078
+xcm:tls_multi_record_message
+        C2Rust Translation faster than Original C, p = 0.00570112
+xcm:tls_invalid_credential_values
+        C2Rust Translation faster than Original C, p = 0.00104603
+        Rustlike faster than Original C, p = 0.01633544
+xcm:tls_get_subject_alternative_names
+        C2Rust Translation faster than Original C, p = 0.00267489
+        C2Rust Translation faster than Rustlike, p = 0.04138331
+xcm:long_ux_names
+        C2Rust Translation faster than Original C, p = 0.00445184
+xcm:tls_get_peer_subject_key_id
+        C2Rust Translation faster than Original C, p = 0.00013328
+xcm:uxf_empty_addrs
+        C2Rust Translation faster than Original C, p = 0.00124247
+        Rustlike faster than Original C, p = 0.00843312
+xcm:tls_get_peer_names
+        C2Rust Translation faster than Original C, p = 0.00094253
+        Rustlike faster than Original C, p = 0.00108283
+xcm:ux_autobound_addrs
+        C2Rust Translation faster than Original C, p = 0.00552903
+xcm:ux_credless_connect
+        C2Rust Translation faster than Original C, p = 0.00771344
+xcm:uxf_existing_socket_file
+        Rustlike faster than Original C, p = 0.01588578
+xcm:uxf_credless_connect
+        C2Rust Translation faster than Original C, p = 0.00001272
+        Rustlike faster than Original C, p = 0.00192616
+xcm:long_uxf_names
+        C2Rust Translation faster than Original C, p = 0.02150562
+        Rustlike faster than Original C, p = 0.00445184
+xcm:uxf_existing_non_socket_file
+        C2Rust Translation faster than Original C, p = 0.00570112
+xcm:null_close
+        C2Rust Translation faster than Original C, p = 0.01544732
+xcm:garbled_tcp_input
+        C2Rust Translation faster than Original C, p = 0.00242590
+        Rustlike faster than Original C, p = 0.02809977
+xcm:ctl_open_nonexisting
+        C2Rust Translation faster than Original C, p = 0.00921364
+xcm:basic_with_incorrect_ctl_dir
+xcm:ctl_concurrent_clients_active_socket
+        Rustlike faster than Original C, p = 0.01303862
+xcm:garbled_tls_input
+        C2Rust Translation faster than Original C, p = 0.00003834
+        Rustlike faster than Original C, p = 0.00431482
+xcm:ctl_iter
+        Original C faster than Rustlike, p = 0.04035006
