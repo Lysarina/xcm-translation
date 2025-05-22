@@ -24,15 +24,17 @@ fig_save_name = "avg"
 
 print_details = False
 plot_all_values = True # plot all test times in same fig as respective conf interval
-plot_sigtest_conf_intervals = False # plot confidence intervals of sig tests (leads to lots of plots)
+plot_sigtest_conf_intervals = True # plot confidence intervals of each sig tests (leads to lots of plots)
 max_plots = 30 # max conf interval plots (recommmended to not bust the computer)
+
+plot_only = ["addr:supported"]
 
 test_count = 165
 
 confidence = 0.95
 alpha = 0.05 # max p-value for significance
 
-custom_colors = ["#004777","#a30000","#ff7700","#efd28d","#00afb5"]
+custom_colors = ["#004777","#a30000","#ff7700","#efd28d","#00afb5", "#9DBD9F"]
 
 # versions = ["original-c-3", "rustlike-3"]
 # files = [20, 20]
@@ -203,51 +205,55 @@ plt.savefig(f"../xcm-perf-comparison-{fig_save_name}.png")
 
 
 count = 0
+if plot_sigtest_conf_intervals:
+    for t in sig_tests:
+        # print(t)
+        # if t in plot_only: print("yahoo")
+        if len(plot_only) > 0 and t not in plot_only: continue
+        # if (np.mean(data_test[t][0]) < np.mean(data_test[t][1])): continue
+        if print_details: print(t)
+        plt.figure(figsize=(10, 6))
+        if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
+        else: 
+            plt.title(f"Confidence Intervals for {t}", fontsize=14)
+            plt.xlabel('Version', fontsize=12)
+            plt.ylabel('Time (s)', fontsize=12)
+        # plt.legend(versions, title="Versions")
 
-for t in sig_tests:
-    if not plot_sigtest_conf_intervals: break
-    if (np.mean(data_test[t][0]) < np.mean(data_test[t][1])): continue
-    if print_details: print(t)
-    plt.figure(figsize=(10, 6))
-    if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
-    else: 
-        plt.title(f"Confidence Intervals for {t}", fontsize=14)
-        plt.xlabel('Version', fontsize=12)
-        plt.ylabel('Time (s)', fontsize=12)
-    # plt.legend(versions, title="Versions")
+        # Plot each version's confidence interval
+        for i in range(len(versions)):
+            median = np.median(data_test[t][i])
+            mean = np.mean(data_test[t][i])
+            sem = stats.sem(data_test[t][i])  # Standard error of the mean
+            margin = sem * stats.t.ppf((1 + confidence) / 2.0, files[i] - 1)
+            lower_bound = mean - margin
+            upper_bound = mean + margin
+            
+            if (plot_all_values): 
+                plt.subplot(2, 2, i+1)
+                plt.plot(data_test[t][i], marker='o')
+                plt.title(f'Run times for {versions[i]}')
+                plt.xlabel('Run')
+                plt.ylabel('Time (s)')
 
-    # Plot each version's confidence interval
-    for i in range(len(versions)):
-        mean = np.mean(data_test[t][i])
-        sem = stats.sem(data_test[t][i])  # Standard error of the mean
-        margin = sem * stats.t.ppf((1 + confidence) / 2.0, files[i] - 1)
-        lower_bound = mean - margin
-        upper_bound = mean + margin
+                plt.subplot(2, 2, 4)
+            
+            plt.errorbar(i, mean, yerr=margin, fmt='o', capsize=5)
+            plt.plot(i, median, marker='D')
+            if print_details: print(f"\t{versions[i]}\n\t\tMean: {mean}\n\t\t{confidence*100:.1f}% confidence interval: ({lower_bound:.5f}, {upper_bound:.5f})")
+
         
-        if (plot_all_values): 
-            plt.subplot(2, 2, i+1)
-            plt.plot(data_test[t][i], marker='o')
-            plt.title(f'Run times for {versions[i]}')
-            plt.xlabel('Run')
-            plt.ylabel('Time (s)')
-
+        if (plot_all_values):
             plt.subplot(2, 2, 4)
-        
-        plt.errorbar(i, mean, yerr=margin, fmt='o', capsize=5)
-        if print_details: print(f"\t{versions[i]}\n\t\tMean: {mean}\n\t\t{confidence*100:.1f}% confidence interval: ({lower_bound:.5f}, {upper_bound:.5f})")
-
-    
-    if (plot_all_values):
-        plt.subplot(2, 2, 4)
-        plt.title(f"Confidence Intervals")
-        plt.xlabel('Version')
-        plt.ylabel('Time (s)')
-    # Set xticks to be the version indices
-    plt.xticks(range(len(versions)), versions)
-    plt.tight_layout()
-    count += 1
-    if count > max_plots:
-        break
+            plt.title(f"Confidence Intervals")
+            plt.xlabel('Version')
+            plt.ylabel('Time (s)')
+        # Set xticks to be the version indices
+        plt.xticks(range(len(versions)), versions)
+        plt.tight_layout()
+        count += 1
+        if count > max_plots:
+            break
 
 print(f"Total significantly different tests: {len(sig_tests)}")
 
