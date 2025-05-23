@@ -137,35 +137,97 @@ attr_path:parse_unparse
 attr_path:equal
         Original C faster than C2Rust Translation, p = 0.00976871
         Original C faster than Rustlike, p = 0.00223465
+attr_path:parse_error
+        Not stat sig
+attr_tree:basic
+        Not stat sig
 attr_tree:list
         Original C faster than Rustlike, p = 0.02809977
+slist:join
+        Not stat sig
+slist:split
+        Not stat sig
+attr_map:access_bin
+        Not stat sig
+xcm:basic
+        Not stat sig
+xcm:bulk_transfer
+        Not stat sig
 xcm:forking_server
         C2Rust Translation faster than Original C, p = 0.00038496
         Rustlike faster than Original C, p = 0.02150562
 xcm:async_server
         C2Rust Translation faster than Original C, p = 0.00180206
         Rustlike faster than Original C, p = 0.00128569
+xcm:dns
+        Not stat sig
+xcm:dns_algorithm_smoke_test
+        Not stat sig
 xcm:net_ns_switch
         C2Rust Translation faster than Original C, p = 0.00137635
         C2Rust Translation faster than Rustlike, p = 0.04352013
+xcm:nonexistent_attr
+        Not stat sig
+xcm:invalid_attr
+        Not stat sig
+xcm:invalid_generic_attr_type
+        Not stat sig
+xcm:dns_multiple_address_probing
+        Not stat sig
+xcm:invalid_tp_attr_type
+        Not stat sig
 xcm:full_listen_queue_doesnt_block_connect
         Original C faster than Rustlike, p = 0.02527167
+xcm:non_blocking_non_orderly_tls_close
+        Not stat sig
+xcm:ops_on_closed_connections
+        Not stat sig
+xcm:relay
+        Not stat sig
 xcm:server_socket_address_immediate_reuse
         C2Rust Translation faster than Original C, p = 0.01267203
 xcm:multiple_server_sockets_on_the_same_address
         C2Rust Translation faster than Original C, p = 0.00519908
         C2Rust Translation faster than Rustlike, p = 0.03835173
+xcm:tcp_dns_timeout
+        Not stat sig
 xcm:btls_dns_timeout
         C2Rust Translation faster than Original C, p = 0.04035006
 xcm:btcp_dns_timeout
         C2Rust Translation faster than Original C, p = 0.02809977
+xcm:utls_dns_timeout
+        Not stat sig
+xcm:tls_dns_timeout
+        Not stat sig
+xcm:unknown_proto
+        Not stat sig
+xcm:invalid_service
+        Not stat sig
+xcm:unresponsive_server_doesnt_block_nonblocking_connect
+        Not stat sig
+xcm:invalid_await_and_fd_argument
+        Not stat sig
 xcm:invalid_address
         C2Rust Translation faster than Original C, p = 0.00868632
         Rustlike faster than Original C, p = 0.02270091
 xcm:connection_refused
         C2Rust Translation faster than Original C, p = 0.00285382
+xcm:undersized_receive_buffer
+        Not stat sig
+xcm:oversized_send
+        Not stat sig
+xcm:zerosized_send
+        Not stat sig
+xcm:non_established_non_blocking_connect
+        Not stat sig
+xcm:tcp_connect_timeout
+        Not stat sig
 xcm:non_blocking_connect_with_finish
         C2Rust Translation faster than Original C, p = 0.03461604
+xcm:non_blocking_connect_lazy
+        Not stat sig
+xcm:dscp_marking
+        Not stat sig
 xcm:bind_to_source_addr
         C2Rust Translation faster than Original C, p = 0.00519908
         Rustlike faster than Original C, p = 0.02209601
@@ -210,17 +272,37 @@ xcm:tls_keepalive_attr
         Rustlike faster than Original C, p = 0.00748632
 xcm:tls_net_hiccup
         Rustlike faster than Original C, p = 0.01726940
+xcm:tcp_dead_peer_detection
+        Not stat sig
 xcm:tls_dead_peer_detection
+xcm:utls_remote_addr
+        Not stat sig
+xcm:tls_key_and_certificates_mixed_up
+        Not stat sig
 xcm:tls_shared_leaf
         C2Rust Translation faster than Original C, p = 0.01825124
+xcm:tls_different_root_ca
+        Not stat sig
+xcm:tls_partial_env_var_fallback
+        Not stat sig
+xcm:tls_accept_attrs_override_server_attrs
+        Not stat sig
 xcm:tls_shared_root_ca_with_attrs
         C2Rust Translation faster than Original C, p = 0.04352013
+xcm:tls_shared_root_ca
+        Not stat sig
+xcm:tls_one_way_mistrust
+        Not stat sig
+xcm:tls_leaf_not_yet_valid
+        Not stat sig
 xcm:tls_leaf_expired
 xcm:tls_ca_not_yet_valid
         C2Rust Translation faster than Original C, p = 0.00124247
 xcm:tls_disable_expiration_doesnt_disable_auth
         C2Rust Translation faster than Original C, p = 0.00007977
         C2Rust Translation faster than Rustlike, p = 0.00684117
+xcm:tls_ca_expired
+        Not stat sig
 xcm:tls_local_leaf_validity_ignored
         C2Rust Translation faster than Original C, p = 0.00418169
 xcm:tls_auth_disabled_no_longer_requires_tc
@@ -260,11 +342,15 @@ xcm:tls_extended_key_usage
         C2Rust Translation faster than Original C, p = 0.01267203
 xcm:tls_role_reversal
         C2Rust Translation faster than Original C, p = 0.01544732
+xcm:serialized_utls_unique_ux_names_with_ns
+        Not stat sig
 xcm:tls_per_namespace_cert
         C2Rust Translation faster than Original C, p = 0.02809977
 xcm:tls_per_namespace_cert_thread
         C2Rust Translation faster than Original C, p = 0.00162979
         Rustlike faster than Original C, p = 0.00212730
+xcm:tls_detect_cert_dir_env_var_changes
+        Not stat sig
 xcm:tls_detect_changes_to_cert_files
         C2Rust Translation faster than Original C, p = 0.00818668
         Rustlike faster than Original C, p = 0.00552903
@@ -312,7 +398,11 @@ xcm:garbled_tcp_input
         Rustlike faster than Original C, p = 0.02809977
 xcm:ctl_open_nonexisting
         C2Rust Translation faster than Original C, p = 0.00921364
+xcm:version
+        Not stat sig
 xcm:basic_with_incorrect_ctl_dir
+xcm:ctl_concurrent_clients_idle_socket
+        Not stat sig
 xcm:ctl_concurrent_clients_active_socket
         Rustlike faster than Original C, p = 0.01303862
 xcm:garbled_tls_input
@@ -320,3 +410,5 @@ xcm:garbled_tls_input
         Rustlike faster than Original C, p = 0.00431482
 xcm:ctl_iter
         Original C faster than Rustlike, p = 0.04035006
+xcm:lossy_network
+        Not stat sig

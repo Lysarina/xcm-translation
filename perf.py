@@ -27,7 +27,7 @@ plot_all_values = True # plot all test times in same fig as respective conf inte
 plot_sigtest_conf_intervals = True # plot confidence intervals of each sig tests (leads to lots of plots)
 max_plots = 30 # max conf interval plots (recommmended to not bust the computer)
 
-plot_only = ["addr:supported"]
+plot_only = ["xcm:ipv6_link_local"] #"addr:supported"
 
 test_count = 165
 
@@ -133,7 +133,7 @@ for t, v in data_test.items():
     if (r.pvalue < alpha):
         sig_tests.append(t)
         data_test_sig[t] = v
-        if print_details: print(f"{t}: F = {r.statistic}, p = {r.pvalue}")
+        # if print_details: print(f"{t}: F = {r.statistic}, p = {r.pvalue}")
 
         # Flatten and prepare for Dunn test
         data = np.concatenate(v)
@@ -167,14 +167,17 @@ for t, v in data_test.items():
         performance_comparison[t] = pairwise_faster
 
         if print_details:
-            print(f"{t}: Dunn")
-            # print(t)
+            # print(f"{t}: Dunn")
+            print(t)
             # print("Significant pairwise differences (p < 0.05):")
             # for pair in sig_pairs:
             #     print(f"\t{versions[pair[0]]} vs {versions[pair[1]]}: p = {pair[2]:.8f}")
             for a, b, p in pairwise_faster:
                 # if (versions[b] == "Original C"):
                     print(f"\t{versions[a]} faster than {versions[b]}, p = {p:.8f}")
+    elif print_details:
+        print(t)
+        print("\tNot stat sig")
 
 # for t, v in data_test_sig.items():
 
