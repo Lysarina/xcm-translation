@@ -22,11 +22,13 @@ To generate new data, run
 ```
 sudo bash gen-results.sh
 ```
-to run sudo make check an amount of times (default 20). The output of each run is saved to a txt file. Rename the output files in `gen-results.sh` for each new variant. The format is `perf_results/<variant-name>-res-$i.txt`.
+to run sudo make check an amount of iterations (default 20). The output of each run is saved to a txt file. Rename the output files in `gen-results.sh` for each new variant or run. The format is `perf_results/<variant-name>-<run-name>-res-$i.txt`. If running several runs, `run-name` needs to be changed, but both the `variant-name` and the amount of iterations needs to stay the same.
 
 For analysing the results, run
 ```
 python3 perf.py
 ```
 
-It reads the output files and performs some statistics, and plots the results. For each new variant, add the variant name, a prettified name, and number of files in the arrays at top.
+It reads the output files and performs some statistics, and plots the results. 
+
+For each new variant, add the variant name in `variants`, a prettified name in `prettified_variants`, the run name in a new array in `run_names`, and the number of iterations in `files`, all at the same index in their respective arrays. If you have several runs with the same variant, add all names into the array in `run_names`.
