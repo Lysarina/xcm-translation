@@ -109,7 +109,7 @@ sig_tests = [] # statistically significant tests
 data_test_sig = {}
 dunn_results = {}  # store Dunn test results here
 significant_pairs = {}  # stores significant group pairs per test
-performance_comparison = {}  # Store which version was faster per significant pair
+performance_comparison = {}  # Store which variant was faster per significant pair
 
 # t = test name
 # v = array of arrays of test results
@@ -171,8 +171,8 @@ win_matrix_percent = (win_matrix / 166) * 100
 plt.figure(figsize=(6, 5))
 sns.heatmap(win_matrix_percent, annot=True, fmt=".1f", cmap="Blues",
             xticklabels=variants, yticklabels=variants, cbar_kws={'label': '% of tests'})
-plt.xlabel("Slower Version")
-plt.ylabel("Faster Version")
+plt.xlabel("Slower Variant")
+plt.ylabel("Faster Variant")
 plt.tight_layout()
 plt.savefig(f"{folder}/xcm-perf-comparison-{fig_save_name}.png")
 
@@ -185,10 +185,10 @@ if plot_sigtest_conf_intervals:
         if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
         else: 
             plt.title(f"Confidence Intervals for {t}", fontsize=14)
-            plt.xlabel('Version', fontsize=12)
+            plt.xlabel('Variant', fontsize=12)
             plt.ylabel('Time (s)', fontsize=12)
 
-        # Plot each version's confidence interval
+        # Plot each variant's confidence interval
         for i in range(len(variants)):
             median = np.median(data_test[t][i])
             mean = np.mean(data_test[t][i])
@@ -214,9 +214,9 @@ if plot_sigtest_conf_intervals:
         if (plot_all_values):
             plt.subplot(2, 2, 4)
             plt.title(f"Confidence Intervals")
-            plt.xlabel('Version')
+            plt.xlabel('Variant')
             plt.ylabel('Time (s)')
-        # Set xticks to be the version indices
+        # Set xticks to be the variant indices
         plt.xticks(range(len(variants)), variants)
         plt.tight_layout()
         count += 1
