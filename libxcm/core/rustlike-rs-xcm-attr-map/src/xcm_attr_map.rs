@@ -560,27 +560,3 @@ pub unsafe extern "C" fn xcm_attr_map_destroy(mut attr_map: *mut xcm_attr_map) {
 //         ut_free(attr_map as *mut libc::c_void);
 //     }
 // }
-
-
-//From c2rust
-// #[allow(clippy::zero_ptr)]
-// #[allow(unused_mut)]
-// #[allow(unused_assignments)]
-// #[unsafe(no_mangle)]
-// pub unsafe extern "C" fn xcm_attr_map_destroy(mut attr_map: *mut xcm_attr_map) {
-//     if !attr_map.is_null() {
-//         let mut attr: *mut attr = 0 as *mut attr;
-//         loop {
-//             attr = (*attr_map).attrs.lh_first;
-//             if attr.is_null() {
-//                 break;
-//             }
-//             if !((*attr).entry.le_next).is_null() {
-//                 (*(*attr).entry.le_next).entry.le_prev = (*attr).entry.le_prev;
-//             }
-//             *(*attr).entry.le_prev = (*attr).entry.le_next;
-//             attr_destroy(attr);
-//         }
-//         ut_free(attr_map as *mut libc::c_void);
-//     }
-// }

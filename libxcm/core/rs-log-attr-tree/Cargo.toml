@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 libc = "0.2.171"
+xcm-rust-common = {path="../../../xcm-rust-common"}
 
 [lib]
 path="src/log_attr_tree.rs"

@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 libc = "0.2.171"
 rs-log = {path="../../libxcm/core/rs-log"}
-
+xcm-rust-common = {path="../../xcm-rust-common"}
 [lib]
 path="src/common_ctl.rs"
 crate-type = ["cdylib", "rlib"]
