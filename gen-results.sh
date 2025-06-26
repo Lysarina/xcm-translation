@@ -1,5 +1,4 @@
-for i in $(seq 1 20);
+for i in $(seq 1 20); # change nbr of iterations
 do
-    # mv perf_results/rustlike-$i.txt perf_results/rustlike-res-$i.txt
-    sudo make check &> perf_results/rustlike-redo-res-$i.txt
+    sudo make check &> perf_results/variant-runname-res-$i.txt
 done
