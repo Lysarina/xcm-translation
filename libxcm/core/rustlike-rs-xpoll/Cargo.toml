@@ -1,0 +1,15 @@
+[package]
+name = "rs-xpoll"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+libc = "0.2.171"
+rs-active-fd = {path="../../tp/common/rs-active-fd"}
+rs-log = {path="../rs-log"}
+rs-util = {path = "../../../common/rs-util"}
+xcm-rust-common = {path="../../../xcm-rust-common"}
+
+[lib]
+path="src/xpoll.rs"
+crate-type = ["cdylib", "rlib"]

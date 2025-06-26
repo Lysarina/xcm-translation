@@ -1,0 +1,21 @@
+[package]
+name = "rs-xcm"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+libc = "0.2.171"
+xcm-rust-common={path="../../../xcm-rust-common"}
+rs-xcm-tp={path="../../tp/common/rs-xcm-tp"}
+rs-common-tp={path="../../tp/common/rs-common-tp"}
+rs-attr-tree={path="../rs-attr-tree"}
+rs-attr-node={path="../rs-attr-node"}
+rs-xpoll = {path="../rs-xpoll"}
+rs-log = {path="../rs-log"}
+rs-util = {path="../../../common/rs-util"}
+rs-xcm-version = {path="../rs-xcm-version"}
+rs-xcm-attr-map = { path = "../rs-xcm-attr-map"}
+
+[lib]
+path="src/xcm.rs"
+crate-type = ["cdylib", "rlib"]

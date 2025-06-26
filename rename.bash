@@ -1,19 +1,27 @@
 #!/bin/bash
 
-root_dir=$(pwd)
-variant="minmod"
+set -e
 
-find "$root_dir" -maxdepth 1 -type d -name 'rs-*' | while read -r rs_dir; do
+root_dir=$(pwd)
+variant="rustlike"
+
+find . -type d \( -name target -prune \) -o -type d -name 'rs-*' -print | while read -r rs_dir; do
+
+#find "$root_dir" -maxdepth 1 -type d -name 'rs-*' | while read -r rs_dir; do
   parent=$(dirname "$rs_dir")
   base=$(basename "$rs_dir")
+  echo $parent
+  echo $base
 
   
     variant_dir="$parent/${variant}-${base}"
+    echo $variant_dir
 
     # Remove old variant if it exists, then copy
-    rm -rf "$variant_dir"
+    
     cp -r "$rs_dir" "$variant_dir"
     echo "Created: $variant_dir"
+    cd "$root_dir"
 done
 
 # find "$root_dir" -depth -type d -name "${variant}-rs-*" | while read -r src_dir; do
