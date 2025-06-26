@@ -3,33 +3,14 @@
 
 pub mod cyclic_declarations {
     use super::xcm_tp::xcm_socket;
-    // use super::xcm_attr::*;
-    // use super::attr_tree_mod::*;
     unsafe extern "C" {
         pub type ctl;
         pub fn xcm_set_blocking(socket: *mut xcm_socket, should_block: bool) -> libc::c_int;
         pub fn xcm_remote_addr(conn_socket: *mut xcm_socket) -> *const libc::c_char;
         pub fn xcm_local_addr(socket: *mut xcm_socket) -> *const libc::c_char;
-        // pub fn xcm_addr_parse_proto(
-        //     addr_s: *const libc::c_char,
-        //     proto: *mut libc::c_char,
-        //     capacity: libc::c_ulong,
-        // ) -> libc::c_int;
         pub fn ctl_create(socket: *mut xcm_socket) -> *mut ctl;
         pub fn ctl_destroy(ctl: *mut ctl, owner: bool);
         pub fn ctl_process(ctl: *mut ctl);
-        // fn xcm_attr_get(
-        //     socket_0: *mut xcm_socket,
-        //     name: *const libc::c_char,
-        //     type_0: *mut xcm_attr_type,
-        //     value: *mut libc::c_void,
-        //     capacity: libc::c_ulong,
-        // ) -> libc::c_int;
-        // fn xcm_attr_get_all(
-        //     socket_0: *mut xcm_socket,
-        //     cb: xcm_attr_cb,
-        //     cb_data: *mut libc::c_void,
-        // );
     }
 }
 
