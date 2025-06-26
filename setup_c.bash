@@ -1,7 +1,7 @@
 
 echo "Setup for Original variant"
 
-sudo make clean
+make clean
 
 echo "Setting Makefile"
 rm "Makefile.am"

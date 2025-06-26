@@ -7,7 +7,7 @@ variant="rustlike"
 
 echo "Setup for RustLike variant"
 
-sudo make clean
+make clean
 
 echo "Setting Makefile"
 rm "Makefile.am"
