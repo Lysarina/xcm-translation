@@ -10,7 +10,6 @@ from collections import defaultdict
 import pandas as pd
 import scikit_posthocs as sp
 import seaborn as sns
-# from sklearn.datasets import load_iris
 
 def tolerant_mean(arrs):
     lens = [len(i) for i in arrs]
@@ -20,14 +19,15 @@ def tolerant_mean(arrs):
         arr[:len(l),idx] = l
     return arr.mean(axis = -1), arr.std(axis=-1)
 
-fig_save_name = "avg"
+subfolder = "paper/"
+fig_save_name = ""
 
 print_details = False
 plot_all_values = True # plot all test times in same fig as respective conf interval
-plot_sigtest_conf_intervals = True # plot confidence intervals of each sig tests (leads to lots of plots)
+plot_sigtest_conf_intervals = False # plot confidence intervals of each sig tests (leads to lots of plots)
 max_plots = 30 # max conf interval plots (recommmended to not bust the computer)
 
-plot_only = ["xcm:ipv6_link_local"] #"addr:supported"
+warmups = 4
 
 test_count = 165
 
@@ -36,12 +36,9 @@ alpha = 0.05 # max p-value for significance
 
 custom_colors = ["#004777","#a30000","#ff7700","#efd28d","#00afb5", "#9DBD9F"]
 
-# versions = ["original-c-3", "rustlike-3"]
-# files = [20, 20]
 versions = ["original-c", "full-c2rust-translation", "rustlike"]
-# subversions = [["3"], ["final-2"], ["2"]] # good res lol
+prettified_versions = ["Original", "MinMod", "RustLike"]
 subversions = [["redo", "redo-2", "2", "3"], ["redo", "redo-2", "redo-3","final-2"], ["redo", "redo-2", "2", "3"]] # all
-# subversions = [["redo-2"], ["redo-2"], ["redo-2"]]
 files = [20, 20, 20]
 
 test_times = re.compile(".*<.*>") # find test times
@@ -56,15 +53,12 @@ fail = False
 
 # Read all data
 for v in range(len(versions)):
-    # data[v] = {}
-    # data[v]["total"] = []
     data_sv[v] = {}
     data_sv[v]["total"] = []
-    # data_test["total"].append([])
     sv = subversions[v]
     for k in range(len(sv)):
         data_sv[v]["total"].append([])
-        for i in range(1, files[v]+1):
+        for i in range(warmups+1, files[v]+1):
             with open(f"perf_results/{versions[v]}-{sv[k]}-res-{i}.txt") as f:
                 content = f.read()
                 # Find all tests and their respective times
@@ -73,30 +67,22 @@ for v in range(len(versions)):
                 for test_match in test_times.findall(content):
                     time = re.sub(r"[\" s>\"]", "", test_match.split("<")[1])
                     test_name = ":".join(test_match.split(":")[:2])
-                    if (i == 1 and k == 0): 
-                        # data[v][test_name] = []
+                    if (k == 0 and (i == warmups+1 or test_name not in data_sv[v].keys())): 
                         data_sv[v][test_name] = []
                         data_sv[v][test_name].append([])
-                        # if (v == 0): data_test[test_name] = []
-                        # data_test[test_name].append([])
-                    elif (i == 1):
+                    elif (i == warmups+1 or test_name not in data_sv[v].keys()):
                         data_sv[v][test_name].append([])
                     if "FAILED" in test_match:
                         fails += 1
                         fail = True
                         continue
-                    # data[v][test_name].append(float(time))
-                    # data_test[test_name][v].append(float(time))
                     data_sv[v][test_name][k].append(float(time))
                     count += 1
                 if fails > 0 or count < test_count:
                     print(f"File {versions[v]}-{sv[k]}-res-{i}.txt FAILED {fails} tests")
-                # print(f"Number of matches: {(len(data[v]))}")
                 # Find total time
                 for res_match in total_time.findall(content):
                     time = re.sub(r"165 tests run in ", "", res_match.split("s;")[0])
-                    # data[v]["total"].append(float(time))
-                    # data_test["total"][v].append(float(time))
                     data_sv[v]["total"][k].append(float(time))
             f.close()
 
@@ -115,10 +101,7 @@ for v in range(len(versions)):
         data[v][test_name] = avg
         data_test[test_name][v] = avg
 
-# if fail:
-#     exit(0)
-
-versions = ["Original C", "C2Rust Translation", "Rustlike"]
+versions = prettified_versions
 
 sig_tests = [] # statistically significant tests
 data_test_sig = {}
@@ -133,7 +116,6 @@ for t, v in data_test.items():
     if (r.pvalue < alpha):
         sig_tests.append(t)
         data_test_sig[t] = v
-        # if print_details: print(f"{t}: F = {r.statistic}, p = {r.pvalue}")
 
         # Flatten and prepare for Dunn test
         data = np.concatenate(v)
@@ -150,9 +132,7 @@ for t, v in data_test.items():
         for i in dunn.index:
             for j in dunn.columns:
                 if i < j and dunn.loc[i, j] < alpha:
-                    sig_pairs.append((i, j, dunn.loc[i, j]))  # optionally include p-value
-                    # idx_i = int(i[1]) - 1  # convert 'v1' to 0
-                    # idx_j = int(j[1]) - 1
+                    sig_pairs.append((i, j, dunn.loc[i, j]))
 
                     median_i = np.median(v[i])
                     median_j = np.median(v[j])
@@ -167,19 +147,12 @@ for t, v in data_test.items():
         performance_comparison[t] = pairwise_faster
 
         if print_details:
-            # print(f"{t}: Dunn")
             print(t)
-            # print("Significant pairwise differences (p < 0.05):")
-            # for pair in sig_pairs:
-            #     print(f"\t{versions[pair[0]]} vs {versions[pair[1]]}: p = {pair[2]:.8f}")
             for a, b, p in pairwise_faster:
-                # if (versions[b] == "Original C"):
-                    print(f"\t{versions[a]} faster than {versions[b]}, p = {p:.8f}")
+                print(f"\t{versions[a]} faster than {versions[b]}, p = {p:.8f}")
     elif print_details:
         print(t)
         print("\tNot stat sig")
-
-# for t, v in data_test_sig.items():
 
 win_matrix = np.zeros((3, 3), dtype=int)
 
@@ -194,26 +167,17 @@ win_matrix_percent = (win_matrix / 166) * 100
 
 # Plot heatmap
 plt.figure(figsize=(6, 5))
-# sns.heatmap(win_matrix, annot=True, fmt="d", cmap="Blues",
-#             xticklabels=versions, yticklabels=versions)
 sns.heatmap(win_matrix_percent, annot=True, fmt=".1f", cmap="Blues",
             xticklabels=versions, yticklabels=versions, cbar_kws={'label': '% of tests'})
-
-# plt.title("Number of Tests Where Version A Was Faster Than B")
 plt.xlabel("Slower Version")
 plt.ylabel("Faster Version")
 plt.tight_layout()
-plt.savefig(f"../xcm-perf-comparison-{fig_save_name}.png")
-# plt.show()
+plt.savefig(f"../{subfolder}xcm-perf-comparison-{fig_save_name}.png")
 
 
 count = 0
 if plot_sigtest_conf_intervals:
     for t in sig_tests:
-        # print(t)
-        # if t in plot_only: print("yahoo")
-        if len(plot_only) > 0 and t not in plot_only: continue
-        # if (np.mean(data_test[t][0]) < np.mean(data_test[t][1])): continue
         if print_details: print(t)
         plt.figure(figsize=(10, 6))
         if (plot_all_values): plt.suptitle(f"{t}", fontsize=14)    
@@ -221,14 +185,13 @@ if plot_sigtest_conf_intervals:
             plt.title(f"Confidence Intervals for {t}", fontsize=14)
             plt.xlabel('Version', fontsize=12)
             plt.ylabel('Time (s)', fontsize=12)
-        # plt.legend(versions, title="Versions")
 
         # Plot each version's confidence interval
         for i in range(len(versions)):
             median = np.median(data_test[t][i])
             mean = np.mean(data_test[t][i])
             sem = stats.sem(data_test[t][i])  # Standard error of the mean
-            margin = sem * stats.t.ppf((1 + confidence) / 2.0, files[i] - 1)
+            margin = sem * stats.t.ppf((1 + confidence) / 2.0, files[i] - 1 - warmups)
             lower_bound = mean - margin
             upper_bound = mean + margin
             
@@ -260,21 +223,37 @@ if plot_sigtest_conf_intervals:
 
 print(f"Total significantly different tests: {len(sig_tests)}")
 
-data_test_means = {}
+## PLOT ALL TESTS
+
+data_test_medians = {}
 for t in data_test.keys():
-    data_test_means[t] = []
+    data_test_medians[t] = []
     for i in range(len(versions)):
-        mean = np.mean(data_test[t][i])
-        data_test_means[t].append(mean)
+        median = np.median(data_test[t][i])
+        data_test_medians[t].append(median)
 
 # Group by prefix before colon
 grouped_labels = defaultdict(list)
 grouped_values = defaultdict(list)
 
-for label in data_test_means:
+# joint = "addr\nattr_map\nattr_path\nattr_tree"
+joint = "attr_map\nattr_path\nattr_tree"
+group_boundaries = [0, 0, 0]
+for label in data_test_medians:
     prefix = label.split(':')[0]
-    grouped_labels[prefix].append(label)
-    grouped_values[prefix].append(data_test_means[label])
+    if prefix == "total": continue
+    if prefix == "attr_map" or prefix == "attr_path" or prefix == "attr_tree":
+        if prefix == "attr_map": 
+            group_boundaries[0] += 1
+            group_boundaries[1] += 1
+        elif prefix == "attr_path":
+            group_boundaries[1] += 1
+        group_boundaries[2] += 1 
+        grouped_labels[joint].append(label)
+        grouped_values[joint].append(data_test_medians[label])
+    else:
+        grouped_labels[prefix].append(label)
+        grouped_values[prefix].append(data_test_medians[label])
 
 colors = ["#004777","#a30000","#ff7700", 'lightgray', 'white']
 cmap = ListedColormap(colors)
@@ -284,7 +263,7 @@ row_labels = []
 group_row_end_indices = []  # To track where to draw separators
 current_row = 0
 
-values_per_row = 30
+values_per_row = 40
 
 # Sort groups by size descending
 sorted_prefixes = sorted(grouped_labels.keys(), key=lambda k: -len(grouped_labels[k]))
@@ -297,7 +276,7 @@ for prefix in sorted_prefixes:
     min_indices = np.argmin(values, axis=1)
     for i, label in enumerate(labels):
         if label not in sig_tests:
-            min_indices[i] = 3  # Highlight
+            min_indices[i] = 3  # Not statistically significant
 
     # Pad to full rows of 30
     n = len(min_indices)
@@ -320,25 +299,28 @@ for prefix in sorted_prefixes:
     group_row_end_indices.append(current_row)
 
 # Plot
-fig, ax = plt.subplots(figsize=(values_per_row * 0.3, len(grid_data) * 0.5))
-im = ax.imshow(grid_data, aspect='auto', cmap=cmap)
+fig, ax = plt.subplots(figsize=(values_per_row * 0.3, len(grid_data) * 0.45))
+im = ax.imshow(grid_data, interpolation='none', aspect='auto', cmap=cmap)
 
 # Draw cell borders (skip padding)
 for i, row in enumerate(grid_data):
     for j, val in enumerate(row):
         if val == 4:
             continue
+        # if i == 4 and j in group_boundaries:
+        #     ax.plot([j - 0.5, j - 0.5], [i - 0.5, i + 0.5],
+        #         color='black', linewidth=2)
         rect = mpatches.Rectangle((j - 0.5, i - 0.5), 1, 1,
-                                  edgecolor='black', facecolor='none', linewidth=0.5)
+                                  edgecolor='black', facecolor='none', linewidth=0.4)
         ax.add_patch(rect)
 
 # Draw faint horizontal separators between groups
 for row in group_row_end_indices[:-1]:  # Exclude final row
-    ax.axhline(row - 0.5, color='black', linestyle='--', linewidth=0.5, alpha=0.3)
+    ax.axhline(row - 0.5, color='black', linestyle='--', linewidth=0.4, alpha=0.3)
 
 # Y-axis labels
-ax.set_yticks(np.arange(len(row_labels)))
-ax.set_yticklabels(row_labels, fontsize=8)
+ax.set_yticks([i for i, label in enumerate(row_labels) if label != ""])
+ax.set_yticklabels([label for label in row_labels if label != ""], fontsize=8)
 
 # Remove x ticks
 ax.set_xticks([])
@@ -349,12 +331,11 @@ legend_patches = [
     mpatches.Patch(color=colors[1], label=versions[1]),
     mpatches.Patch(color=colors[2], label=versions[2]),
     mpatches.Patch(color=colors[3], label="No stat. sig.")
-    # mpatches.Patch(color=colors[4], label="Padding")
 ]
 ax.legend(handles=legend_patches, loc='upper center', bbox_to_anchor=(0.5, -0.05),
           ncol=len(legend_patches), frameon=False)
 
 plt.tight_layout()
-plt.savefig(f"../xcm-all-tests-{fig_save_name}.png")
+plt.savefig(f"../{subfolder}xcm-all-tests-{fig_save_name}.png", dpi=300, bbox_inches='tight')
 if count < 30:
     plt.show()
